@@ -6,14 +6,25 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var username: String = ""
+    @State private var usernameEmail: String = ""
     @State private var password: String = ""
     @State private var showPassword: Bool = false
     
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
+    
+    func login() {
+        Auth.auth().signIn(withEmail: usernameEmail, password: password) { (result, error) in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            } else {
+                print("success")
+            }
+        }
+    }
     
     var body: some View {
         VStack{
@@ -24,13 +35,13 @@ struct LoginScreen: View {
                 Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
                 TextField(
                     "User name (email address)",
-                    text: $username
+                    text: $usernameEmail
                 ).frame(height: 40)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .frame(height: 40)
@@ -70,7 +81,7 @@ struct LoginScreen: View {
                     Text("Forgot passwort")
                 }.frame(alignment: .trailing).padding()
             }
-            Button(action: {}){
+            Button(action: {login()}){
                 Text("Login").padding()
             }
             .tint(purpleColor)

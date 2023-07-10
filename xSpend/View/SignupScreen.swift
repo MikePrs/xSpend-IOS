@@ -6,16 +6,27 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SignupScreen: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     @Environment(\.colorScheme) var colorScheme
-    @State private var username: String = ""
+    @State private var usernameEmail: String = ""
     @State private var password: String = ""
     @State private var password2: String = ""
     @State private var showPassword: Bool = false
     @State private var passwordMatch: Bool = false
     
+    func signUp() {
+        Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
+            if let error = error {
+                print("an error occured: \(error.localizedDescription)")
+                return
+            }else{
+                print("login")
+            }
+        }
+    }
 
     var body: some View {
         VStack{
@@ -25,13 +36,13 @@ struct SignupScreen: View {
             Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
             TextField(
                 "User name (email address)",
-                text: $username
+                text: $usernameEmail
             ).frame(height: 40)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
                 }
-                .foregroundColor(.white)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .frame(height: 40)
@@ -67,7 +78,7 @@ struct SignupScreen: View {
                 }
             }
             HStack{
-                SecureField("Confirm Password", text: $password2)
+                SecureField("Confirm Password", text: $password2,
                     .frame(height: 40)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
@@ -77,7 +88,7 @@ struct SignupScreen: View {
                     .disableAutocorrection(true)
                 Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
             }
-            Button(action: {}){
+            Button(action: {signUp()}){
                 Text("Sign Up").padding()
             }
             .tint(purpleColor)
