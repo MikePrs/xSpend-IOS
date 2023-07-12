@@ -26,6 +26,20 @@ struct LoginScreen: View {
         }
     }
     
+    func sendPasswordReset(withEmail email: String){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+                print("password change err")
+        }
+    }
+    
+    func resetingPassword(){
+        if usernameEmail != "" {
+            sendPasswordReset(withEmail: usernameEmail)
+        }else{
+            print("fill email first")
+        }
+    }
+    
     var body: some View {
         VStack{
             VStack{
@@ -77,7 +91,7 @@ struct LoginScreen: View {
             }.padding()
             HStack{
                 Spacer()
-                Button(role: .destructive , action: {}){
+                Button(role: .destructive , action: {resetingPassword()}){
                     Text("Forgot passwort")
                 }.frame(alignment: .trailing).padding()
             }

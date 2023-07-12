@@ -18,13 +18,17 @@ struct SignupScreen: View {
     @State private var passwordMatch: Bool = false
     
     func signUp() {
-        Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
-            if let error = error {
-                print("an error occured: \(error.localizedDescription)")
-                return
-            }else{
-                print("login")
+        if passwordMatch {
+            Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
+                if let error = error {
+                    print("an error occured: \(error.localizedDescription)")
+                    return
+                }else{
+                    print("login")
+                }
             }
+        }else{
+            print("passwords dont match")
         }
     }
 
@@ -78,16 +82,21 @@ struct SignupScreen: View {
                 }
             }
             HStack{
-                SecureField("Confirm Password", text: $password2,
+                SecureField("Confirm Password", text: $password2)
                     .frame(height: 40)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
                     }
+                    .onChange(of: password2) { newValue in
+                        self.passwordMatch = newValue == self.password
+                    }
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                 Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
             }
+            
+            
             Button(action: {signUp()}){
                 Text("Sign Up").padding()
             }
