@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import ToastViewSwift
 
 struct SignupScreen: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
@@ -16,12 +17,16 @@ struct SignupScreen: View {
     @State private var password2: String = ""
     @State private var showPassword: Bool = false
     @State private var passwordMatch: Bool = false
+    @State private var errorAlert: Bool = false
+    @State private var errorAlertMessage: String = ""
     
     func signUp() {
         if passwordMatch {
             Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
                 if let error = error {
                     print("an error occured: \(error.localizedDescription)")
+                    errorAlert = true
+                    errorAlertMessage = error.localizedDescription
                     return
                 }else{
                     print("login")
@@ -29,6 +34,8 @@ struct SignupScreen: View {
             }
         }else{
             print("passwords dont match")
+            errorAlert = true
+            errorAlertMessage = "Passwords dont match"
         }
     }
 
@@ -94,6 +101,8 @@ struct SignupScreen: View {
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                 Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
+            }.alert(errorAlertMessage, isPresented: $errorAlert) {
+                Button("Ok") {}
             }
             
             

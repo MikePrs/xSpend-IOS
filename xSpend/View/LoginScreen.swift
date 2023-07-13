@@ -13,13 +13,17 @@ struct LoginScreen: View {
     @State private var usernameEmail: String = ""
     @State private var password: String = ""
     @State private var showPassword: Bool = false
+    @State private var errorAlert: Bool = false
+    @State private var errorAlertMessage: String = ""
     
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     func login() {
         Auth.auth().signIn(withEmail: usernameEmail, password: password) { (result, error) in
-            if error != nil {
-                print(error?.localizedDescription ?? "")
+            if let error = error {
+                print(error.localizedDescription)
+                errorAlert = true
+                errorAlertMessage = error.localizedDescription
             } else {
                 print("success")
             }
@@ -29,6 +33,8 @@ struct LoginScreen: View {
     func sendPasswordReset(withEmail email: String){
         Auth.auth().sendPasswordReset(withEmail: email) { error in
                 print("password change err")
+                errorAlert = true
+                errorAlertMessage = "Password change erros"
         }
     }
     
@@ -37,6 +43,8 @@ struct LoginScreen: View {
             sendPasswordReset(withEmail: usernameEmail)
         }else{
             print("fill email first")
+            errorAlert = true
+            errorAlertMessage = "Fill email first"
         }
     }
     
@@ -89,6 +97,9 @@ struct LoginScreen: View {
                     }
                 }
             }.padding()
+            .alert(errorAlertMessage, isPresented: $errorAlert) {
+                Button("Ok") {}
+            }
             HStack{
                 Spacer()
                 Button(role: .destructive , action: {resetingPassword()}){
