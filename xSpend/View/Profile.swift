@@ -49,7 +49,7 @@ struct Profile: View {
             .navigationBarTitle("Profile")
             
             .navigationDestination(isPresented: $logoutLink) {
-                ContentView()
+                LandingScreen()
             }
         }
     }

@@ -8,21 +8,11 @@
 import SwiftUI
 import FirebaseAuth
 
-struct ContentView: View {
+struct LandingScreen: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     @State var loginLink: Bool = false
     @State var signupLink: Bool = false
-    @State var mainAppLink: Bool = false
     @Environment(\.colorScheme) var colorScheme
-    
-    
-    func onLoad(){
-        if Auth.auth().currentUser != nil {
-            print("user")
-            self.mainAppLink = true
-        }
-    }
-    
     
     var body: some View {
         ZStack{
@@ -56,16 +46,35 @@ struct ContentView: View {
                     .navigationDestination(isPresented: $signupLink) {
                         SignupScreen()
                     }
-                    .navigationDestination(isPresented: $mainAppLink) {
-                        TabManager()
-                    }
             }
-        }.onAppear {onLoad()}
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        LandingScreen()
+    }
+}
+
+struct ContentView: View {
+    @State var mainAppLink: Bool = false
+    func onLoad(){
+        if Auth.auth().currentUser != nil {
+            self.mainAppLink = true
+            print("user")
+        }else{
+            self.mainAppLink = false
+            print("no user")
+        }
+    }
+    var body: some View {
+            NavigationStack{
+                if mainAppLink {
+                    TabManager()
+                }else{
+                    LandingScreen()
+                }
+            }.onAppear {onLoad()}
     }
 }
