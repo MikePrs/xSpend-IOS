@@ -6,41 +6,61 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    @State var isLoginLinkActive: Bool = false
-    @State var isSignupLinkActive: Bool = false
+    @State var loginLink: Bool = false
+    @State var signupLink: Bool = false
+    @State var mainAppLink: Bool = false
     @Environment(\.colorScheme) var colorScheme
+    
+    
+    func onLoad(){
+        if Auth.auth().currentUser != nil {
+            print("user")
+            self.mainAppLink = true
+        }
+    }
+    
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                Spacer()
-                Text("Welcome to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
-                
-                Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
-                Spacer()
-                Image("expensesIcon").resizable().frame(width: 200,height: 200)
-                Spacer()
-                NavigationLink(destination: LoginScreen(), isActive: $isLoginLinkActive){
-                    Button(action: {self.isLoginLinkActive = true }){
+        ZStack{
+            NavigationStack {
+                VStack {
+                    Spacer()
+                    Text("Welcome to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                    
+                    Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
+                    Spacer()
+                    Image("expensesIcon").resizable().frame(width: 200,height: 200)
+                    Spacer()
+                    Button(action: {self.loginLink = true }){
                         Text("Login").padding().frame(maxWidth: .infinity)
                     }
                     .tint(purpleColor)
                     .buttonStyle(.borderedProminent)
                     .font(.system(size: 25))
-                }
-                NavigationLink(destination: SignupScreen(), isActive: $isSignupLinkActive){
-                    Button(action: {self.isSignupLinkActive = true }){
+                    
+                    Button(action: {self.signupLink = true }){
                         Text("SignUp").padding().frame(maxWidth: .infinity)
                     }
                     .tint(purpleColor)
                     .buttonStyle(.bordered)
                     .font(.system(size: 25))
-                }
+                }.padding()
+                    .navigationBarBackButtonHidden(true)
+                    .navigationDestination(isPresented: $loginLink) {
+                        LoginScreen()
+                    }
+                    .navigationDestination(isPresented: $signupLink) {
+                        SignupScreen()
+                    }
+                    .navigationDestination(isPresented: $mainAppLink) {
+                        TabManager()
+                    }
             }
-            .padding()
-        }
+        }.onAppear {onLoad()}
     }
 }
 

@@ -19,7 +19,8 @@ struct SignupScreen: View {
     @State private var passwordMatch: Bool = false
     @State private var errorAlert: Bool = false
     @State private var errorAlertMessage: String = ""
-    
+    @State private var signupLink: Bool = false
+
     func signUp() {
         if passwordMatch {
             Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
@@ -29,7 +30,7 @@ struct SignupScreen: View {
                     errorAlertMessage = error.localizedDescription
                     return
                 }else{
-                    print("login")
+                    signupLink.toggle()
                 }
             }
         }else{
@@ -40,41 +41,32 @@ struct SignupScreen: View {
     }
 
     var body: some View {
-        VStack{
-            Image("expensesIcon").resizable().frame(width: 200,height: 200)
-            Text("Sign up to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
-            
-            Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
-            TextField(
-                "User name (email address)",
-                text: $usernameEmail
-            ).frame(height: 40)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
-                }
-                .foregroundColor(colorScheme == .dark ? .white : .black)
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                .frame(height: 40)
-                .padding(.bottom)
-            
-            HStack{
-                if showPassword {
-                    TextField(
-                        "Password",
-                        text: $password
-                    )
-                    .frame(height: 40)
+        NavigationStack {
+            VStack{
+                Image("expensesIcon").resizable().frame(width: 200,height: 200)
+                Text("Sign up to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                
+                Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
+                TextField(
+                    "User name (email address)",
+                    text: $usernameEmail
+                ).frame(height: 40)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
                     }
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .frame(height: 40)
                     .padding(.bottom)
-                }else{
-                    SecureField("Password", text: $password)
+                
+                HStack{
+                    if showPassword {
+                        TextField(
+                            "Password",
+                            text: $password
+                        )
                         .frame(height: 40)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
@@ -83,37 +75,51 @@ struct SignupScreen: View {
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .padding(.bottom)
-                }
-                Button(action: {self.showPassword = !self.showPassword }){
-                    Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
-                }
-            }
-            HStack{
-                SecureField("Confirm Password", text: $password2)
-                    .frame(height: 40)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
+                    }else{
+                        SecureField("Password", text: $password)
+                            .frame(height: 40)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
+                            }
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .padding(.bottom)
                     }
-                    .onChange(of: password2) { newValue in
-                        self.passwordMatch = newValue == self.password
+                    Button(action: {self.showPassword = !self.showPassword }){
+                        Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
                     }
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
-            }.alert(errorAlertMessage, isPresented: $errorAlert) {
-                Button("Ok") {}
-            }
-            
-            
-            Button(action: {signUp()}){
-                Text("Sign Up").padding()
-            }
-            .tint(purpleColor)
-            .buttonStyle(.borderedProminent)
-            .font(.system(size: 20))
-            .padding(.top,60)
-        }.padding()
+                }
+                HStack{
+                    SecureField("Confirm Password", text: $password2)
+                        .frame(height: 40)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
+                        }
+                        .onChange(of: password2) { newValue in
+                            self.passwordMatch = newValue == self.password
+                        }
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                    Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
+                }.alert(errorAlertMessage, isPresented: $errorAlert) {
+                    Button("Ok") {}
+                }
+                
+                
+                Button(action: {signUp()}){
+                    Text("Sign Up").padding()
+                }
+                .tint(purpleColor)
+                .buttonStyle(.borderedProminent)
+                .font(.system(size: 20))
+                .padding(.top,60)
+            }.padding()
+            .navigationDestination(isPresented: $signupLink) {
+                TabManager()
+              }
+        }
     }
 }
 

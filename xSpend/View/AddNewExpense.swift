@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct AddNewExpense: View {
     var body: some View {
-        Text("Add Expense")
+        ZStack{
+            Text("Add Expense")
+        }
     }
 }
 

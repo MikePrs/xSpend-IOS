@@ -19,12 +19,12 @@ struct CustomTabBar: View {
     
     private var fillImage: String {
         switch selectedTab{
-            case .house:
-                return "house.fill"
-            case .add:
-                return "plus.circle.fill"
-            case .person:
-                return "person.fill"
+        case .house:
+            return "house.fill"
+        case .add:
+            return "plus.circle.fill"
+        case .person:
+            return "person.fill"
         }
     }
     
@@ -32,19 +32,18 @@ struct CustomTabBar: View {
         print(Tab.allCases)
         print(selectedTab)
         switch tab{
-            case .house:
-                return "house"
-            case .add:
-                return "plus.circle"
-            case .person:
-                return "person"
+        case .house:
+            return "house"
+        case .add:
+            return "plus.circle"
+        case .person:
+            return "person"
         }
     }
     
     func initSetup() {
         
     }
-    
     
     var body: some View {
         VStack {
@@ -54,15 +53,15 @@ struct CustomTabBar: View {
                     ForEach(Tab.allCases, id: \.rawValue) { tab in
                         Spacer()
                         if (tab != .add){
-                        Image(systemName: selectedTab == tab ? fillImage : getIcon(tab))
-                            .scaleEffect(tab == selectedTab ? 2 : 1.0)
-                            .foregroundColor(.gray)
-                            .font(.system(size: 20))
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.1)) {
-                                    selectedTab = tab
+                            Image(systemName: selectedTab == tab ? fillImage : getIcon(tab))
+                                .scaleEffect(tab == selectedTab ? 2 : 1.0)
+                                .foregroundColor(.gray)
+                                .font(.system(size: 20))
+                                .onTapGesture {
+                                    withAnimation(.easeInOut(duration: 0.1)) {
+                                        selectedTab = tab
+                                    }
                                 }
-                            }
                         }
                         Spacer()
                     }
@@ -70,7 +69,7 @@ struct CustomTabBar: View {
                 .frame(width: nil, height: 60)
                 .background(.thinMaterial)
                 .cornerRadius(20)
-            .padding()
+                .padding()
                 HStack{
                     Spacer()
                     Image(systemName: "plus.circle.fill")
@@ -103,28 +102,33 @@ struct TabManager: View {
         UITabBar.appearance().isHidden = true
     }
     var body: some View {
+        
         ZStack {
-            VStack {
-                TabView(selection: $tabSelected) {
-                    ForEach(Tab.allCases, id: \.rawValue) { tab in
-                        HStack {
-                            if(tab.rawValue == "add"){
-                                AddNewExpense()
-                            }else if (tab.rawValue == "house"){
-                                
-                            }else if(tab.rawValue == "person"){
-                                Profile()
+            NavigationStack {
+                ZStack{
+                    VStack {
+                        TabView(selection: $tabSelected) {
+                            ForEach(Tab.allCases, id: \.rawValue) { tab in
+                                HStack {
+                                    if(tab.rawValue == "add"){
+                                        AddNewExpense()
+                                    }else if (tab.rawValue == "house"){
+                                        
+                                    }else if(tab.rawValue == "person"){
+                                        Profile()
+                                    }
+                                }
+                                .tag(tab)
                             }
                         }
-                        .tag(tab)
-                        
+                    }
+                    VStack {
+                        Spacer()
+                        CustomTabBar(selectedTab: $tabSelected)
                     }
                 }
             }
-            VStack {
-                Spacer()
-                CustomTabBar(selectedTab: $tabSelected)
-            }
+            .navigationBarBackButtonHidden(true)
         }
     }
     

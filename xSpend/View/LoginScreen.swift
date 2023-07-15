@@ -14,6 +14,7 @@ struct LoginScreen: View {
     @State private var password: String = ""
     @State private var showPassword: Bool = false
     @State private var errorAlert: Bool = false
+    @State private var loginLink: Bool = false
     @State private var errorAlertMessage: String = ""
     
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
@@ -25,7 +26,7 @@ struct LoginScreen: View {
                 errorAlert = true
                 errorAlertMessage = error.localizedDescription
             } else {
-                print("success")
+                loginLink.toggle()
             }
         }
     }
@@ -50,69 +51,76 @@ struct LoginScreen: View {
     
     var body: some View {
         VStack{
-            VStack{
-                Image("expensesIcon").resizable().frame(width: 200,height: 200)
-                Text("Login to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
-                
-                Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
-                TextField(
-                    "User name (email address)",
-                    text: $usernameEmail
-                ).frame(height: 40)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
-                    }
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .frame(height: 40)
-                    .padding(.bottom)
-                
-                HStack{
-                    if showPassword {
+            NavigationStack {
+                VStack{
+                    VStack{
+                        Image("expensesIcon").resizable().frame(width: 200,height: 200)
+                        Text("Login to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                        
+                        Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
                         TextField(
-                            "Password",
-                            text: $password
-                        )
-                        .frame(height: 40)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
-                        }
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
-                    }else{
-                        SecureField("Password", text: $password)
-                            .frame(height: 40)
+                            "User name (email address)",
+                            text: $usernameEmail
+                        ).frame(height: 40)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
                             }
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
+                            .frame(height: 40)
+                            .padding(.bottom)
+                        
+                        HStack{
+                            if showPassword {
+                                TextField(
+                                    "Password",
+                                    text: $password
+                                )
+                                .frame(height: 40)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
+                                }
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                            }else{
+                                SecureField("Password", text: $password)
+                                    .frame(height: 40)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(colorScheme == .dark ?.gray:purpleColor, lineWidth: 2)
+                                    }
+                                    .textInputAutocapitalization(.never)
+                                    .disableAutocorrection(true)
+                            }
+                            Button(action: {self.showPassword = !self.showPassword }){
+                                Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
+                            }
+                        }
+                    }.padding()
+                        .alert(errorAlertMessage, isPresented: $errorAlert) {
+                            Button("Ok") {}
+                        }
+                    HStack{
+                        Spacer()
+                        Button(role: .destructive , action: {resetingPassword()}){
+                            Text("Forgot passwort")
+                        }.frame(alignment: .trailing).padding()
                     }
-                    Button(action: {self.showPassword = !self.showPassword }){
-                        Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
+                    Button(action: {login()}){
+                        Text("Login").padding()
                     }
+                    .tint(purpleColor)
+                    .buttonStyle(.borderedProminent)
+                    .font(.system(size: 20))
+                    .padding(.top)
                 }
-            }.padding()
-            .alert(errorAlertMessage, isPresented: $errorAlert) {
-                Button("Ok") {}
+                .navigationDestination(isPresented: $loginLink) {
+                    TabManager()
+                }
             }
-            HStack{
-                Spacer()
-                Button(role: .destructive , action: {resetingPassword()}){
-                    Text("Forgot passwort")
-                }.frame(alignment: .trailing).padding()
-            }
-            Button(action: {login()}){
-                Text("Login").padding()
-            }
-            .tint(purpleColor)
-            .buttonStyle(.borderedProminent)
-            .font(.system(size: 20))
-            .padding(.top)
         }
     }
 }

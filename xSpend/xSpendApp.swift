@@ -7,7 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
-
+import FirebaseAuth
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -27,7 +27,7 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-          TabManager()
+        ContentView()
       }
     }
   }
