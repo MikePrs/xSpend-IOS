@@ -17,6 +17,7 @@
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
 		059CDDF32A6096790006DF80 /* AddNewExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDF22A6096790006DF80 /* AddNewExpense.swift */; };
 		059CDDF52A6096900006DF80 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDF42A6096900006DF80 /* Profile.swift */; };
+		059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */; };
 		5BD4032159E8F37E6985C5FA /* Pods_xSpend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7542958D217ABE34EB600133 /* Pods_xSpend.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		059CDDF22A6096790006DF80 /* AddNewExpense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewExpense.swift; sourceTree = "<group>"; };
 		059CDDF42A6096900006DF80 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCurrencyCode.swift; sourceTree = "<group>"; };
 		5FAA02916440240AA9A2AC37 /* Pods-xSpend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xSpend.release.xcconfig"; path = "Target Support Files/Pods-xSpend/Pods-xSpend.release.xcconfig"; sourceTree = "<group>"; };
 		7542958D217ABE34EB600133 /* Pods_xSpend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_xSpend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B962134E31EE37060EB2C4B /* Pods-xSpend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xSpend.debug.xcconfig"; path = "Target Support Files/Pods-xSpend/Pods-xSpend.debug.xcconfig"; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 		0565AE832A5AF3210050A9D8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				059CDDF52A6096900006DF80 /* Profile.swift in Sources */,
 				059CDDF32A6096790006DF80 /* AddNewExpense.swift in Sources */,
 				0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */,
+				059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */,
 				0565AE872A5B04A80050A9D8 /* SignupScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

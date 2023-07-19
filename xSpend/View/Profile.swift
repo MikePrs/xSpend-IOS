@@ -9,10 +9,10 @@ import SwiftUI
 import FirebaseAuth
 
 struct Profile: View {
-    @State private var isDarkMode: Bool = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
     @State private var logoutLink: Bool = false
-    @State private var currencySelection: String = "Euro"
-    
+    @AppStorage("currencySelection") private var currencySelection: String = "Euro"
+    private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     func signOut(){
         do {
             try Auth.auth().signOut()
@@ -20,6 +20,9 @@ struct Profile: View {
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    func setUp() {
     }
     
     
@@ -33,25 +36,32 @@ struct Profile: View {
                     }
                     LabeledContent("Username", value: userEmail.components(separatedBy: "@")[0])
                 }
-                Toggle("Dark Mode", isOn: $isDarkMode)
                 Section {
-                    Picker("Currency", selection: $currencySelection){
-                        Text("Euro")
-                        Text("Dollar")
+                    Toggle("Dark Mode", isOn: $isDarkMode)
+                    Picker("Country", selection: $currencySelection){
+                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
+                            Text(key)
+                        }
                     }
+//                    Picker("Currency", selection: $currencySelection){
+//                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
+//                            Text(value)
+//                        }
+//                    }.disabled(true)
+                    LabeledContent("Currency", value: countryCurrencyCode[currencySelection] ?? "")
                 } header: {
-                    Text("In App Currency")
+                    Text("App Settings")
                 }
                 Section {
                     Button(role: .destructive) {signOut()} label:{Text("Log Out")}
                 }
             }
             .navigationBarTitle("Profile")
-            
             .navigationDestination(isPresented: $logoutLink) {
                 LandingScreen()
             }
-        }
+        }.onAppear{setUp()}
+
     }
 }
 

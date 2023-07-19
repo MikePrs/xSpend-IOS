@@ -22,12 +22,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct YourApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+  @AppStorage("isDarkMode") private var isDarkMode = false
 
 
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView()
+        ContentView().preferredColorScheme(isDarkMode ? .dark : .light)
       }
     }
   }
