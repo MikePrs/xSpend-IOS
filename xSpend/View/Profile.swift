@@ -27,7 +27,7 @@ struct Profile: View {
     
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form{
                 if let userEmail = Auth.auth().currentUser?.email{
                     HStack {
@@ -43,20 +43,16 @@ struct Profile: View {
                             Text(key)
                         }
                     }
-//                    Picker("Currency", selection: $currencySelection){
-//                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
-//                            Text(value)
-//                        }
-//                    }.disabled(true)
                     LabeledContent("Currency", value: countryCurrencyCode[currencySelection] ?? "")
                 } header: {
                     Text("App Settings")
                 }
+                Button(role: .cancel) {print("addnew expense")} label:{Text("Add new expense type")}
                 Section {
                     Button(role: .destructive) {signOut()} label:{Text("Log Out")}
                 }
             }
-            .navigationBarTitle("Profile")
+            .navigationBarTitle(Text("Profile"))
             .navigationDestination(isPresented: $logoutLink) {
                 LandingScreen()
             }

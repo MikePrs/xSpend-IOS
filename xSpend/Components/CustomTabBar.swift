@@ -29,8 +29,6 @@ struct CustomTabBar: View {
     }
     
     private func getIcon(_ tab:Tab)->String{
-        print(Tab.allCases)
-        print(selectedTab)
         switch tab{
         case .house:
             return "house"
@@ -113,7 +111,7 @@ struct TabManager: View {
                                     if(tab.rawValue == "add"){
                                         AddNewExpense()
                                     }else if (tab.rawValue == "house"){
-                                        
+                                        Expenses()
                                     }else if(tab.rawValue == "person"){
                                         Profile()
                                     }
@@ -129,7 +127,7 @@ struct TabManager: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
-        }
+        }.ignoresSafeArea(.keyboard, edges: .bottom)
     }
     
 }
