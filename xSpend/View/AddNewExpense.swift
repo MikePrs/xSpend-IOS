@@ -11,56 +11,35 @@ import FirebaseAuth
 struct AddNewExpense: View {
     @State private var expenseTitle: String = ""
     @State private var expenseIcon: String = "eurosign.circle"
-    @State private var expenseType: String = "Coffee"
+    @State private var expenseType: String = ""
     @State private var expenseNotes: String = ""
     @State private var expenseAmount: Float = 0.0
-    let types = ["Coffee","Gas","Rent","Electricity"]
+    private let types = ["Coffee","Gas","Rent","Electricity"]
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     
     var body: some View {
         NavigationView{
             ZStack{
-                
                 Form {
                     TextField("Title", text: $expenseTitle)
                     HStack{
                         Text("Amount:   ")
-                        TextField("Amount", value: $expenseAmount,format:.number)
+                        TextField("Amount", value: $expenseAmount,format:.number).keyboardType(.decimalPad)
                     }
                     Picker("Type", selection: $expenseType){
                         ForEach(types, id: \.self) { value in
-                            Text(value)
+                            Text(value).tag(value)
                         }
-                    }
+                    }.pickerStyle(.navigationLink)
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
-                }
-                
-                VStack {
-                    VStack{Spacer()}.frame(maxHeight: .infinity)
-                    VStack {
-                        Button {
-                            
-                        } label: {
-                            Text("Add  ")
-                                .font(.system(size: 20))
-                                .padding()
-                                .foregroundColor(purpleColor)
-                                .background(
-                                    RoundedRectangle(
-                                        cornerRadius: 10,
-                                        style: .continuous
-                                    )
-                                    .stroke(purpleColor, lineWidth: 3)
-                                )
-                        }
-                    }.frame(maxHeight: .infinity)
-                }
+                    Section {
+                        Button(role: .cancel) {print("add")} label:{Text("Add").foregroundColor(purpleColor)}
+                    }
+                }.scrollDismissesKeyboard(.immediately)
             }
             .navigationBarTitle(Text("Add new expense"))
-        }.onTapGesture {
-            hideKeyboard()
-        }
+        }.onAppear{}
     }
 }
 

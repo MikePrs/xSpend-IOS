@@ -13,6 +13,7 @@ struct Profile: View {
     @State private var logoutLink: Bool = false
     @AppStorage("currencySelection") private var currencySelection: String = "Euro"
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
+    
     func signOut(){
         do {
             try Auth.auth().signOut()
