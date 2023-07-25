@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
+import AlertToast
 
 struct AddNewExpense: View {
     let db = Firestore.firestore()
@@ -17,15 +18,31 @@ struct AddNewExpense: View {
     @State private var expenseNotes: String = ""
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
+    @State var showSuccessToast = false
+
     private let types = ["Coffee","Gas","Rent","Electricity"]
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     
     func add() {
-        if (expenseTitle.isEmpty || expenseAmount == 0){
+        if (expenseAmount == 0){
             showingAlert = true
         }else{
-            
+            self.db.collection("Expenses")
+                .addDocument(data: [
+                    "title":expenseTitle,
+                    "amount":expenseAmount,
+                    "type":expenseType,
+                    "notes":expenseNotes,
+                    "user":Auth.auth().currentUser?.email as Any
+                ]){ err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        showSuccessToast = true
+                        print("Document successfully written!")
+                    }
+                }
         }
     }
     
@@ -54,6 +71,8 @@ struct AddNewExpense: View {
                             
                     }
                 }.scrollDismissesKeyboard(.immediately)
+            }.toast(isPresenting: $showSuccessToast) {
+                AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: .white))
             }
             .alert("Title and Amout should be filled.", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) { }
