@@ -7,15 +7,27 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 struct AddNewExpense: View {
+    let db = Firestore.firestore()
     @State private var expenseTitle: String = ""
     @State private var expenseIcon: String = "eurosign.circle"
-    @State private var expenseType: String = ""
+    @State private var expenseType: String = "Coffee"
     @State private var expenseNotes: String = ""
     @State private var expenseAmount: Float = 0.0
+    @State var showingAlert = false
     private let types = ["Coffee","Gas","Rent","Electricity"]
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
+    
+    
+    func add() {
+        if (expenseTitle.isEmpty || expenseAmount == 0){
+            showingAlert = true
+        }else{
+            
+        }
+    }
     
     
     var body: some View {
@@ -25,7 +37,11 @@ struct AddNewExpense: View {
                     TextField("Title", text: $expenseTitle)
                     HStack{
                         Text("Amount:   ")
-                        TextField("Amount", value: $expenseAmount,format:.number).keyboardType(.decimalPad)
+                        TextField("Amount", value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                            if let textField = obj.object as? UITextField {
+                                textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                            }
+                        }
                     }
                     Picker("Type", selection: $expenseType){
                         ForEach(types, id: \.self) { value in
@@ -34,9 +50,13 @@ struct AddNewExpense: View {
                     }.pickerStyle(.navigationLink)
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
                     Section {
-                        Button(role: .cancel) {print("add")} label:{Text("Add").foregroundColor(purpleColor)}
+                        Button(role: .cancel) {add()} label:{Text("Add").foregroundColor(purpleColor)}
+                            
                     }
                 }.scrollDismissesKeyboard(.immediately)
+            }
+            .alert("Title and Amout should be filled.", isPresented: $showingAlert) {
+                Button("OK", role: .cancel) { }
             }
             .navigationBarTitle(Text("Add new expense"))
         }.onAppear{}
@@ -56,3 +76,4 @@ extension View {
         UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
     }
 }
+
