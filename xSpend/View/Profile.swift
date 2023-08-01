@@ -11,6 +11,7 @@ import FirebaseAuth
 struct Profile: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @State private var logoutLink: Bool = false
+    @State private var expenseTypesLink: Bool = false
     @AppStorage("currencySelection") private var currencySelection: String = "Euro"
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     
@@ -48,7 +49,7 @@ struct Profile: View {
                 } header: {
                     Text("App Settings")
                 }
-                Button(role: .cancel) {print("addnew expense")} label:{Text("Add new expense type")}
+                Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text("Add new expense type")}
                 Section {
                     Button(role: .destructive) {signOut()} label:{Text("Log Out")}
                 }
@@ -56,6 +57,9 @@ struct Profile: View {
             .navigationBarTitle(Text("Profile"))
             .navigationDestination(isPresented: $logoutLink) {
                 LandingScreen()
+            }
+            .navigationDestination(isPresented: $expenseTypesLink) {
+                ExpenseTypes()
             }
         }.onAppear{setUp()}
 
