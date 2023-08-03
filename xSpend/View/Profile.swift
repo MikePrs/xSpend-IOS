@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import SymbolPicker
 
 struct Profile: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
@@ -62,7 +63,6 @@ struct Profile: View {
                 ExpenseTypes()
             }
         }.onAppear{setUp()}
-
     }
 }
 
