@@ -24,7 +24,7 @@ struct AddNewExpense: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     
-    func add() {
+    func addNewExpense() {
         if (expenseAmount == 0){
             showingAlert = true
         }else{
@@ -67,7 +67,7 @@ struct AddNewExpense: View {
                     }.pickerStyle(.navigationLink)
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
                     Section {
-                        Button(role: .cancel) {add()} label:{Text("Add").foregroundColor(purpleColor)}
+                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(purpleColor)}
                             
                     }
                 }.scrollDismissesKeyboard(.immediately)

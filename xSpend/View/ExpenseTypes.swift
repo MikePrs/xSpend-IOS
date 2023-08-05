@@ -7,11 +7,18 @@
 
 import SwiftUI
 import SymbolPicker
+import FirebaseAuth
+import FirebaseFirestore
+import AlertToast
+
 
 struct ExpenseTypes: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    let db = Firestore.firestore()
     @State private var showingAlert = false
+    @State private var showingErrAlert = false
+    @State var showSuccessToast = false
     @State private var ExpenseTypeName = ""
     @State private var iconPickerPresented = false
     @State private var icon = "cup.and.saucer.fill"
@@ -24,8 +31,27 @@ struct ExpenseTypes: View {
         alltypes.updateValue("custom", forKey: "plus")
     }
     
-    func add() {
-        print("add")
+    func addNewExpenseType() {
+        if (ExpenseTypeName == ""){
+            showingErrAlert = true
+        }else{
+            self.db.collection("ExpenseTypes")
+                .addDocument(data: [
+                    ExpenseTypeName:icon,
+                    "user":Auth.auth().currentUser?.email as Any
+                ]){ err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        showSuccessToast = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                            showingAlert = false
+                        }
+                        print("Document successfully written!")
+                    }
+                }
+        }
+        
     }
     
     var body: some View {
@@ -67,15 +93,22 @@ struct ExpenseTypes: View {
                     }
                     .sheet(isPresented: $showingAlert) {
                         VStack(spacing: 20){
-                            Text("New Expense").font(.system(size: 30))
                             HStack {
-                                TextField("Enter new expense name", text: $ExpenseTypeName)
+                                Button("Back") {
+                                    showingAlert = false
+                                }
+                                Spacer()
+                            }.padding(.vertical)
+                            Spacer()
+                            Text("New Expense type").font(.system(size: 30))
+                            HStack {
+                                TextField("Enter new expense type name", text: $ExpenseTypeName)
                                     .frame(height: 45)
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .padding([.horizontal], 4)
-                                        .cornerRadius(10)
-                                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
-                                        .padding([.horizontal], 4)
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding([.horizontal], 4)
+                                    .cornerRadius(10)
+                                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
+                                    .padding([.horizontal], 4)
                                 Button {
                                     iconPickerPresented = true
                                 } label: {
@@ -90,8 +123,15 @@ struct ExpenseTypes: View {
                                     SymbolPicker(symbol: $icon)
                                 }
                             }
-                            Button("Add"){add()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? purpleColor: .white)
+                            Button("Add"){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? purpleColor: .white)
+                            Spacer()
                         }.padding(.horizontal,40)
+                        .toast(isPresenting: $showSuccessToast) {
+                            AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: .white))
+                        }
+                        .alert("Expense name should be filled.", isPresented: $showingErrAlert) {
+                            Button("OK", role: .cancel) { }
+                        }
                     }
                 }
             }
