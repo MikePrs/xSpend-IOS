@@ -21,14 +21,18 @@ struct ExpenseTypes: View {
     @State var showSuccessToast = false
     @State private var ExpenseTypeName = ""
     @State private var iconPickerPresented = false
-    @State private var icon = "cup.and.saucer.fill"
-    @State var alltypes = [String:String]()
+    @State private var icon = "questionmark.square.dashed"
+    @State var standardTypes = [
+        ExpenseType(id: "0", name:"Coffee",icon:"cup.and.saucer.fill"),
+        ExpenseType(id: "1", name:"Gas",icon:"fuelpump.circle"),
+        ExpenseType(id: "2", name:"Rent",icon:"house.circle"),
+        ExpenseType(id: "3", name:"Electricity",icon:"bolt.circle")
+    ]
+    @State var allTypes = [ExpenseType]()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    var standardTypes = ["Coffee":"cup.and.saucer.fill","Gas":"fuelpump.circle","Rent":"house.circle","Electricity":"bolt.circle"]
-    
+
     func setUp() {
-        alltypes = standardTypes
-        alltypes.updateValue("custom", forKey: "plus")
+        getExpenseTypes()
     }
     
     func addNewExpenseType() {
@@ -37,7 +41,8 @@ struct ExpenseTypes: View {
         }else{
             self.db.collection("ExpenseTypes")
                 .addDocument(data: [
-                    ExpenseTypeName:icon,
+                    "name":ExpenseTypeName,
+                    "icon":icon,
                     "user":Auth.auth().currentUser?.email as Any
                 ]){ err in
                     if let err = err {
@@ -51,32 +56,60 @@ struct ExpenseTypes: View {
                     }
                 }
         }
-        
+    }
+    
+    func getExpenseTypes(){
+        db.collection("ExpenseTypes")
+            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
+            .addSnapshotListener { querySnapshot, error in
+                if error != nil {
+                    print("Error geting Expense types")
+                }else{
+                    if let snapshotDocuments = querySnapshot?.documents{
+                        allTypes=standardTypes
+                        for doc in snapshotDocuments{
+                            let data = doc.data()
+                            allTypes.append(ExpenseType(id:doc.documentID, name:data["name"] as! String, icon:data["icon"] as! String))
+                        }
+                    }
+                }
+            }
+    }
+    
+    func removeExpenseType(with docId:String){
+        db.collection("ExpenseTypes").document(docId).delete() { err in
+            if let err = err {
+              print("Error removing document: \(err)")
+            }
+            else {
+              print("Document successfully removed!")
+            }
+          }
     }
     
     var body: some View {
         NavigationStack{
             List{
-                ForEach(alltypes.sorted(by: <), id: \.key) { key, value in
-                    if standardTypes.keys.contains(key){
+                ForEach(allTypes) {type in
+                    if standardTypes.contains(where: { $0.name == type.name }){
                         HStack{
-                            Text(key).foregroundColor(.gray)
+                            Text(type.name).foregroundColor(.gray)
                             Spacer()
-                            Image(systemName: value).resizable().foregroundColor(.gray)
+                            Image(systemName: type.icon).resizable().foregroundColor(.gray)
                                 .frame(width: 25, height: 25)
                             
                         }.frame(height: 40)
                     }else{
                         HStack{
-                            Text(key)
+                            Text(type.name)
                             Spacer()
-                            Image(systemName: value).resizable()
+                            Image(systemName: type.icon).resizable()
                                 .frame(width: 25, height: 25)
                             
                         }.frame(height: 40)
                             .swipeActions {
                                 Button("Delete") {
-                                    print("Right on!")
+                                    removeExpenseType(with: type.id)
                                 }
                                 .tint(.red)
                             }

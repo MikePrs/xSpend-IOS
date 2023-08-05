@@ -13,3 +13,9 @@ struct Expense {
     var type:String
     var note:String
 }
+
+struct ExpenseType:Identifiable {
+    var id:String
+    var name:String
+    var icon:String
+}
