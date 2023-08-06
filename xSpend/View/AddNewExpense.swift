@@ -19,10 +19,13 @@ struct AddNewExpense: View {
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
     @State var showSuccessToast = false
-
-    private let types = ["Coffee","Gas","Rent","Electricity"]
+    @State private var alltypesValues = [String]()
+    private let standardTypes = ["Coffee","Gas","Rent","Electricity"]
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
+    func setUp(){
+        getExpenseTypes()
+    }
     
     func addNewExpense() {
         if (expenseAmount == 0){
@@ -46,6 +49,24 @@ struct AddNewExpense: View {
         }
     }
     
+    func getExpenseTypes(){
+        db.collection("ExpenseTypes")
+            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
+            .addSnapshotListener { querySnapshot, error in
+                if error != nil {
+                    print("Error geting Expense types")
+                }else{
+                    if let snapshotDocuments = querySnapshot?.documents{
+                        alltypesValues=standardTypes
+                        for doc in snapshotDocuments{
+                            let data = doc.data()
+                            alltypesValues.append(data["name"] as! String)
+                        }
+                    }
+                }
+            }
+    }
+    
     
     var body: some View {
         NavigationView{
@@ -61,7 +82,7 @@ struct AddNewExpense: View {
                         }
                     }
                     Picker("Type", selection: $expenseType){
-                        ForEach(types, id: \.self) { value in
+                        ForEach(alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
                     }.pickerStyle(.navigationLink)
@@ -78,7 +99,7 @@ struct AddNewExpense: View {
                 Button("OK", role: .cancel) { }
             }
             .navigationBarTitle(Text("Add new expense"))
-        }.onAppear{}
+        }.onAppear{setUp()}
     }
 }
 

@@ -22,6 +22,8 @@ struct ExpenseTypes: View {
     @State private var ExpenseTypeName = ""
     @State private var iconPickerPresented = false
     @State private var icon = "questionmark.square.dashed"
+    @State private var alertMessage = ""
+    @State private var alltypesValues = [String]()
     @State var standardTypes = [
         ExpenseType(id: "0", name:"Coffee",icon:"cup.and.saucer.fill"),
         ExpenseType(id: "1", name:"Gas",icon:"fuelpump.circle"),
@@ -36,7 +38,8 @@ struct ExpenseTypes: View {
     }
     
     func addNewExpenseType() {
-        if (ExpenseTypeName == ""){
+        if (ExpenseTypeName == "" || alltypesValues.contains(ExpenseTypeName)){
+            alertMessage = ExpenseTypeName == "" ? "Expense name should be filled." : "This expense type already exists."
             showingErrAlert = true
         }else{
             self.db.collection("ExpenseTypes")
@@ -70,6 +73,7 @@ struct ExpenseTypes: View {
                         for doc in snapshotDocuments{
                             let data = doc.data()
                             allTypes.append(ExpenseType(id:doc.documentID, name:data["name"] as! String, icon:data["icon"] as! String))
+                            alltypesValues.append(data["name"] as! String)
                         }
                     }
                 }
@@ -162,7 +166,7 @@ struct ExpenseTypes: View {
                         .toast(isPresenting: $showSuccessToast) {
                             AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: .white))
                         }
-                        .alert("Expense name should be filled.", isPresented: $showingErrAlert) {
+                        .alert(alertMessage, isPresented: $showingErrAlert) {
                             Button("OK", role: .cancel) { }
                         }
                     }
