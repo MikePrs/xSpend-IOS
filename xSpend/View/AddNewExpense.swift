@@ -13,8 +13,8 @@ import AlertToast
 struct AddNewExpense: View {
     let db = Firestore.firestore()
     @State private var expenseTitle: String = ""
-    @State private var expenseIcon: String = "eurosign.circle"
     @State private var expenseType: String = "Coffee"
+    @State private var expenseDate = Date.now
     @State private var expenseNotes: String = ""
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
@@ -31,17 +31,24 @@ struct AddNewExpense: View {
         if (expenseAmount == 0){
             showingAlert = true
         }else{
+            let formatter4 = DateFormatter()
+            formatter4.dateFormat = "d/M/YYYY"
             self.db.collection("Expenses")
                 .addDocument(data: [
                     "title":expenseTitle,
                     "amount":expenseAmount,
                     "type":expenseType,
                     "notes":expenseNotes,
-                    "user":Auth.auth().currentUser?.email as Any
+                    "user":Auth.auth().currentUser?.email as Any,
+                    "date":formatter4.string(from: expenseDate)
                 ]){ err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
+                        expenseTitle = ""
+                        expenseType = ""
+                        expenseNotes = ""
+                        expenseAmount = 0.0
                         showSuccessToast = true
                         print("Document successfully written!")
                     }
@@ -86,6 +93,9 @@ struct AddNewExpense: View {
                             Text(value).tag(value)
                         }
                     }.pickerStyle(.navigationLink)
+                    DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
+                        Text("Select a date")
+                    }
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
                     Section {
                         Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(purpleColor)}

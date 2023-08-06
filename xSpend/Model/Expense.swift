@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct Expense {
+struct Expense:Identifiable {
+    var id:String
     var title:String
     var amount:Float
     var type:String
