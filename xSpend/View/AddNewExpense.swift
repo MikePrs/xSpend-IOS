@@ -11,7 +11,7 @@ import FirebaseFirestore
 import AlertToast
 
 struct AddNewExpense: View {
-    let db = Firestore.firestore()
+    @Environment(\.colorScheme) var colorScheme
     @State private var expenseTitle: String = ""
     @State private var expenseType: String = "Coffee"
     @State private var expenseDate = Date.now
@@ -19,12 +19,13 @@ struct AddNewExpense: View {
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
     @State var showSuccessToast = false
-    @State private var alltypesValues = [String]()
-    private let standardTypes = ["Coffee","Gas","Rent","Electricity"]
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
+    @ObservedObject var fbViewModel = FirebaseViewModel()
+
+    
     func setUp(){
-        getExpenseTypes()
+        fbViewModel.getExpenseTypes()
     }
     
     func addNewExpense() {
@@ -33,47 +34,24 @@ struct AddNewExpense: View {
         }else{
             let formatter4 = DateFormatter()
             formatter4.dateFormat = "d/M/YYYY"
-            self.db.collection("Expenses")
-                .addDocument(data: [
-                    "title":expenseTitle,
-                    "amount":expenseAmount,
-                    "type":expenseType,
-                    "notes":expenseNotes,
-                    "user":Auth.auth().currentUser?.email as Any,
-                    "date":formatter4.string(from: expenseDate)
-                ]){ err in
-                    if let err = err {
-                        print("Error writing document: \(err)")
-                    } else {
-                        expenseTitle = ""
-                        expenseType = ""
-                        expenseNotes = ""
-                        expenseAmount = 0.0
-                        showSuccessToast = true
-                        print("Document successfully written!")
-                    }
-                }
+            let newExpense = [
+                "title":expenseTitle,
+                "amount":expenseAmount,
+                "type":expenseType,
+                "notes":expenseNotes,
+                "user":Auth.auth().currentUser?.email as Any,
+                "date":formatter4.string(from: expenseDate)
+            ]
+            let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense)
+            if addSuccess {
+                expenseTitle = ""
+                expenseType = ""
+                expenseNotes = ""
+                expenseAmount = 0.0
+                showSuccessToast = true
+            }
         }
     }
-    
-    func getExpenseTypes(){
-        db.collection("ExpenseTypes")
-            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
-            .addSnapshotListener { querySnapshot, error in
-                if error != nil {
-                    print("Error geting Expense types")
-                }else{
-                    if let snapshotDocuments = querySnapshot?.documents{
-                        alltypesValues=standardTypes
-                        for doc in snapshotDocuments{
-                            let data = doc.data()
-                            alltypesValues.append(data["name"] as! String)
-                        }
-                    }
-                }
-            }
-    }
-    
     
     var body: some View {
         NavigationView{
@@ -89,7 +67,7 @@ struct AddNewExpense: View {
                         }
                     }
                     Picker("Type", selection: $expenseType){
-                        ForEach(alltypesValues, id: \.self) { value in
+                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
                     }.pickerStyle(.navigationLink)
@@ -103,7 +81,7 @@ struct AddNewExpense: View {
                     }
                 }.scrollDismissesKeyboard(.immediately)
             }.toast(isPresenting: $showSuccessToast) {
-                AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: .white))
+                AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: colorScheme == .light ? .black: .white))
             }
             .alert("Title and Amout should be filled.", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) { }
