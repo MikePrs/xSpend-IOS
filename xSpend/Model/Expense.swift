@@ -13,10 +13,16 @@ struct Expense:Identifiable {
     var amount:Float
     var type:String
     var note:String
+    var date:String
 }
 
 struct ExpenseType:Identifiable {
     var id:String
     var name:String
     var icon:String
+}
+
+struct SectionedExpenses:Identifiable{
+    var id:String
+    var expenses:[Expense]
 }

@@ -40,6 +40,7 @@ struct AddNewExpense: View {
                 "type":expenseType,
                 "notes":expenseNotes,
                 "user":Auth.auth().currentUser?.email as Any,
+                "timestamp": expenseDate.timeIntervalSince1970,
                 "date":formatter4.string(from: expenseDate)
             ]
             let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense)
