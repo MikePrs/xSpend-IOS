@@ -14,6 +14,7 @@ enum Tab: String, CaseIterable {
 }
 
 struct CustomTabBar: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var selectedTab: Tab
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
@@ -65,7 +66,7 @@ struct CustomTabBar: View {
                     }
                 }
                 .frame(width: nil, height: 60)
-                .background(.thinMaterial)
+                .background(colorScheme == .dark ? .thinMaterial : .bar)
                 .cornerRadius(20)
                 .padding()
                 HStack{
@@ -102,30 +103,21 @@ struct TabManager: View {
     var body: some View {
         
         ZStack {
-            NavigationStack {
-                ZStack{
-                    VStack {
-                        TabView(selection: $tabSelected) {
-                            ForEach(Tab.allCases, id: \.rawValue) { tab in
-                                HStack {
-                                    if(tab.rawValue == "add"){
-                                        AddNewExpense()
-                                    }else if (tab.rawValue == "house"){
-                                        ExpensesScreen()
-                                    }else if(tab.rawValue == "person"){
-                                        Profile()
-                                    }
-                                }
-                                .tag(tab)
-                            }
-                        }
-                    }
-                    VStack {
-                        Spacer()
-                        CustomTabBar(selectedTab: $tabSelected)
+                VStack {
+                    TabView(selection: $tabSelected) {                        AddNewExpense().tabItem {
+                        }.tag(Tab.add)
+                        
+                        ExpensesScreen().tabItem {
+                        }.tag(Tab.house)
+                        
+                        Profile().tabItem {
+                        }.tag(Tab.person)
                     }
                 }
-            }
+                VStack {
+                    Spacer()
+                    CustomTabBar(selectedTab: $tabSelected)
+                }
             .navigationBarBackButtonHidden(true)
         }.ignoresSafeArea(.keyboard, edges: .bottom)
     }
@@ -137,4 +129,3 @@ struct AddExpense_Previews: PreviewProvider {
         TabManager()
     }
 }
-

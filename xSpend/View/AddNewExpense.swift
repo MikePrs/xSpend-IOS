@@ -78,7 +78,6 @@ struct AddNewExpense: View {
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
                     Section {
                         Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(purpleColor)}
-                            
                     }
                 }.scrollDismissesKeyboard(.immediately)
             }.toast(isPresenting: $showSuccessToast) {
@@ -97,12 +96,3 @@ struct AddNewExpense_Previews: PreviewProvider {
         AddNewExpense()
     }
 }
-
-
-extension View {
-    func hideKeyboard() {
-        let resign = #selector(UIResponder.resignFirstResponder)
-        UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
-    }
-}
-

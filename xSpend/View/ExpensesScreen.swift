@@ -10,18 +10,26 @@ import FirebaseFirestore
 import FirebaseAuth
 
 struct ExpensesScreen: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
+    @State var limitDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)
     
     func setUp() {
-        fbViewModel.getExpenses(from: Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!, to:Date.now)
+        fbViewModel.sectioned = [:]
+        fbViewModel.getExpenses(from: limitDate!, to:Date.now)
+    }
+    
+    func loadMoreExpenses(){
+        let newLimit = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: limitDate!)
+        fbViewModel.getExpenses(from: newLimit!, to:limitDate!)
+        limitDate = newLimit
     }
     
     
     
     var body: some View {
         NavigationView{
-            
             ZStack{
                 VStack {
                     List{
@@ -33,16 +41,23 @@ struct ExpensesScreen: View {
                             }
                         }
                         
-                        HStack {
-                            Spacer()
-                            Button() {} label:{Text(fbViewModel.expenseSectioned.count>0 ? "Load More":"No Expenses").foregroundColor(purpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
-                            Spacer()
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? "Load More":"No Expenses").foregroundColor(purpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
+                                Spacer()
+                            }
                         }
                     }
-                   
+                    
+                    VStack{
+                        
+                    }.frame(height: 100)
                 }
+                .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
+                .ignoresSafeArea(.all, edges: [.bottom, .trailing])
             }.navigationBarTitle(Text("Expenses"))
-        }.onAppear{setUp()}
+        }.onAppear{setUp()}.onDisappear {fbViewModel.sectioned = [:]}
     }
 }
 

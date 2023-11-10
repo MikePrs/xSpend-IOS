@@ -17,8 +17,9 @@ class FirebaseViewModel: ObservableObject {
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
     
+
+    
     func getExpenseTypes(){
-        print(Date.now)
         db.collection("ExpenseTypes")
             .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
             .addSnapshotListener { [self] querySnapshot, error in
@@ -49,8 +50,6 @@ class FirebaseViewModel: ObservableObject {
     }
     
     func getExpenses(from:Date , to:Date) {
-//        print(to,to.timeIntervalSince1970)
-//        print(from, from.timeIntervalSince1970)
         db.collection("Expenses")
             .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField("timestamp", isLessThanOrEqualTo: to.timeIntervalSince1970)
@@ -62,16 +61,14 @@ class FirebaseViewModel: ObservableObject {
                     }else{
                         if let snapshotDocuments = querySnapshot?.documents{
 //                            expenses=[]
-                            self.sectioned = [:]
+//                            self.sectioned = [:]
                             for doc in snapshotDocuments{
 //                                print("snapshot proccess")
                                 let data = doc.data()
                                 let exp = Expense(id: doc.documentID, title: data["title"] as! String, amount: data["amount"] as! Float, type: data["type"] as! String, note:data["notes"] as! String, date: data["date"] as! String )
 //                                    expenses.append(exp)
                                 self.sectioned[exp.date, default: []].append(exp)
-                                
                             }
-//                            print("format")
                             formatData()
                         }
                     }
@@ -89,7 +86,6 @@ class FirebaseViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         expenseSectioned = expenseSectioned.sorted{dateFormatter.date(from: $0.id)! > dateFormatter.date(from: $1.id)!}
-//        print(expenseSectioned)
     }
 }
 
