@@ -16,8 +16,10 @@ struct ExpensesScreen: View {
     @State var limitDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)
     
     func setUp() {
+        fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
         fbViewModel.getExpenses(from: limitDate!, to:Date.now)
+        print(fbViewModel.alltypesValueIcon)
     }
     
     func loadMoreExpenses(){
@@ -36,7 +38,20 @@ struct ExpensesScreen: View {
                         ForEach(fbViewModel.expenseSectioned) { section in
                             Section(header: Text("\(section.id)")) {
                                 ForEach(section.expenses) { exp in
-                                    Text(exp.title)
+                                    VStack{
+                                        HStack{
+                                            Text(exp.title)
+                                            Text(String(exp.amount))
+                                            Spacer()
+                                            
+                                            if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
+                                                Image(systemName: String(icon))
+                                            }else{
+                                                Text(String(exp.type))
+                                            }
+                                            
+                                        }
+                                    }
                                 }
                             }
                         }

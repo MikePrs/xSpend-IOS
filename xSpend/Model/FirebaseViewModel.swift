@@ -16,8 +16,7 @@ class FirebaseViewModel: ObservableObject {
     let standardTypes = ["Coffee","Gas","Rent","Electricity"]
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
-    
-
+    @Published var alltypesValueIcon : [String:String] = ["Coffee":"cup.and.saucer.fill","Gas":"fuelpump.circle","Rent":"house.circle","Electricity":"bolt.circle"]
     
     func getExpenseTypes(){
         db.collection("ExpenseTypes")
@@ -30,7 +29,10 @@ class FirebaseViewModel: ObservableObject {
                         alltypesValues=standardTypes
                         for doc in snapshotDocuments{
                             let data = doc.data()
-                            alltypesValues.append(data["name"] as! String)
+                            if let name = data["name"] as? String , let icon = data["icon"] as? String{
+                                    alltypesValues.append(name)
+                                    alltypesValueIcon[name] = icon
+                            }
                         }
                     }
                 }
