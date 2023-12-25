@@ -63,7 +63,7 @@ class FirebaseViewModel: ObservableObject {
                     }else{
                         if let snapshotDocuments = querySnapshot?.documents{
 //                            expenses=[]
-//                            self.sectioned = [:]
+                            self.sectioned = [:]
                             for doc in snapshotDocuments{
 //                                print("snapshot proccess")
                                 let data = doc.data()

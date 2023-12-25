@@ -13,19 +13,26 @@ struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    @State var limitDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)
+    @State var limitDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
+    @State var filterCategory = "Any";
+    @State var startDate = Date.now;
+    
     
     func setUp() {
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: limitDate!, to:Date.now)
+        fbViewModel.getExpenses(from: limitDate, to:startDate)
         print(fbViewModel.alltypesValueIcon)
     }
     
     func loadMoreExpenses(){
-        let newLimit = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: limitDate!)
-        fbViewModel.getExpenses(from: newLimit!, to:limitDate!)
+        let newLimit = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: limitDate)!
+        fbViewModel.getExpenses(from: newLimit, to:limitDate)
         limitDate = newLimit
+    }
+    
+    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date) {
+        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate)
     }
     
     
@@ -35,6 +42,28 @@ struct ExpensesScreen: View {
             ZStack{
                 VStack {
                     List{
+                        Section(header: Text("FILTERS")) {
+                            Picker("Category", selection: $filterCategory) {
+                                Text("Any")
+                            }
+                            DatePicker(
+                                "Start Date",
+                                selection: $startDate,
+                                //                                     in: dateRange,
+                                displayedComponents: [.date]
+                            ).onChange(of: startDate, perform: { newStartdate in
+                                filterExpensesDate(newStartdate,limitDate)
+                            })
+                            DatePicker(
+                                "End Date",
+                                selection: $limitDate,
+                                //                                     in: dateRange,
+                                displayedComponents: [.date]
+                            ).onChange(of: limitDate, perform: { newEndDate in
+                                filterExpensesDate(startDate,newEndDate)
+                            })
+                            //                        }
+                        }
                         ForEach(fbViewModel.expenseSectioned) { section in
                             Section(header: Text("\(section.id)")) {
                                 ForEach(section.expenses) { exp in
