@@ -13,10 +13,10 @@ struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    @State var limitDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
+    @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
     @State var filterCategory = "Any";
-    @State var startDate = Date.now;
-    
+    @State var limitDate = Date.now;
+
     
     func setUp() {
         fbViewModel.getExpenseTypes()
@@ -26,13 +26,13 @@ struct ExpensesScreen: View {
     }
     
     func loadMoreExpenses(){
-        let newLimit = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: limitDate)!
-        fbViewModel.getExpenses(from: newLimit, to:limitDate)
-        limitDate = newLimit
+        let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
+        fbViewModel.getExpenses(from: olderEx, to:limitDate)
+        startDate = olderEx
     }
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date) {
-        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate)
+            fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate)
     }
     
     
@@ -41,7 +41,8 @@ struct ExpensesScreen: View {
         NavigationView{
             ZStack{
                 VStack {
-                    List{
+                    
+                    Form{
                         Section(header: Text("FILTERS")) {
                             Picker("Category", selection: $filterCategory) {
                                 Text("Any")
@@ -49,7 +50,7 @@ struct ExpensesScreen: View {
                             DatePicker(
                                 "Start Date",
                                 selection: $startDate,
-                                //                                     in: dateRange,
+                                in: ...limitDate,
                                 displayedComponents: [.date]
                             ).onChange(of: startDate, perform: { newStartdate in
                                 filterExpensesDate(newStartdate,limitDate)
@@ -57,13 +58,16 @@ struct ExpensesScreen: View {
                             DatePicker(
                                 "End Date",
                                 selection: $limitDate,
-                                //                                     in: dateRange,
+                                in: ...Date.now, 
                                 displayedComponents: [.date]
                             ).onChange(of: limitDate, perform: { newEndDate in
                                 filterExpensesDate(startDate,newEndDate)
                             })
-                            //                        }
                         }
+                    }
+                    .frame(height: 170)
+                    
+                    List{
                         ForEach(fbViewModel.expenseSectioned) { section in
                             Section(header: Text("\(section.id)")) {
                                 ForEach(section.expenses) { exp in
