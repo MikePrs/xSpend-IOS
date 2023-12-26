@@ -13,7 +13,7 @@ struct Profile: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @State private var logoutLink: Bool = false
     @State private var expenseTypesLink: Bool = false
-    @AppStorage("currencySelection") private var currencySelection: String = "Euro"
+    @AppStorage("currencySelection") private var currencySelection: String = ""
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     
     func signOut(){
@@ -26,6 +26,14 @@ struct Profile: View {
     }
     
     func setUp() {
+        print(currencySelection)
+        if currencySelection == "" {
+            if let usersCountryCode = Locale.current.region?.identifier{
+                if let name = (Locale.current as NSLocale).displayName(forKey: .countryCode, value:usersCountryCode ){
+                    currencySelection = name
+                }
+            }
+        }
     }
     
     
