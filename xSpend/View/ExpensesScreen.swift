@@ -14,25 +14,24 @@ struct ExpensesScreen: View {
     @ObservedObject var fbViewModel = FirebaseViewModel()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
-    @State var filterCategory = "Any";
+    @State var filterType = "Any";
     @State var limitDate = Date.now;
 
     
     func setUp() {
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: limitDate, to:startDate)
-        print(fbViewModel.alltypesValueIcon)
+        fbViewModel.getExpenses(from: limitDate, to:startDate, category: "Any")
     }
     
     func loadMoreExpenses(){
         let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
-        fbViewModel.getExpenses(from: olderEx, to:limitDate)
+        fbViewModel.getExpenses(from: olderEx, to:limitDate, category: filterType)
         startDate = olderEx
     }
     
-    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date) {
-            fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate)
+    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
+            fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
     }
     
     
@@ -41,19 +40,23 @@ struct ExpensesScreen: View {
         NavigationView{
             ZStack{
                 VStack {
-                    
                     Form{
                         Section(header: Text("FILTERS")) {
-                            Picker("Category", selection: $filterCategory) {
-                                Text("Any")
-                            }
+                            Picker("Category", selection: $filterType) {
+                                Text("Any").tag("Any")
+                                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                                    Text(value).tag(value)
+                                }
+                            }.onChange(of: filterType, perform: { value in
+                                filterExpensesDate(startDate,limitDate,value)
+                            })
                             DatePicker(
                                 "Start Date",
                                 selection: $startDate,
                                 in: ...limitDate,
                                 displayedComponents: [.date]
                             ).onChange(of: startDate, perform: { newStartdate in
-                                filterExpensesDate(newStartdate,limitDate)
+                                filterExpensesDate(newStartdate,limitDate,filterType)
                             })
                             DatePicker(
                                 "End Date",
@@ -61,7 +64,7 @@ struct ExpensesScreen: View {
                                 in: ...Date.now, 
                                 displayedComponents: [.date]
                             ).onChange(of: limitDate, perform: { newEndDate in
-                                filterExpensesDate(startDate,newEndDate)
+                                filterExpensesDate(startDate,newEndDate,filterType)
                             })
                         }
                     }
@@ -76,7 +79,6 @@ struct ExpensesScreen: View {
                                             Text(exp.title)
                                             Text(String(exp.amount))
                                             Spacer()
-                                            
                                             if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
                                                 Image(systemName: String(icon))
                                             }else{
@@ -97,10 +99,7 @@ struct ExpensesScreen: View {
                             }
                         }
                     }
-                    
-                    VStack{
-                        
-                    }.frame(height: 100)
+                    VStack{}.frame(height: 100)
                 }
                 .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
                 .ignoresSafeArea(.all, edges: [.bottom, .trailing])

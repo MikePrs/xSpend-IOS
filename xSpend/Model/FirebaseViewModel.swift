@@ -51,12 +51,17 @@ class FirebaseViewModel: ObservableObject {
         return success
     }
     
-    func getExpenses(from:Date , to:Date) {
-        db.collection("Expenses")
+    func getExpenses(from:Date , to:Date, category:String ) {
+        var query = db.collection("Expenses")
             .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField("timestamp", isLessThanOrEqualTo: to.timeIntervalSince1970)
             .whereField("timestamp", isGreaterThanOrEqualTo: from.timeIntervalSince1970)
-            .addSnapshotListener { [self] querySnapshot, error in
+                
+        if(category != "Any"){
+            query = query.whereField("type",isEqualTo: category)
+        }
+        
+        query.addSnapshotListener { [self] querySnapshot, error in
                 
                     if error != nil {
                         print("Error geting Expenses")
@@ -74,7 +79,6 @@ class FirebaseViewModel: ObservableObject {
                             formatData()
                         }
                     }
-                
             }
     }
     
