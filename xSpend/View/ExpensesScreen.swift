@@ -21,7 +21,7 @@ struct ExpensesScreen: View {
     func setUp() {
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: limitDate, to:startDate, category: "Any")
+        fbViewModel.getExpenses(from: startDate, to:limitDate, category: "Any")
     }
     
     func loadMoreExpenses(){
@@ -76,15 +76,18 @@ struct ExpensesScreen: View {
                                 ForEach(section.expenses) { exp in
                                     VStack{
                                         HStack{
-                                            Text(exp.title)
-                                            Text(String(exp.amount))
+                                            
+                                            VStack(alignment: .leading, spacing: 0){
+                                                Text("-"+String(exp.amount))
+                                                Text(exp.title).font(.system(size: 14)).opacity(0.6)
+                                            }
+                                            
                                             Spacer()
                                             if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
                                                 Image(systemName: String(icon))
                                             }else{
                                                 Text(String(exp.type))
                                             }
-                                            
                                         }
                                     }
                                 }

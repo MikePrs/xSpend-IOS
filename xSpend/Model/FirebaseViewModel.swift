@@ -60,7 +60,6 @@ class FirebaseViewModel: ObservableObject {
         if(category != "Any"){
             query = query.whereField("type",isEqualTo: category)
         }
-        
         query.addSnapshotListener { [self] querySnapshot, error in
                 
                     if error != nil {
