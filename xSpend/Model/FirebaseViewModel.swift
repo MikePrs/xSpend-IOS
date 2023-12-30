@@ -71,8 +71,10 @@ class FirebaseViewModel: ObservableObject {
                             for doc in snapshotDocuments{
 //                                print("snapshot proccess")
                                 let data = doc.data()
-                                let exp = Expense(id: doc.documentID, title: data["title"] as! String, amount: data["amount"] as! Float, type: data["type"] as! String, note:data["notes"] as! String, date: data["date"] as! String )
+                                print(doc.documentID)
+                                let exp = Expense(id: doc.documentID, title: data["title"] as! String, amount: data["amount"] as! Float, type: data["type"] as! String, note:data["notes"] as! String, date: data["date"] as! String, currency: data["currency"] as! String )
 //                                    expenses.append(exp)
+                                print(exp)
                                 self.sectioned[exp.date, default: []].append(exp)
                             }
                             formatData()

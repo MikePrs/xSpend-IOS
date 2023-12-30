@@ -12,6 +12,7 @@ import AlertToast
 
 struct AddNewExpense: View {
     @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var exchangeRates = ExchangeRatesViewModel()
     @State private var expenseTitle: String = ""
     @State private var expenseType: String = "Coffee"
     @State private var expenseDate = Date.now
@@ -19,12 +20,20 @@ struct AddNewExpense: View {
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
     @State var showSuccessToast = false
+    @AppStorage("currencySelection") private var currencySelection: String = ""
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     @ObservedObject var fbViewModel = FirebaseViewModel()
 
     
-    func setUp(){
+    func onAppear() {
+        if currencySelection == "" {
+            if let usersCountryCode = Locale.current.region?.identifier{
+                if let name = (Locale.current as NSLocale).displayName(forKey: .countryCode, value:usersCountryCode ){
+                    currencySelection = name
+                }
+            }
+        }
         fbViewModel.getExpenseTypes()
     }
     
@@ -41,7 +50,8 @@ struct AddNewExpense: View {
                 "notes":expenseNotes,
                 "user":Auth.auth().currentUser?.email as Any,
                 "timestamp": expenseDate.timeIntervalSince1970,
-                "date":formatter4.string(from: expenseDate)
+                "date":formatter4.string(from: expenseDate),
+                "currency": CountryCurrencyCode().countryCurrency[currencySelection]!
             ]
             let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense)
             if addSuccess {
@@ -87,7 +97,7 @@ struct AddNewExpense: View {
                 Button("OK", role: .cancel) { }
             }
             .navigationBarTitle(Text("Add new expense"))
-        }.onAppear{setUp()}
+        }.onAppear{onAppear()}
     }
 }
 

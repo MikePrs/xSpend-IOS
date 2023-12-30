@@ -15,6 +15,7 @@ struct Profile: View {
     @State private var expenseTypesLink: Bool = false
     @AppStorage("currencySelection") private var currencySelection: String = ""
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
+    @State private var uniqueCurrencyCodes = Set<String>()
     
     func signOut(){
         do {
@@ -26,14 +27,7 @@ struct Profile: View {
     }
     
     func setUp() {
-        print(currencySelection)
-        if currencySelection == "" {
-            if let usersCountryCode = Locale.current.region?.identifier{
-                if let name = (Locale.current as NSLocale).displayName(forKey: .countryCode, value:usersCountryCode ){
-                    currencySelection = name
-                }
-            }
-        }
+        uniqueCurrencyCodes = Set<String>(countryCurrencyCode.values)
     }
     
     
@@ -54,7 +48,7 @@ struct Profile: View {
                             Text(key)
                         }
                     }
-                    LabeledContent("Currency", value: countryCurrencyCode[currencySelection] ?? "")
+                    LabeledContent("Current Currency", value: countryCurrencyCode[currencySelection] ?? "")
                 } header: {
                     Text("App Settings")
                 }

@@ -12,13 +12,20 @@ import FirebaseAuth
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
+    private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
+    @AppStorage("currencySelection") private var currencySelection: String = ""
+
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
-    @State var filterType = "Any";
-    @State var limitDate = Date.now;
+    @State var filterType = "Any"
+    @State var limitDate = Date.now
+    @State var currency = ""
+    @ObservedObject var exchangeRates = ExchangeRatesViewModel()
 
     
-    func setUp() {
+    func setUp() async {
+        await exchangeRates.fetchExchangeRates()
+        currency = countryCurrencyCode[currencySelection] ?? ""
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
         fbViewModel.getExpenses(from: startDate, to:limitDate, category: "Any")
@@ -76,12 +83,18 @@ struct ExpensesScreen: View {
                                 ForEach(section.expenses) { exp in
                                     VStack{
                                         HStack{
-                                            
                                             VStack(alignment: .leading, spacing: 0){
-                                                Text("-"+String(exp.amount))
+                                                HStack {
+                                                    Text("-"+String(exp.amount))
+                                                    Text(exp.currency)
+                                                    if currency != exp.currency {
+                                                        Text(" ->  - \(exchangeRates.getExchangeRate(baseCurrencyAmount: (Double(exp.amount)), currency: exp.currency), specifier: "%.2f")"
+                                                        )
+                                                        Text(currency)
+                                                    }
+                                                }
                                                 Text(exp.title).font(.system(size: 14)).opacity(0.6)
                                             }
-                                            
                                             Spacer()
                                             if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
                                                 Image(systemName: String(icon))
@@ -107,7 +120,7 @@ struct ExpensesScreen: View {
                 .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
                 .ignoresSafeArea(.all, edges: [.bottom, .trailing])
             }.navigationBarTitle(Text("Expenses"))
-        }.onAppear{setUp()}.onDisappear {fbViewModel.sectioned = [:]}
+        }.task{await setUp()}.onDisappear {fbViewModel.sectioned = [:]}
     }
 }
 
