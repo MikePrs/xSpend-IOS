@@ -8,7 +8,6 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseAuth
-import RangeUISlider
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
@@ -22,13 +21,14 @@ struct ExpensesScreen: View {
     @State var limitDate = Date.now
     @State var currency = ""
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
-    @State var minPriceValueSelected:CGFloat = 0
-    @State var maxPriceValueSelected:CGFloat = 500
     @State var enableFilters:Bool=false
-    @State var minPrice:Float = 0
+    @State var minPrice:Int = 0
+    @State var maxPrice:String = ""
     @State var filtersSize:CGFloat = 50
+    @State var emptytext = ""
     
     func setUp() async {
+        print(maxPrice)
         await exchangeRates.fetchExchangeRates()
         currency = countryCurrencyCode[currencySelection] ?? ""
         fbViewModel.getExpenseTypes()
@@ -55,7 +55,7 @@ struct ExpensesScreen: View {
                     Form{
                         HStack {
                             Button() {
-                                filtersSize = !enableFilters ? 260 : 50
+                                filtersSize = !enableFilters ? 270 : 50
                                 enableFilters.toggle()
                             } label:{
                                 HStack {
@@ -91,38 +91,17 @@ struct ExpensesScreen: View {
                                 filterExpensesDate(startDate,newEndDate,filterType)
                             })
                             VStack {
+                                Text("PRICE RANGE").foregroundStyle(.gray)
                                 HStack {
+                                    Text("min").foregroundStyle(.gray)
                                     TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
-                                    TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                    Text("max").foregroundStyle(.gray)
+                                    TextField("", text: $maxPrice).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                    
+                                    Text("Set").foregroundStyle(purpleColor).onTapGesture {
+                                        hideKeyboard()
+                                    }
                                 }
-                                
-                                RangeSlider(minValueSelected: self.$minPriceValueSelected, maxValueSelected: self.$minPriceValueSelected)
-                                    .scaleMinValue(0)
-                                    .scaleMaxValue(1000)
-                                    .defaultValueLeftKnob(0)
-                                    .defaultValueRightKnob(500)
-                                    .rangeSelectedGradientColor1(purpleColor)
-                                    .rangeSelectedGradientColor2(purpleColor)
-                                    .rangeSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
-                                    .rangeSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
-                                    .rangeNotSelectedGradientColor1(.gray)
-                                    .rangeNotSelectedGradientColor2(.gray)
-                                    .rangeNotSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
-                                    .rangeNotSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
-                                    .barHeight(5)
-                                    .leftKnobColor(purpleColor)
-                                    .leftKnobWidth(30)
-                                    .leftKnobHeight(30)
-                                    .leftKnobCorners(15)
-                                    .rightKnobColor(purpleColor)
-                                    .rightKnobWidth(30)
-                                    .rightKnobHeight(30)
-                                    .rightKnobCorners(15)
-                                    .showKnobsLabels(false)
-                                    .knobsLabelFontSize(18)
-                                    .knobsLabelFontColor(Color(.gray))
-                                    .accessibility(identifier: "RangeUISliderStandard")
-                                    .padding([.bottom , .top],10)
                             }
                         }
                     }.scrollDisabled(true).frame(height: filtersSize)
@@ -177,5 +156,11 @@ struct ExpensesScreen: View {
 struct Expenses_Previews: PreviewProvider {
     static var previews: some View {
         ExpensesScreen()
+    }
+}
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
