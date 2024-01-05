@@ -11,6 +11,7 @@ target 'xSpend' do
     pod 'AlertToast'
     pod 'ToastViewSwift'
     pod 'SymbolPicker'
+    pod 'RangeUISlider', '~> 3.0'
   # Pods for xSpend
 
 end

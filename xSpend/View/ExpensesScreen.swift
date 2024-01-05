@@ -8,20 +8,25 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseAuth
+import RangeUISlider
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @AppStorage("currencySelection") private var currencySelection: String = ""
-
+    
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
     @State var filterType = "Any"
     @State var limitDate = Date.now
     @State var currency = ""
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
-
+    @State var minPriceValueSelected:CGFloat = 0
+    @State var maxPriceValueSelected:CGFloat = 500
+    @State var enableFilters:Bool=false
+    @State var minPrice:Float = 0
+    @State var filtersSize:CGFloat = 50
     
     func setUp() async {
         await exchangeRates.fetchExchangeRates()
@@ -38,7 +43,7 @@ struct ExpensesScreen: View {
     }
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
-            fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
+        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
     }
     
     
@@ -48,34 +53,79 @@ struct ExpensesScreen: View {
             ZStack{
                 VStack {
                     Form{
-                        Section(header: Text("FILTERS")) {
-                            Picker("Category", selection: $filterType) {
-                                Text("Any").tag("Any")
-                                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                                    Text(value).tag(value)
+                                HStack {
+                                    Button() {
+                                        filtersSize = !enableFilters ? 260 : 50
+                                        enableFilters.toggle()
+                                    } label:{
+                                        HStack {
+                                            Text("FILTERS").foregroundStyle(.gray)
+                                            Spacer()
+                                            Image(systemName: enableFilters ? "chevron.up" : "chevron.down" ).foregroundStyle(.gray)
+                                        }
+                                    }
                                 }
-                            }.onChange(of: filterType, perform: { value in
-                                filterExpensesDate(startDate,limitDate,value)
-                            })
-                            DatePicker(
-                                "Start Date",
-                                selection: $startDate,
-                                in: ...limitDate,
-                                displayedComponents: [.date]
-                            ).onChange(of: startDate, perform: { newStartdate in
-                                filterExpensesDate(newStartdate,limitDate,filterType)
-                            })
-                            DatePicker(
-                                "End Date",
-                                selection: $limitDate,
-                                in: ...Date.now, 
-                                displayedComponents: [.date]
-                            ).onChange(of: limitDate, perform: { newEndDate in
-                                filterExpensesDate(startDate,newEndDate,filterType)
-                            })
+                            if enableFilters {
+                                Picker("Category", selection: $filterType) {
+                                    Text("Any").tag("Any")
+                                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                                        Text(value).tag(value)
+                                    }
+                                }.onChange(of: filterType, perform: { value in
+                                    filterExpensesDate(startDate,limitDate,value)
+                                })
+                                DatePicker(
+                                    "Start Date",
+                                    selection: $startDate,
+                                    in: ...limitDate,
+                                    displayedComponents: [.date]
+                                ).onChange(of: startDate, perform: { newStartdate in
+                                    filterExpensesDate(newStartdate,limitDate,filterType)
+                                })
+                                DatePicker(
+                                    "End Date",
+                                    selection: $limitDate,
+                                    in: ...Date.now,
+                                    displayedComponents: [.date]
+                                ).onChange(of: limitDate, perform: { newEndDate in
+                                    filterExpensesDate(startDate,newEndDate,filterType)
+                                })
+                                VStack {
+                                    HStack {
+                                        TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                        TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                    }
+                                    
+                                    RangeSlider(minValueSelected: self.$minPriceValueSelected, maxValueSelected: self.$minPriceValueSelected)
+                                        .scaleMinValue(0)
+                                        .scaleMaxValue(1000)
+                                        .defaultValueLeftKnob(0)
+                                        .defaultValueRightKnob(500)
+                                        .rangeSelectedGradientColor1(purpleColor)
+                                        .rangeSelectedGradientColor2(purpleColor)
+                                        .rangeSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
+                                        .rangeSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
+                                        .rangeNotSelectedGradientColor1(.gray)
+                                        .rangeNotSelectedGradientColor2(.gray)
+                                        .rangeNotSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
+                                        .rangeNotSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
+                                        .barHeight(5)
+                                        .leftKnobColor(purpleColor)
+                                        .leftKnobWidth(30)
+                                        .leftKnobHeight(30)
+                                        .leftKnobCorners(15)
+                                        .rightKnobColor(purpleColor)
+                                        .rightKnobWidth(30)
+                                        .rightKnobHeight(30)
+                                        .rightKnobCorners(15)
+                                        .showKnobsLabels(false)
+                                        .knobsLabelFontSize(18)
+                                        .knobsLabelFontColor(Color(.gray))
+                                        .accessibility(identifier: "RangeUISliderStandard")
+                                        .padding([.bottom , .top],10)
+                                }
                         }
-                    }
-                    .frame(height: 170)
+                    }.scrollDisabled(true).frame(height: filtersSize)
                     
                     List{
                         ForEach(fbViewModel.expenseSectioned) { section in
