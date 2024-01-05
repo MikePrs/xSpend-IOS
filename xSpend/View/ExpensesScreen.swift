@@ -53,77 +53,77 @@ struct ExpensesScreen: View {
             ZStack{
                 VStack {
                     Form{
+                        HStack {
+                            Button() {
+                                filtersSize = !enableFilters ? 260 : 50
+                                enableFilters.toggle()
+                            } label:{
                                 HStack {
-                                    Button() {
-                                        filtersSize = !enableFilters ? 260 : 50
-                                        enableFilters.toggle()
-                                    } label:{
-                                        HStack {
-                                            Text("FILTERS").foregroundStyle(.gray)
-                                            Spacer()
-                                            Image(systemName: enableFilters ? "chevron.up" : "chevron.down" ).foregroundStyle(.gray)
-                                        }
-                                    }
+                                    Text("FILTERS").foregroundStyle(.gray)
+                                    Spacer()
+                                    Image(systemName: enableFilters ? "chevron.up" : "chevron.down" ).foregroundStyle(.gray)
                                 }
-                            if enableFilters {
-                                Picker("Category", selection: $filterType) {
-                                    Text("Any").tag("Any")
-                                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                                        Text(value).tag(value)
-                                    }
-                                }.onChange(of: filterType, perform: { value in
-                                    filterExpensesDate(startDate,limitDate,value)
-                                })
-                                DatePicker(
-                                    "Start Date",
-                                    selection: $startDate,
-                                    in: ...limitDate,
-                                    displayedComponents: [.date]
-                                ).onChange(of: startDate, perform: { newStartdate in
-                                    filterExpensesDate(newStartdate,limitDate,filterType)
-                                })
-                                DatePicker(
-                                    "End Date",
-                                    selection: $limitDate,
-                                    in: ...Date.now,
-                                    displayedComponents: [.date]
-                                ).onChange(of: limitDate, perform: { newEndDate in
-                                    filterExpensesDate(startDate,newEndDate,filterType)
-                                })
-                                VStack {
-                                    HStack {
-                                        TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
-                                        TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
-                                    }
-                                    
-                                    RangeSlider(minValueSelected: self.$minPriceValueSelected, maxValueSelected: self.$minPriceValueSelected)
-                                        .scaleMinValue(0)
-                                        .scaleMaxValue(1000)
-                                        .defaultValueLeftKnob(0)
-                                        .defaultValueRightKnob(500)
-                                        .rangeSelectedGradientColor1(purpleColor)
-                                        .rangeSelectedGradientColor2(purpleColor)
-                                        .rangeSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
-                                        .rangeSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
-                                        .rangeNotSelectedGradientColor1(.gray)
-                                        .rangeNotSelectedGradientColor2(.gray)
-                                        .rangeNotSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
-                                        .rangeNotSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
-                                        .barHeight(5)
-                                        .leftKnobColor(purpleColor)
-                                        .leftKnobWidth(30)
-                                        .leftKnobHeight(30)
-                                        .leftKnobCorners(15)
-                                        .rightKnobColor(purpleColor)
-                                        .rightKnobWidth(30)
-                                        .rightKnobHeight(30)
-                                        .rightKnobCorners(15)
-                                        .showKnobsLabels(false)
-                                        .knobsLabelFontSize(18)
-                                        .knobsLabelFontColor(Color(.gray))
-                                        .accessibility(identifier: "RangeUISliderStandard")
-                                        .padding([.bottom , .top],10)
+                            }
+                        }
+                        if enableFilters {
+                            Picker("Category", selection: $filterType) {
+                                Text("Any").tag("Any")
+                                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                                    Text(value).tag(value)
                                 }
+                            }.onChange(of: filterType, perform: { value in
+                                filterExpensesDate(startDate,limitDate,value)
+                            })
+                            DatePicker(
+                                "Start Date",
+                                selection: $startDate,
+                                in: ...limitDate,
+                                displayedComponents: [.date]
+                            ).onChange(of: startDate, perform: { newStartdate in
+                                filterExpensesDate(newStartdate,limitDate,filterType)
+                            })
+                            DatePicker(
+                                "End Date",
+                                selection: $limitDate,
+                                in: ...Date.now,
+                                displayedComponents: [.date]
+                            ).onChange(of: limitDate, perform: { newEndDate in
+                                filterExpensesDate(startDate,newEndDate,filterType)
+                            })
+                            VStack {
+                                HStack {
+                                    TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                    TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                                }
+                                
+                                RangeSlider(minValueSelected: self.$minPriceValueSelected, maxValueSelected: self.$minPriceValueSelected)
+                                    .scaleMinValue(0)
+                                    .scaleMaxValue(1000)
+                                    .defaultValueLeftKnob(0)
+                                    .defaultValueRightKnob(500)
+                                    .rangeSelectedGradientColor1(purpleColor)
+                                    .rangeSelectedGradientColor2(purpleColor)
+                                    .rangeSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
+                                    .rangeSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
+                                    .rangeNotSelectedGradientColor1(.gray)
+                                    .rangeNotSelectedGradientColor2(.gray)
+                                    .rangeNotSelectedGradientStartPoint(CGPoint(x: 0, y: 0.5))
+                                    .rangeNotSelectedGradientEndPoint(CGPoint(x: 0, y: 1))
+                                    .barHeight(5)
+                                    .leftKnobColor(purpleColor)
+                                    .leftKnobWidth(30)
+                                    .leftKnobHeight(30)
+                                    .leftKnobCorners(15)
+                                    .rightKnobColor(purpleColor)
+                                    .rightKnobWidth(30)
+                                    .rightKnobHeight(30)
+                                    .rightKnobCorners(15)
+                                    .showKnobsLabels(false)
+                                    .knobsLabelFontSize(18)
+                                    .knobsLabelFontColor(Color(.gray))
+                                    .accessibility(identifier: "RangeUISliderStandard")
+                                    .padding([.bottom , .top],10)
+                            }
                         }
                     }.scrollDisabled(true).frame(height: filtersSize)
                     
