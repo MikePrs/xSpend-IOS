@@ -97,32 +97,46 @@ import SwiftUI
 
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
+    @State var title = "Add new Expense"
     init() {
         UITabBar.appearance().isHidden = true
     }
+    
     var body: some View {
         
         ZStack {
-                VStack {
-                    TabView(selection: $tabSelected) {                        AddNewExpense().tabItem {
-                        }.tag(Tab.add)
-                        
-                        ExpensesScreen().tabItem {
-                        }.tag(Tab.house)
-                        
-                        Profile().tabItem {
-                        }.tag(Tab.person)
-                    }
+            VStack {
+                TabView(selection: $tabSelected) {
+                    AddNewExpense().tabItem {
+                    }.tag(Tab.add)
+                    
+                    ExpensesScreen().tabItem {
+                    }.tag(Tab.house)
+                    
+                    Profile().tabItem {
+                    }.tag(Tab.person)
                 }
-                VStack {
-                    Spacer()
-                    CustomTabBar(selectedTab: $tabSelected)
+            }
+            VStack {
+                Spacer()
+                CustomTabBar(selectedTab: $tabSelected)
+            }
+            .onChange(of: tabSelected) { newValue in
+                if newValue == .add {
+                    self.title = "Add new Expense"
+                } else if newValue == .person {
+                    self.title = "Profile"
+                } else {
+                    self.title = "Expenses"
                 }
+            }
             .navigationBarBackButtonHidden(true)
-        }.ignoresSafeArea(.keyboard, edges: .bottom)
+        }.ignoresSafeArea(.keyboard, edges: .bottom).navigationTitle(title)
     }
     
 }
+
+
 
 struct AddExpense_Previews: PreviewProvider {
     static var previews: some View {

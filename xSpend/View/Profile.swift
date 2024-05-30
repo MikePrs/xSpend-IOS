@@ -32,32 +32,29 @@ struct Profile: View {
     
     
     var body: some View {
-        NavigationView {
-            Form{
-                if let userEmail = Auth.auth().currentUser?.email{
-                    HStack {
-                        Image(systemName: "person.circle").frame(width: 80,height: 80).font(.system(size: 50))
-                        Text(userEmail)
-                    }
-                    LabeledContent("Username", value: userEmail.components(separatedBy: "@")[0])
+        Form{
+            if let userEmail = Auth.auth().currentUser?.email{
+                HStack {
+                    Image(systemName: "person.circle").frame(width: 80,height: 80).font(.system(size: 50))
+                    Text(userEmail)
                 }
-                Section {
-                    Toggle("Dark Mode", isOn: $isDarkMode)
-                    Picker("Country", selection: $currencySelection){
-                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
-                            Text(key)
-                        }
-                    }
-                    LabeledContent("Current Currency", value: countryCurrencyCode[currencySelection] ?? "")
-                } header: {
-                    Text("App Settings")
-                }
-                Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text("Add new expense type")}
-                Section {
-                    Button(role: .destructive) {signOut()} label:{Text("Log Out")}
-                }
+                LabeledContent("Username", value: userEmail.components(separatedBy: "@")[0])
             }
-            .navigationBarTitle(Text("Profile"))
+            Section {
+                Toggle("Dark Mode", isOn: $isDarkMode)
+                Picker("Country", selection: $currencySelection){
+                    ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
+                        Text(key)
+                    }
+                }
+                LabeledContent("Current Currency", value: countryCurrencyCode[currencySelection] ?? "")
+            } header: {
+                Text("App Settings")
+            }
+            Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text("Add new expense type")}
+            Section {
+                Button(role: .destructive) {signOut()} label:{Text("Log Out")}
+            }
             .navigationDestination(isPresented: $logoutLink) {
                 LandingScreen()
             }

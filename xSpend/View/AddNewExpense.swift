@@ -17,10 +17,11 @@ enum AddExpensesField: Hashable {
         switch self {
         case .title:
             return .amount
+        case .amount:
+            return .notes
         default:
             return nil
         }
-        
     }
 }
 
@@ -37,10 +38,10 @@ struct AddNewExpense: View {
     @AppStorage("currencySelection") private var currencySelection: String = ""
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
-
+    
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @FocusState private var focusedField: AddExpensesField?
-
+    
     
     func onAppear() {
         if currencySelection == "" {
@@ -103,9 +104,9 @@ struct AddNewExpense: View {
                     DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
                         Text("Select a date")
                     }
-                    TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
+                    TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
                     Section {
-                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(lightPurpleColor)}
+                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)
@@ -114,9 +115,13 @@ struct AddNewExpense: View {
                         HStack{
                             Spacer()
                             Button(action: {
-                                focusedField = focusedField?.next
+                                if focusedField == .notes {
+                                    addNewExpense()
+                                }else{
+                                    focusedField = focusedField?.next
+                                }
                             }) {
-                                Text("Next").foregroundStyle(lightPurpleColor)
+                                Text(focusedField == .notes ? "Add" : "Next").foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
                             }
                         }
                     }
@@ -127,7 +132,6 @@ struct AddNewExpense: View {
             .alert("Title and Amout should be filled.", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) { }
             }
-            .navigationBarTitle(Text("Add new expense"))
         }.onAppear{onAppear()}
     }
 }
