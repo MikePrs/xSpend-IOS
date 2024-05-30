@@ -38,7 +38,7 @@ struct ExpensesScreen: View {
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
     @State var enableFilters:Bool=false
     @State var minPrice:Int = 0
-    @State var maxPrice:String = ""
+    @State var maxPrice:Int = 0
     @State var filtersSize:CGFloat = 80
     @State var emptytext = ""
     @FocusState private var focusedField: ExpenseFilterFields?
@@ -61,6 +61,10 @@ struct ExpensesScreen: View {
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
         fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
+    }
+    
+    func setPriceRange(){
+        hideKeyboard()
     }
     
     
@@ -94,15 +98,18 @@ struct ExpensesScreen: View {
                         selection: $startDate,
                         in: ...limitDate,
                         displayedComponents: [.date]
-                    ).onChange(of: startDate, perform: { newStartdate in
+                    ).tint(lightPurpleColor)
+                    .onChange(of: startDate, perform: { newStartdate in
                         filterExpensesDate(newStartdate,limitDate,filterType)
                     })
+                    
                     DatePicker(
                         "End Date",
                         selection: $limitDate,
                         in: ...Date.now,
                         displayedComponents: [.date]
-                    ).onChange(of: limitDate, perform: { newEndDate in
+                    ).tint(lightPurpleColor)
+                    .onChange(of: limitDate, perform: { newEndDate in
                         filterExpensesDate(startDate,newEndDate,filterType)
                     })
                     VStack {
@@ -112,15 +119,15 @@ struct ExpensesScreen: View {
                             TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .min)
                             Text("max").foregroundStyle(.gray)
-                            TextField("", text: $maxPrice).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                            TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
-                            Text("Set").foregroundStyle(purpleColor).onTapGesture {
-                                hideKeyboard()
+                            Text("Set").foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
+                                setPriceRange()
                             }
                         }
                     }
                 }
-            }.scrollDisabled(true).frame(height: filtersSize)
+            }.scrollDisabled(true).frame(height: filtersSize).ignoresSafeArea(.keyboard)
             
             List{
                 ForEach(fbViewModel.expenseSectioned) { section in
@@ -153,7 +160,7 @@ struct ExpensesScreen: View {
                 VStack {
                     HStack {
                         Spacer()
-                        Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? "Load More":"No Expenses").foregroundColor(purpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
+                        Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? "Load More":"No Expenses").foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
                         Spacer()
                     }
                 }
@@ -163,11 +170,16 @@ struct ExpensesScreen: View {
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
                     HStack{
+                        Button(action: {
+                            setPriceRange()
+                        }) {
+                            Text("Set").foregroundStyle(lightPurpleColor)
+                        }
                         Spacer()
                         Button(action: {
                             focusedField = focusedField?.next
                         }) {
-                            Text(focusedField == .min ? ">" : "<").foregroundStyle(lightPurpleColor)
+                            Image(systemName: focusedField == .min ? "chevron.right" : "chevron.left" ).foregroundStyle(lightPurpleColor)
                         }
                     }
                 }

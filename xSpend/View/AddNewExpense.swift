@@ -103,7 +103,7 @@ struct AddNewExpense: View {
                     }.pickerStyle(.navigationLink)
                     DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
                         Text("Select a date")
-                    }
+                    }.tint(lightPurpleColor)
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
                     Section {
                         Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
