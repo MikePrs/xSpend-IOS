@@ -8,34 +8,11 @@
 import UIKit
 
 public class Toast {
-    /// The direction where the toast will be displayed
-    public enum Direction {
-        case top, bottom
-    }
+    private static var activeToasts = [Toast]()
     
-    /// Built-in animations for your toast
-    public enum AnimationType {
-        /// Use this type for fading in/out animations.
-        case slide(x: CGFloat, y: CGFloat)
-
-        /// Use this type for fading in/out animations.
-        ///
-        /// alphaValue must be greater or equal to 0 and less or equal to 1.
-        case fade(alphaValue: CGFloat)
-        
-        /// Use this type for scaling and slide in/out animations.
-        case scaleAndSlide(scaleX: CGFloat, scaleY: CGFloat, x: CGFloat, y: CGFloat)
-        
-        /// Use this type for scaling in/out animations.
-        case scale(scaleX: CGFloat, scaleY: CGFloat)
-        
-        /// Use this type for giving your own affine transformation
-        case custom(transformation: CGAffineTransform)
-        
-        /// Currently the default animation if no explicit one specified.
-        case `default`
-    }
-        
+    public let view: ToastView
+    private var backgroundView: UIView?
+    
     private var closeTimer: Timer?
     
     /// This is for pan gesture to close.
@@ -49,14 +26,10 @@ public class Toast {
             return .black
         }
     }
-    
-    public let view: ToastView
 
-    public weak var delegate: ToastDelegate?
+    private var multicast = MulticastDelegate<ToastDelegate>()
     
-    private let config: ToastConfiguration
-    
-    private(set) var direction: Direction
+    public private(set) var config: ToastConfiguration
     
     /// Creates a new Toast with the default Apple style layout with a title and an optional subtitle.
     /// - Parameters:
@@ -67,9 +40,10 @@ public class Toast {
     public static func text(
         _ title: NSAttributedString,
         subtitle: NSAttributedString? = nil,
+        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
-        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle))
+        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle, viewConfig: viewConfig), config: viewConfig)
         return self.init(view: view, config: config)
     }
     
@@ -82,9 +56,10 @@ public class Toast {
     public static func text(
         _ title: String,
         subtitle: String? = nil,
+        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
-        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle))
+        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle, viewConfig: viewConfig), config: viewConfig)
         return self.init(view: view, config: config)
     }
     
@@ -101,10 +76,12 @@ public class Toast {
         imageTint: UIColor? = defaultImageTint,
         title: NSAttributedString,
         subtitle: NSAttributedString? = nil,
+        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
         let view = AppleToastView(
-            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle)
+            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle, viewConfig: viewConfig),
+            config: viewConfig
         )
         return self.init(view: view, config: config)
     }
@@ -122,10 +99,12 @@ public class Toast {
         imageTint: UIColor? = defaultImageTint,
         title: String,
         subtitle: String? = nil,
+        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
         let view = AppleToastView(
-            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle)
+            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle, viewConfig: viewConfig),
+            config: viewConfig
         )
         return self.init(view: view, config: config)
     }
@@ -150,14 +129,22 @@ public class Toast {
     public required init(view: ToastView, config: ToastConfiguration) {
         self.config = config
         self.view = view
-        self.direction = config.direction
-                
-        if config.enablePanToClose {
-            enablePanToClose()
+        
+        for dismissable in config.dismissables {
+            switch dismissable {
+            case .tap:
+                enableTapToClose()
+            case .longPress:
+                enableLongPressToClose()
+            case .swipe:
+                enablePanToClose()
+            default:
+                break
+            }
         }
     }
     
-#if !os(tvOS)
+#if !os(tvOS) && !os(visionOS)
     /// Show the toast with haptic feedback
     /// - Parameters:
     ///   - type: Haptic feedback type
@@ -171,69 +158,79 @@ public class Toast {
     /// Show the toast
     /// - Parameter delay: Time after which the toast is shown
     public func show(after delay: TimeInterval = 0) {
-        config.view?.addSubview(view) ?? topController()?.view.addSubview(view)
+        if let backgroundView = self.createBackgroundView() {
+            self.backgroundView = backgroundView
+            config.view?.addSubview(backgroundView) ?? ToastHelper.topController()?.view.addSubview(backgroundView)
+        }
+
+        config.view?.addSubview(view) ?? ToastHelper.topController()?.view.addSubview(view)
         view.createView(for: self)
         
-        delegate?.willShowToast(self)
+        multicast.invoke { $0.willShowToast(self) }
 
         config.enteringAnimation.apply(to: self.view)
+        let endBackgroundColor = backgroundView?.backgroundColor
+        backgroundView?.backgroundColor = .clear
         UIView.animate(withDuration: config.animationTime, delay: delay, options: [.curveEaseOut, .allowUserInteraction]) {
             self.config.enteringAnimation.undo(from: self.view)
+            self.backgroundView?.backgroundColor = endBackgroundColor
         } completion: { [self] _ in
-            delegate?.didShowToast(self)
-            closeTimer = Timer.scheduledTimer(withTimeInterval: .init(config.displayTime), repeats: false) { [self] _ in
-                if config.autoHide {
-                    close()
-                }
+            multicast.invoke { $0.didShowToast(self) }
+            
+            configureCloseTimer()
+            if !config.allowToastOverlap {
+                closeOverlappedToasts()
             }
+            Toast.activeToasts.append(self)
+        }
+    }
+    
+    private func closeOverlappedToasts() {
+        Toast.activeToasts.forEach {
+            $0.closeTimer?.invalidate()
+            $0.close(animated: false)
         }
     }
     
     /// Close the toast
     /// - Parameters:
     ///   - completion: A completion handler which is invoked after the toast is hidden
-    public func close(completion: (() -> Void)? = nil) {
-        delegate?.willCloseToast(self)
+    ///   - animated: A Boolean value that determines whether to apply animation.
+    public func close(animated: Bool = true, completion: (() -> Void)? = nil) {
+        multicast.invoke { $0.willCloseToast(self) }
 
         UIView.animate(withDuration: config.animationTime,
                        delay: 0,
                        options: [.curveEaseIn, .allowUserInteraction],
                        animations: {
-            self.config.exitingAnimation.apply(to: self.view)
+            if animated {
+                self.config.exitingAnimation.apply(to: self.view)
+            }
+            self.backgroundView?.backgroundColor = .clear
         }, completion: { _ in
+            self.backgroundView?.removeFromSuperview()
             self.view.removeFromSuperview()
+            if let index = Toast.activeToasts.firstIndex(where: { $0 == self }) {
+                Toast.activeToasts.remove(at: index)
+            }
             completion?()
-            self.delegate?.didCloseToast(self)
+            self.multicast.invoke { $0.didCloseToast(self) }
         })
     }
     
-    private func topController() -> UIViewController? {
-        if var topController = keyWindow()?.rootViewController {
-            while let presentedViewController = topController.presentedViewController {
-                topController = presentedViewController
-            }
-            return topController
-        }
-        return nil
+    public func addDelegate(delegate: ToastDelegate) -> Void {
+        multicast.add(delegate)
     }
-
-    private func keyWindow() -> UIWindow? {
-        if #available(iOS 13.0, *) {
-            for scene in UIApplication.shared.connectedScenes {
-                guard let windowScene = scene as? UIWindowScene else {
-                    continue
-                }
-                if windowScene.windows.isEmpty {
-                    continue
-                }
-                guard let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
-                    continue
-                }
-                return window
-            }
+    
+    private func createBackgroundView() -> UIView? {
+        switch (config.background) {
+        case .none:
             return nil
-        } else {
-            return UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        case .color(let color):
+            let backgroundView = UIView(frame: config.view?.frame ?? ToastHelper.topController()?.view.frame ?? .zero)
+            backgroundView.backgroundColor = color
+            backgroundView.layer.zPosition = 998
+            return backgroundView
         }
     }
     
@@ -242,34 +239,35 @@ public class Toast {
     }
 }
 
-public extension Toast{
+public extension Toast {
     private func enablePanToClose() {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(toastOnPan(_:)))
         self.view.addGestureRecognizer(pan)
     }
     
     @objc private func toastOnPan(_ gesture: UIPanGestureRecognizer) {
-        guard let topVc = topController() else {
+        guard let topVc = ToastHelper.topController() else {
             return
         }
         
-        switch gesture.state{
+        switch gesture.state {
         case .began:
             startY = self.view.frame.origin.y
             startShiftY = gesture.location(in: topVc.view).y
-            closeTimer?.invalidate() // prevent timer to fire close action while being touched
+            closeTimer?.invalidate()
         case .changed:
             let delta = gesture.location(in: topVc.view).y - startShiftY
-            switch direction {
-            case .top:
-                if delta <= 0 {
-                    self.view.frame.origin.y = startY + delta
-                }
-            case .bottom:
-                if delta >= 0 {
-                    self.view.frame.origin.y = startY + delta
+            
+            for dismissable in config.dismissables {
+                if case .swipe(let dismissSwipeDirection) = dismissable {
+                    let shouldApply = dismissSwipeDirection.shouldApply(delta, direction: config.direction)
+                    
+                    if shouldApply {
+                        self.view.frame.origin.y = startY + delta
+                    }
                 }
             }
+            
         case .ended:
             let threshold = 15.0 // if user drags more than threshold the toast will be dismissed
             let ammountOfUserDragged = abs(startY - self.view.frame.origin.y)
@@ -281,20 +279,12 @@ public extension Toast{
                 UIView.animate(withDuration: config.animationTime, delay: 0, options: [.curveEaseOut, .allowUserInteraction]) {
                     self.view.frame.origin.y = self.startY
                 } completion: { [self] _ in
-                    closeTimer = Timer.scheduledTimer(withTimeInterval: .init(config.displayTime), repeats: false) { [self] _ in
-                        if config.autoHide {
-                            close()
-                        }
-                    }
+                    configureCloseTimer()
                 }
             }
             
         case .cancelled, .failed:
-            closeTimer = Timer.scheduledTimer(withTimeInterval: .init(config.displayTime), repeats: false) { [self] _ in
-                if config.autoHide {
-                    close()
-                }
-            }
+            configureCloseTimer()
         default:
             break
         }
@@ -305,47 +295,43 @@ public extension Toast{
         self.view.addGestureRecognizer(tap)
     }
     
+    func enableLongPressToClose() {
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(toastOnTap))
+        self.view.addGestureRecognizer(tap)
+    }
+    
     @objc func toastOnTap(_ gesture: UITapGestureRecognizer) {
         closeTimer?.invalidate()
         close()
     }
-}
-
-fileprivate extension Toast.AnimationType {
-    /// Applies the effects to the ToastView.
-    func apply(to view: UIView) {
-        switch self {
-        case .slide(x: let x, y: let y):
-            view.transform = CGAffineTransform(translationX: x, y: y)
-            
-        case .fade(let value):
-            view.alpha = value
-            
-        case .scaleAndSlide(let scaleX, let scaleY, let x, let y):
-            view.transform = CGAffineTransform(scaleX: scaleX, y: scaleY).translatedBy(x: x, y: y)
-            
-        case .scale(let scaleX, let scaleY):
-            view.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-            
-        case .custom(let transformation):
-            view.transform = transformation
-            
-        case .`default`:
-            break
+    
+    private func configureCloseTimer() {
+        for dismissable in config.dismissables {
+            if case .time(let displayTime) = dismissable {
+                closeTimer = Timer.scheduledTimer(withTimeInterval: .init(displayTime), repeats: false) { [self] _ in
+                    close()
+                }
+            }
         }
     }
+}
+
+extension Toast {
+    public enum Dismissable: Equatable {
+        case tap,
+             longPress,
+             time(time: TimeInterval),
+             swipe(direction: DismissSwipeDirection)
+    }
     
-    /// Undo the effects from the ToastView so that it never happened.
-    func undo(from view: UIView) {
-        switch self {
-        case .slide, .scaleAndSlide, .scale, .custom:
-            view.transform = .identity
-            
-        case .fade:
-            view.alpha = 1.0
-            
-        case .`default`:
-            break
-        }
+    public enum Background: Equatable {
+        case none,
+             color(color: UIColor = defaultImageTint.withAlphaComponent(0.25))
+    }
+}
+
+extension Toast: Equatable {
+    public static func == (lhs: Toast, rhs: Toast) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
 }

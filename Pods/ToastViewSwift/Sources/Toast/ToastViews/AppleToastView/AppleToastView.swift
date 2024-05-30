@@ -9,31 +9,26 @@ import Foundation
 import UIKit
 
 public class AppleToastView : UIView, ToastView {
-    private let minHeight: CGFloat
-    private let minWidth: CGFloat
-
-    private let darkBackgroundColor: UIColor
-    private let lightBackgroundColor: UIColor
+    private let config: ToastViewConfiguration
     
     private let child: UIView
     
-    private weak var toast: Toast?
+    private var toast: Toast?
     
     public init(
         child: UIView,
-        minHeight: CGFloat = 58,
-        minWidth: CGFloat = 150,
-        darkBackgroundColor: UIColor = UIColor(red: 0.13, green: 0.13, blue: 0.13, alpha: 1.00),
-        lightBackgroundColor: UIColor = UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 1.00)
+        config: ToastViewConfiguration = ToastViewConfiguration()
     ) {
-        self.minHeight = minHeight
-        self.minWidth = minWidth
-        self.darkBackgroundColor = darkBackgroundColor
-        self.lightBackgroundColor = lightBackgroundColor
+        self.config = config
         self.child = child
         super.init(frame: .zero)
         
         addSubview(child)
+    }
+    
+    public override func removeFromSuperview() {
+      super.removeFromSuperview()
+      self.toast = nil
     }
     
     public func createView(for toast: Toast) {
@@ -42,19 +37,20 @@ public class AppleToastView : UIView, ToastView {
         translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight),
-            widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: config.minHeight),
+            widthAnchor.constraint(greaterThanOrEqualToConstant: config.minWidth),
             leadingAnchor.constraint(greaterThanOrEqualTo: superview.leadingAnchor, constant: 10),
             trailingAnchor.constraint(lessThanOrEqualTo: superview.trailingAnchor, constant: -10),
             centerXAnchor.constraint(equalTo: superview.centerXAnchor)
         ])
         
-        switch toast.direction {
+        switch toast.config.direction {
         case .bottom:
             bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor, constant: 0).isActive = true
-            
         case .top:
             topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor, constant: 0).isActive = true
+        case .center:
+            centerYAnchor.constraint(equalTo: superview.layoutMarginsGuide.centerYAnchor, constant: 0).isActive = true
         }
         
         addSubviewConstraints()
@@ -73,11 +69,11 @@ public class AppleToastView : UIView, ToastView {
         layoutIfNeeded()
         clipsToBounds = true
         layer.zPosition = 999
-        layer.cornerRadius = frame.height / 2
+        layer.cornerRadius = config.cornerRadius ?? frame.height / 2
         if #available(iOS 12.0, *) {
-            backgroundColor = traitCollection.userInterfaceStyle == .light ? lightBackgroundColor : darkBackgroundColor
+            backgroundColor = traitCollection.userInterfaceStyle == .light ? config.lightBackgroundColor : config.darkBackgroundColor
         } else {
-            backgroundColor = lightBackgroundColor
+            backgroundColor = config.lightBackgroundColor
         }
         
         addShadow()

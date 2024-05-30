@@ -58,6 +58,7 @@ public let StorageErrorDomain: String = "FIRStorageErrorDomain"
     errorDictionary["ResponseErrorDomain"] = serverError.domain
     errorDictionary["ResponseErrorCode"] = serverError.code
     errorDictionary["bucket"] = ref.path.bucket
+    errorDictionary[NSUnderlyingErrorKey] = serverError
 
     if let object = ref.path.object {
       errorDictionary["object"] = object
@@ -75,7 +76,7 @@ public let StorageErrorDomain: String = "FIRStorageErrorDomain"
    */
   static func error(withInvalidRequest request: Data?) -> NSError {
     var requestString: String
-    if let request = request {
+    if let request {
       requestString = String(data: request, encoding: .utf8) ?? "<unstringable data>"
     } else {
       requestString = "<nil request returned from server>"

@@ -10,6 +10,20 @@ import FirebaseAuth
 import FirebaseFirestore
 import AlertToast
 
+enum AddExpensesField: Hashable {
+    case title,amount,type,date,notes,end
+    
+    var next:AddExpensesField? {
+        switch self {
+        case .title:
+            return .amount
+        default:
+            return nil
+        }
+        
+    }
+}
+
 struct AddNewExpense: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
@@ -22,8 +36,10 @@ struct AddNewExpense: View {
     @State var showSuccessToast = false
     @AppStorage("currencySelection") private var currencySelection: String = ""
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    
+    let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
+
     @ObservedObject var fbViewModel = FirebaseViewModel()
+    @FocusState private var focusedField: AddExpensesField?
 
     
     func onAppear() {
@@ -69,6 +85,7 @@ struct AddNewExpense: View {
             ZStack{
                 Form {
                     TextField("Title", text: $expenseTitle)
+                        .focused($focusedField, equals: .title)
                     HStack{
                         Text("Amount:   ")
                         TextField("Amount", value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -76,6 +93,7 @@ struct AddNewExpense: View {
                                 textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                             }
                         }
+                        .focused($focusedField, equals: .amount)
                     }
                     Picker("Type", selection: $expenseType){
                         ForEach(fbViewModel.alltypesValues, id: \.self) { value in
@@ -87,9 +105,22 @@ struct AddNewExpense: View {
                     }
                     TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200)
                     Section {
-                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(purpleColor)}
+                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(lightPurpleColor)}
                     }
-                }.scrollDismissesKeyboard(.immediately)
+                }
+                .scrollDismissesKeyboard(.immediately)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                focusedField = focusedField?.next
+                            }) {
+                                Text("Next").foregroundStyle(lightPurpleColor)
+                            }
+                        }
+                    }
+                }
             }.toast(isPresenting: $showSuccessToast) {
                 AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: colorScheme == .light ? .black: .white))
             }
