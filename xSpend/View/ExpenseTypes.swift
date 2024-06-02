@@ -39,14 +39,14 @@ struct ExpenseTypes: View {
     
     func addNewExpenseType() {
         if (ExpenseTypeName == "" || alltypesValues.contains(ExpenseTypeName)){
-            alertMessage = ExpenseTypeName == "" ? "Expense name should be filled." : "This expense type already exists."
+            alertMessage = ExpenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType
             showingErrAlert = true
         }else{
-            self.db.collection("ExpenseTypes")
+            self.db.collection(Constants.firebase.expenseTypes)
                 .addDocument(data: [
-                    "name":ExpenseTypeName,
-                    "icon":icon,
-                    "user":Auth.auth().currentUser?.email as Any
+                    Constants.firebase.name:ExpenseTypeName,
+                    Constants.firebase.icon:icon,
+                    Constants.firebase.userF:Auth.auth().currentUser?.email as Any
                 ]){ err in
                     if let err = err {
                         print("Error writing document: \(err)")
@@ -62,8 +62,8 @@ struct ExpenseTypes: View {
     }
     
     func getExpenseTypes(){
-        db.collection("ExpenseTypes")
-            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
+        db.collection(Constants.firebase.expenseTypes)
+            .whereField(Constants.strings.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
             .addSnapshotListener { querySnapshot, error in
                 if error != nil {
                     print("Error geting Expense types")
@@ -72,8 +72,8 @@ struct ExpenseTypes: View {
                         allTypes=standardTypes
                         for doc in snapshotDocuments{
                             let data = doc.data()
-                            allTypes.append(ExpenseType(id:doc.documentID, name:data["name"] as! String, icon:data["icon"] as! String))
-                            alltypesValues.append(data["name"] as! String)
+                            allTypes.append(ExpenseType(id:doc.documentID, name:data[Constants.firebase.name] as! String, icon:data[Constants.firebase.icon] as! String))
+                            alltypesValues.append(data[Constants.firebase.name] as! String)
                         }
                     }
                 }
@@ -81,7 +81,7 @@ struct ExpenseTypes: View {
     }
     
     func removeExpenseType(with docId:String){
-        db.collection("ExpenseTypes").document(docId).delete() { err in
+        db.collection(Constants.firebase.expenseTypes).document(docId).delete() { err in
             if let err = err {
               print("Error removing document: \(err)")
             }
@@ -112,7 +112,7 @@ struct ExpenseTypes: View {
                             
                         }.frame(height: 40)
                             .swipeActions {
-                                Button("Delete") {
+                                Button(Constants.strings.delete) {
                                     removeExpenseType(with: type.id)
                                 }
                                 .tint(.red)
@@ -126,20 +126,20 @@ struct ExpenseTypes: View {
                     Button {
                         showingAlert = true
                     } label: {
-                        Label("Add", systemImage: "plus").padding(.trailing).font(.system(size: 24)).foregroundColor(colorScheme == .light ? .black : .white)
+                        Label(Constants.strings.add, systemImage: Constants.icon.plus).padding(.trailing).font(.system(size: 24)).foregroundColor(colorScheme == .light ? .black : .white)
                     }
                     .sheet(isPresented: $showingAlert) {
                         VStack(spacing: 20){
                             HStack {
-                                Button("Back") {
+                                Button(Constants.strings.back) {
                                     showingAlert = false
                                 }
                                 Spacer()
                             }.padding(.vertical)
                             Spacer()
-                            Text("New Expense type").font(.system(size: 30))
+                            Text(Constants.strings.newExpenseType).font(.system(size: 30))
                             HStack {
-                                TextField("Enter new expense type name", text: $ExpenseTypeName)
+                                TextField(Constants.strings.enterNewExpenseType, text: $ExpenseTypeName)
                                     .frame(height: 45)
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .padding([.horizontal], 4)
@@ -160,14 +160,14 @@ struct ExpenseTypes: View {
                                     SymbolPicker(symbol: $icon)
                                 }
                             }
-                            Button("Add"){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? purpleColor: .white)
+                            Button(Constants.strings.add){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? purpleColor: .white)
                             Spacer()
                         }.padding(.horizontal,40)
                         .toast(isPresenting: $showSuccessToast) {
-                            AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: .white))
+                            AlertToast(type: .complete(.gray), title: Constants.strings.expenseCreated, style: .style(titleColor: .white))
                         }
                         .alert(alertMessage, isPresented: $showingErrAlert) {
-                            Button("OK", role: .cancel) { }
+                            Button(Constants.strings.ok, role: .cancel) { }
                         }
                     }
                 }

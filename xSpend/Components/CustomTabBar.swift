@@ -21,22 +21,22 @@ struct CustomTabBar: View {
     private var fillImage: String {
         switch selectedTab{
         case .house:
-            return "house.fill"
+            return Constants.icon.house
         case .add:
-            return "plus.circle.fill"
+            return Constants.icon.plusFill
         case .person:
-            return "person.fill"
+            return Constants.icon.personFill
         }
     }
     
     private func getIcon(_ tab:Tab)->String{
         switch tab{
         case .house:
-            return "house"
+            return Constants.icon.personFill
         case .add:
-            return "plus.circle"
+            return Constants.icon.house
         case .person:
-            return "person"
+            return Constants.icon.personSimple
         }
     }
     
@@ -71,7 +71,7 @@ struct CustomTabBar: View {
                 .padding()
                 HStack{
                     Spacer()
-                    Image(systemName: "plus.circle.fill")
+                    Image(systemName: Constants.icon.plusFill)
                         .scaleEffect(3)
                         .foregroundColor(purpleColor)
                         .font(.system(size: 20))
@@ -97,7 +97,7 @@ import SwiftUI
 
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
-    @State var title = "Add new Expense"
+    @State var title = Constants.strings.addExpenseType
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -123,11 +123,11 @@ struct TabManager: View {
             }
             .onChange(of: tabSelected) { newValue in
                 if newValue == .add {
-                    self.title = "Add new Expense"
+                    self.title = Constants.strings.addExpenseType
                 } else if newValue == .person {
-                    self.title = "Profile"
+                    self.title = Constants.strings.profile
                 } else {
-                    self.title = "Expenses"
+                    self.title = Constants.strings.expenses
                 }
             }
             .navigationBarBackButtonHidden(true)

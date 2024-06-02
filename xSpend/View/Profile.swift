@@ -10,10 +10,10 @@ import FirebaseAuth
 import SymbolPicker
 
 struct Profile: View {
-    @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
     @State private var logoutLink: Bool = false
     @State private var expenseTypesLink: Bool = false
-    @AppStorage("currencySelection") private var currencySelection: String = ""
+    @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @State private var uniqueCurrencyCodes = Set<String>()
     
@@ -35,25 +35,25 @@ struct Profile: View {
         Form{
             if let userEmail = Auth.auth().currentUser?.email{
                 HStack {
-                    Image(systemName: "person.circle").frame(width: 80,height: 80).font(.system(size: 50))
+                    Image(systemName: Constants.icon.person).frame(width: 80,height: 80).font(.system(size: 50))
                     Text(userEmail)
                 }
-                LabeledContent("Username", value: userEmail.components(separatedBy: "@")[0])
+                LabeledContent(Constants.strings.userName, value: userEmail.components(separatedBy: "@")[0])
             }
             Section {
-                Toggle("Dark Mode", isOn: $isDarkMode)
-                Picker("Country", selection: $currencySelection){
+                Toggle(Constants.strings.darkMode, isOn: $isDarkMode)
+                Picker(Constants.strings.country, selection: $currencySelection){
                     ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
                         Text(key)
                     }
                 }
-                LabeledContent("Current Currency", value: countryCurrencyCode[currencySelection] ?? "")
+                LabeledContent(Constants.strings.currentCurrency, value: countryCurrencyCode[currencySelection] ?? "")
             } header: {
-                Text("App Settings")
+                Text(Constants.strings.appSettings)
             }
-            Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text("Add new expense type")}
+            Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
             Section {
-                Button(role: .destructive) {signOut()} label:{Text("Log Out")}
+                Button(role: .destructive) {signOut()} label:{Text(Constants.strings.logOut)}
             }
             .navigationDestination(isPresented: $logoutLink) {
                 LandingScreen()

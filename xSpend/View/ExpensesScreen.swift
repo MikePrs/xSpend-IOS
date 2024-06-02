@@ -26,13 +26,13 @@ struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
-    @AppStorage("currencySelection") private var currencySelection: String = ""
+    @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
     
     @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
-    @State var filterType = "Any"
+    @State var filterType = Constants.strings.any
     @State var limitDate = Date.now
     @State var currency = ""
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
@@ -50,7 +50,7 @@ struct ExpensesScreen: View {
         currency = countryCurrencyCode[currencySelection] ?? ""
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: startDate, to:limitDate, category: "Any")
+        fbViewModel.getExpenses(from: startDate, to:limitDate, category: Constants.strings.any)
     }
     
     func loadMoreExpenses(){
@@ -78,15 +78,15 @@ struct ExpensesScreen: View {
                         enableFilters.toggle()
                     } label:{
                         HStack {
-                            Text("FILTERS").foregroundStyle(.gray)
+                            Text(Constants.strings.filters).foregroundStyle(.gray)
                             Spacer()
-                            Image(systemName: enableFilters ? "chevron.up" : "chevron.down" ).foregroundStyle(.gray)
+                            Image(systemName: enableFilters ? Constants.icon.up : Constants.icon.down ).foregroundStyle(.gray)
                         }
                     }
                 }
                 if enableFilters {
-                    Picker("Category", selection: $filterType) {
-                        Text("Any").tag("Any")
+                    Picker(Constants.strings.category, selection: $filterType) {
+                        Text(Constants.strings.any).tag(Constants.strings.any)
                         ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
@@ -94,7 +94,7 @@ struct ExpensesScreen: View {
                         filterExpensesDate(startDate,limitDate,value)
                     })
                     DatePicker(
-                        "Start Date",
+                        Constants.strings.startDate,
                         selection: $startDate,
                         in: ...limitDate,
                         displayedComponents: [.date]
@@ -104,7 +104,7 @@ struct ExpensesScreen: View {
                     })
                     
                     DatePicker(
-                        "End Date",
+                        Constants.strings.endDate,
                         selection: $limitDate,
                         in: ...Date.now,
                         displayedComponents: [.date]
@@ -113,15 +113,15 @@ struct ExpensesScreen: View {
                         filterExpensesDate(startDate,newEndDate,filterType)
                     })
                     VStack {
-                        Text("PRICE RANGE").foregroundStyle(.gray)
+                        Text(Constants.strings.priceRange).foregroundStyle(.gray)
                         HStack {
-                            Text("min").foregroundStyle(.gray)
+                            Text(Constants.strings.min).foregroundStyle(.gray)
                             TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .min)
-                            Text("max").foregroundStyle(.gray)
+                            Text(Constants.strings.max).foregroundStyle(.gray)
                             TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
-                            Text("Set").foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
+                            Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
                                 setPriceRange()
                             }
                         }
@@ -160,7 +160,7 @@ struct ExpensesScreen: View {
                 VStack {
                     HStack {
                         Spacer()
-                        Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? "Load More":"No Expenses").foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
+                        Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
                         Spacer()
                     }
                 }
@@ -173,13 +173,13 @@ struct ExpensesScreen: View {
                         Button(action: {
                             setPriceRange()
                         }) {
-                            Text("Set").foregroundStyle(lightPurpleColor)
+                            Text(Constants.strings.set).foregroundStyle(lightPurpleColor)
                         }
                         Spacer()
                         Button(action: {
                             focusedField = focusedField?.next
                         }) {
-                            Image(systemName: focusedField == .min ? "chevron.right" : "chevron.left" ).foregroundStyle(lightPurpleColor)
+                            Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(lightPurpleColor)
                         }
                     }
                 }
