@@ -35,7 +35,7 @@ struct AddNewExpense: View {
     @State private var expenseAmount: Float = 0.0
     @State var showingAlert = false
     @State var showSuccessToast = false
-    @AppStorage("currencySelection") private var currencySelection: String = ""
+    @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
     
@@ -61,14 +61,14 @@ struct AddNewExpense: View {
             let formatter4 = DateFormatter()
             formatter4.dateFormat = "d/M/YYYY"
             let newExpense = [
-                "title":expenseTitle,
-                "amount":expenseAmount,
-                "type":expenseType,
-                "notes":expenseNotes,
-                "user":Auth.auth().currentUser?.email as Any,
-                "timestamp": expenseDate.timeIntervalSince1970,
-                "date":formatter4.string(from: expenseDate),
-                "currency": CountryCurrencyCode().countryCurrency[currencySelection]!
+                Constants.firebase.title : expenseTitle,
+                Constants.firebase.amount : expenseAmount,
+                Constants.firebase.type : expenseType,
+                Constants.firebase.notes : expenseNotes,
+                Constants.firebase.user : Auth.auth().currentUser?.email as Any,
+                Constants.firebase.timestamp :  expenseDate.timeIntervalSince1970,
+                Constants.firebase.date : formatter4.string(from: expenseDate),
+                Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection]!
             ]
             let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense)
             if addSuccess {
@@ -85,28 +85,28 @@ struct AddNewExpense: View {
         NavigationView{
             ZStack{
                 Form {
-                    TextField("Title", text: $expenseTitle)
+                    TextField(Constants.strings.title, text: $expenseTitle)
                         .focused($focusedField, equals: .title)
                     HStack{
-                        Text("Amount:   ")
-                        TextField("Amount", value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                        Text(Constants.strings.amountSpace)
+                        TextField(Constants.strings.amount, value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
                             if let textField = obj.object as? UITextField {
                                 textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                             }
                         }
                         .focused($focusedField, equals: .amount)
                     }
-                    Picker("Type", selection: $expenseType){
+                    Picker(Constants.strings.type, selection: $expenseType){
                         ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
                     }.pickerStyle(.navigationLink)
                     DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
-                        Text("Select a date")
+                        Text(Constants.strings.selectDate)
                     }.tint(lightPurpleColor)
-                    TextField("Notes", text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
+                    TextField(Constants.strings.notes, text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
                     Section {
-                        Button(role: .cancel) {addNewExpense()} label:{Text("Add").foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
+                        Button(role: .cancel) {addNewExpense()} label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)
@@ -121,16 +121,16 @@ struct AddNewExpense: View {
                                     focusedField = focusedField?.next
                                 }
                             }) {
-                                Text(focusedField == .notes ? "Add" : "Next").foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
+                                Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
                             }
                         }
                     }
                 }
             }.toast(isPresenting: $showSuccessToast) {
-                AlertToast(type: .complete(.gray), title: "Expense Created", style: .style(titleColor: colorScheme == .light ? .black: .white))
+                AlertToast(type: .complete(.gray), title: Constants.strings.expenseCreated, style: .style(titleColor: colorScheme == .light ? .black: .white))
             }
-            .alert("Title and Amout should be filled.", isPresented: $showingAlert) {
-                Button("OK", role: .cancel) { }
+            .alert(Constants.strings.titleAmountErr, isPresented: $showingAlert) {
+                Button(Constants.strings.ok, role: .cancel) { }
             }
         }.onAppear{onAppear()}
     }

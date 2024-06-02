@@ -19,21 +19,21 @@ struct LandingScreen: View {
             NavigationStack {
                 VStack {
                     Spacer()
-                    Text("Welcome to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                    Text(Constants.strings.welcomTo).font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
                     
-                    Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
+                    Text(Constants.strings.xSpend).font(.system(size: 35)).foregroundColor(purpleColor).bold()
                     Spacer()
-                    Image("expensesIcon").resizable().frame(width: 200,height: 200)
+                    Image(Constants.icon.expenses).resizable().frame(width: 200,height: 200)
                     Spacer()
                     Button(action: {self.loginLink = true }){
-                        Text("Login").padding().frame(maxWidth: .infinity)
+                        Text(Constants.strings.login).padding().frame(maxWidth: .infinity)
                     }
                     .tint(purpleColor)
                     .buttonStyle(.borderedProminent)
                     .font(.system(size: 25))
                     
                     Button(action: {self.signupLink = true }){
-                        Text("SignUp").padding().frame(maxWidth: .infinity)
+                        Text(Constants.strings.signUp).padding().frame(maxWidth: .infinity)
                     }
                     .tint(purpleColor)
                     .buttonStyle(.bordered)

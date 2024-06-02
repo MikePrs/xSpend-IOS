@@ -34,21 +34,20 @@ struct SignupScreen: View {
                 }
             }
         }else{
-            print("passwords dont match")
             errorAlert = true
-            errorAlertMessage = "Passwords dont match"
+            errorAlertMessage = Constants.strings.passwordsDontMatch
         }
     }
 
     var body: some View {
         NavigationStack {
             VStack{
-                Image("expensesIcon").resizable().frame(width: 200,height: 200)
-                Text("Sign up to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                Image(Constants.icon.expenses).resizable().frame(width: 200,height: 200)
+                Text(Constants.strings.loginTo).font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
                 
-                Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
+                Text(Constants.strings.xSpend).font(.system(size: 35)).foregroundColor(purpleColor).bold()
                 TextField(
-                    "User name (email address)",
+                    Constants.strings.userNameEmail,
                     text: $usernameEmail
                 ).frame(height: 40)
                     .overlay {
@@ -64,7 +63,7 @@ struct SignupScreen: View {
                 HStack{
                     if showPassword {
                         TextField(
-                            "Password",
+                            Constants.strings.password,
                             text: $password
                         )
                         .frame(height: 40)
@@ -76,7 +75,7 @@ struct SignupScreen: View {
                         .disableAutocorrection(true)
                         .padding(.bottom)
                     }else{
-                        SecureField("Password", text: $password)
+                        SecureField(Constants.strings.password, text: $password)
                             .frame(height: 40)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
@@ -87,11 +86,11 @@ struct SignupScreen: View {
                             .padding(.bottom)
                     }
                     Button(action: {self.showPassword = !self.showPassword }){
-                        Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
+                        Image(systemName: self.showPassword ? Constants.icon.eye:Constants.icon.slashEye).foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
                     }
                 }
                 HStack{
-                    SecureField("Confirm Password", text: $password2)
+                    SecureField(Constants.strings.confirmPassword, text: $password2)
                         .frame(height: 40)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
@@ -102,14 +101,14 @@ struct SignupScreen: View {
                         }
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
-                    Image(systemName: self.passwordMatch ? "checkmark.circle.fill":"xmark.circle.fill").foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
+                    Image(systemName: self.passwordMatch ? Constants.icon.ckeckMarkFill:Constants.icon.xMarkFill).foregroundColor(self.passwordMatch ? .green:.red).font(.system(size: 25))
                 }.alert(errorAlertMessage, isPresented: $errorAlert) {
-                    Button("Ok") {}
+                    Button(Constants.strings.ok) {}
                 }
                 
                 
                 Button(action: {signUp()}){
-                    Text("Sign Up").padding()
+                    Text(Constants.strings.signUp).padding()
                 }
                 .tint(purpleColor)
                 .buttonStyle(.borderedProminent)

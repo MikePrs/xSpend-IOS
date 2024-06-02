@@ -33,9 +33,8 @@ struct LoginScreen: View {
     
     func sendPasswordReset(withEmail email: String){
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-                print("password change err")
                 errorAlert = true
-                errorAlertMessage = "Password change erros"
+            errorAlertMessage = Constants.strings.passwordErr
         }
     }
     
@@ -43,9 +42,8 @@ struct LoginScreen: View {
         if usernameEmail != "" {
             sendPasswordReset(withEmail: usernameEmail)
         }else{
-            print("fill email first")
             errorAlert = true
-            errorAlertMessage = "Fill email first"
+            errorAlertMessage = Constants.strings.emailFillErr
         }
     }
     
@@ -54,12 +52,12 @@ struct LoginScreen: View {
             NavigationStack {
                 VStack{
                     VStack{
-                        Image("expensesIcon").resizable().frame(width: 200,height: 200)
-                        Text("Login to ").font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
+                        Image(Constants.icon.expenses).resizable().frame(width: 200,height: 200)
+                        Text(Constants.strings.loginTo).font(.system(size: 30)).foregroundColor(colorScheme == .dark ?.white:purpleColor)
                         
-                        Text("xSpend").font(.system(size: 35)).foregroundColor(purpleColor).bold()
+                        Text(Constants.strings.xSpend).font(.system(size: 35)).foregroundColor(purpleColor).bold()
                         TextField(
-                            "User name (email address)",
+                            Constants.strings.userNameEmail,
                             text: $usernameEmail
                         ).frame(height: 40)
                             .overlay {
@@ -75,7 +73,7 @@ struct LoginScreen: View {
                         HStack{
                             if showPassword {
                                 TextField(
-                                    "Password",
+                                    Constants.strings.password,
                                     text: $password
                                 )
                                 .frame(height: 40)
@@ -86,7 +84,7 @@ struct LoginScreen: View {
                                 .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
                             }else{
-                                SecureField("Password", text: $password)
+                                SecureField(Constants.strings.password, text: $password)
                                     .frame(height: 40)
                                     .overlay {
                                         RoundedRectangle(cornerRadius: 10)
@@ -96,21 +94,21 @@ struct LoginScreen: View {
                                     .disableAutocorrection(true)
                             }
                             Button(action: {self.showPassword = !self.showPassword }){
-                                Image(systemName: self.showPassword ? "eye":"eye.slash").foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
+                                Image(systemName: self.showPassword ? Constants.icon.eye:Constants.icon.slashEye).foregroundColor(colorScheme == .dark ?.gray:purpleColor).font(.system(size: 25))
                             }
                         }
                     }.padding()
                         .alert(errorAlertMessage, isPresented: $errorAlert) {
-                            Button("Ok") {}
+                            Button(Constants.strings.ok) {}
                         }
                     HStack{
                         Spacer()
                         Button(role: .destructive , action: {resetingPassword()}){
-                            Text("Forgot passwort")
+                            Text(Constants.strings.forgotPassword)
                         }.frame(alignment: .trailing).padding()
                     }
                     Button(action: {login()}){
-                        Text("Login").padding()
+                        Text(Constants.strings.login).padding()
                     }
                     .tint(purpleColor)
                     .buttonStyle(.borderedProminent)
