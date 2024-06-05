@@ -32,7 +32,7 @@ struct AddNewExpense: View {
     @State private var expenseType: String = "Coffee"
     @State private var expenseDate = Date.now
     @State private var expenseNotes: String = ""
-    @State private var expenseAmount: Float = 0.0
+    @State private var expenseAmount: Float? = nil
     @State var showingAlert = false
     @State var showSuccessToast = false
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
@@ -55,14 +55,14 @@ struct AddNewExpense: View {
     }
     
     func addNewExpense() {
-        if (expenseAmount == 0){
+        if (expenseAmount == 0 || expenseAmount == nil ){
             showingAlert = true
         }else{
             let formatter4 = DateFormatter()
             formatter4.dateFormat = "d/M/YYYY"
             let newExpense = [
                 Constants.firebase.title : expenseTitle,
-                Constants.firebase.amount : expenseAmount,
+                Constants.firebase.amount : expenseAmount ?? 0,
                 Constants.firebase.type : expenseType,
                 Constants.firebase.notes : expenseNotes,
                 Constants.firebase.user : Auth.auth().currentUser?.email as Any,
@@ -70,12 +70,12 @@ struct AddNewExpense: View {
                 Constants.firebase.date : formatter4.string(from: expenseDate),
                 Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection]!
             ]
-            let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense)
+            let addSuccess = fbViewModel.addNewExpense(newExpense: newExpense as [String : Any])
             if addSuccess {
                 expenseTitle = ""
                 expenseType = ""
                 expenseNotes = ""
-                expenseAmount = 0.0
+                expenseAmount = nil
                 showSuccessToast = true
             }
         }

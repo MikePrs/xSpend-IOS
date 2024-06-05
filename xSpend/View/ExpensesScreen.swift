@@ -37,15 +37,14 @@ struct ExpensesScreen: View {
     @State var currency = ""
     @ObservedObject var exchangeRates = ExchangeRatesViewModel()
     @State var enableFilters:Bool=false
-    @State var minPrice:Int = 0
-    @State var maxPrice:Int = 0
+    @State var minPrice:Float? = nil
+    @State var maxPrice:Float? = nil
     @State var filtersSize:CGFloat = 80
     @State var emptytext = ""
     @FocusState private var focusedField: ExpenseFilterFields?
     
     
     func setUp() async {
-        print(maxPrice)
         await exchangeRates.fetchExchangeRates()
         currency = countryCurrencyCode[currencySelection] ?? ""
         fbViewModel.getExpenseTypes()
@@ -63,8 +62,9 @@ struct ExpensesScreen: View {
         fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
     }
     
-    func setPriceRange(){
+    func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String){
         hideKeyboard()
+        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice)
     }
     
     
@@ -121,8 +121,9 @@ struct ExpensesScreen: View {
                             Text(Constants.strings.max).foregroundStyle(.gray)
                             TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
+                                
                             Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
-                                setPriceRange()
+                                setPriceRange(startDate,limitDate,filterType)
                             }
                         }
                     }
@@ -171,7 +172,7 @@ struct ExpensesScreen: View {
                 ToolbarItem(placement: .keyboard) {
                     HStack{
                         Button(action: {
-                            setPriceRange()
+                            setPriceRange(startDate,limitDate,filterType)
                         }) {
                             Text(Constants.strings.set).foregroundStyle(lightPurpleColor)
                         }

@@ -51,12 +51,20 @@ class FirebaseViewModel: ObservableObject {
         return success
     }
     
-    func getExpenses(from:Date , to:Date, category:String ) {
+    func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
         var query = db.collection("Expenses")
             .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField("timestamp", isLessThanOrEqualTo: to.timeIntervalSince1970)
             .whereField("timestamp", isGreaterThanOrEqualTo: from.timeIntervalSince1970)
-                
+               
+        if let minAmount = min , minAmount != 0  {
+            query = query.whereField("amount",isGreaterThanOrEqualTo: minAmount)
+        }
+        
+        if let maxAmount = max , maxAmount != 0 {
+            query = query.whereField("amount",isLessThanOrEqualTo: maxAmount)
+        }
+        
         if(category != "Any"){
             query = query.whereField("type",isEqualTo: category)
         }
