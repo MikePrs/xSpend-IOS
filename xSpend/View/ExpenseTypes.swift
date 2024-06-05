@@ -21,15 +21,10 @@ struct ExpenseTypes: View {
     @State var showSuccessToast = false
     @State private var ExpenseTypeName = ""
     @State private var iconPickerPresented = false
-    @State private var icon = "questionmark.square.dashed"
+    @State private var icon = Constants.icon.noIcon
     @State private var alertMessage = ""
     @State private var alltypesValues = [String]()
-    @State var standardTypes = [
-        ExpenseType(id: "0", name:"Coffee",icon:"cup.and.saucer.fill"),
-        ExpenseType(id: "1", name:"Gas",icon:"fuelpump.circle"),
-        ExpenseType(id: "2", name:"Rent",icon:"house.circle"),
-        ExpenseType(id: "3", name:"Electricity",icon:"bolt.circle")
-    ]
+    @State var standardTypes = Constants.staticList.standardTypes
     @State var allTypes = [ExpenseType]()
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
 
@@ -46,7 +41,7 @@ struct ExpenseTypes: View {
                 .addDocument(data: [
                     Constants.firebase.name:ExpenseTypeName,
                     Constants.firebase.icon:icon,
-                    Constants.firebase.userF:Auth.auth().currentUser?.email as Any
+                    Constants.firebase.user:Auth.auth().currentUser?.email as Any
                 ]){ err in
                     if let err = err {
                         print("Error writing document: \(err)")
@@ -120,7 +115,7 @@ struct ExpenseTypes: View {
                     }
                 }
             }
-            .navigationTitle(Text("Expense Types"))
+            .navigationTitle(Text(Constants.strings.expenseTypes))
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {

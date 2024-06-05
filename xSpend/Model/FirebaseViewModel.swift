@@ -13,14 +13,14 @@ class FirebaseViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var alltypesValues = [String]()
 //    @Published var expenses = [Expense]()
-    let standardTypes = ["Coffee","Gas","Rent","Electricity"]
+    let standardTypes = Constants.staticList.standardStringType
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
-    @Published var alltypesValueIcon : [String:String] = ["Coffee":"cup.and.saucer.fill","Gas":"fuelpump.circle","Rent":"house.circle","Electricity":"bolt.circle"]
+    @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
     
     func getExpenseTypes(){
-        db.collection("ExpenseTypes")
-            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
+        db.collection(Constants.firebase.expenseTypes)
+            .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
             .addSnapshotListener { [self] querySnapshot, error in
                 if error != nil {
                     print("Error geting Expense types")
@@ -29,7 +29,7 @@ class FirebaseViewModel: ObservableObject {
                         alltypesValues=standardTypes
                         for doc in snapshotDocuments{
                             let data = doc.data()
-                            if let name = data["name"] as? String , let icon = data["icon"] as? String{
+                            if let name = data[Constants.firebase.name] as? String , let icon = data[Constants.firebase.icon] as? String{
                                     alltypesValues.append(name)
                                     alltypesValueIcon[name] = icon
                             }
@@ -41,7 +41,7 @@ class FirebaseViewModel: ObservableObject {
 
     func addNewExpense(newExpense:[String:Any])->Bool {
         var success = true
-        self.db.collection("Expenses")
+        self.db.collection(Constants.firebase.expenses)
             .addDocument(data: newExpense){ err in
                 if let err = err {
                     success = false
@@ -52,21 +52,21 @@ class FirebaseViewModel: ObservableObject {
     }
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
-        var query = db.collection("Expenses")
-            .whereField("user", isEqualTo: Auth.auth().currentUser?.email! as Any)
-            .whereField("timestamp", isLessThanOrEqualTo: to.timeIntervalSince1970)
-            .whereField("timestamp", isGreaterThanOrEqualTo: from.timeIntervalSince1970)
+        var query = db.collection(Constants.firebase.expenses)
+            .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
+            .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: to.timeIntervalSince1970)
+            .whereField(Constants.firebase.timestamp, isGreaterThanOrEqualTo: from.timeIntervalSince1970)
                
         if let minAmount = min , minAmount != 0  {
-            query = query.whereField("amount",isGreaterThanOrEqualTo: minAmount)
+            query = query.whereField(Constants.firebase.amount,isGreaterThanOrEqualTo: minAmount)
         }
         
         if let maxAmount = max , maxAmount != 0 {
-            query = query.whereField("amount",isLessThanOrEqualTo: maxAmount)
+            query = query.whereField(Constants.firebase.amount,isLessThanOrEqualTo: maxAmount)
         }
         
-        if(category != "Any"){
-            query = query.whereField("type",isEqualTo: category)
+        if(category != Constants.strings.any){
+            query = query.whereField(Constants.firebase.type,isEqualTo: category)
         }
         query.addSnapshotListener { [self] querySnapshot, error in
                 
@@ -80,7 +80,7 @@ class FirebaseViewModel: ObservableObject {
 //                                print("snapshot proccess")
                                 let data = doc.data()
                                 print(doc.documentID)
-                                let exp = Expense(id: doc.documentID, title: data["title"] as! String, amount: data["amount"] as! Float, type: data["type"] as! String, note:data["notes"] as! String, date: data["date"] as! String, currency: data["currency"] as! String )
+                                let exp = Expense(id: doc.documentID, title: data[Constants.firebase.title] as! String, amount: data[Constants.firebase.amount] as! Float, type: data[Constants.firebase.type] as! String, note:data[Constants.firebase.notes] as! String, date: data[Constants.firebase.date] as! String, currency: data[Constants.firebase.currency] as! String )
 //                                    expenses.append(exp)
                                 print(exp)
                                 self.sectioned[exp.date, default: []].append(exp)
