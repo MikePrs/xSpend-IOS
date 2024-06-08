@@ -26,7 +26,6 @@ struct ExpenseTypes: View {
     @State private var alltypesValues = [String]()
     @State var standardTypes = Constants.staticList.standardTypes
     @State var allTypes = [ExpenseType]()
-    let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
 
     func setUp() {
         getExpenseTypes()
@@ -155,7 +154,7 @@ struct ExpenseTypes: View {
                                     SymbolPicker(symbol: $icon)
                                 }
                             }
-                            Button(Constants.strings.add){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? purpleColor: .white)
+                            Button(Constants.strings.add){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
                             Spacer()
                         }.padding(.horizontal,40)
                         .toast(isPresenting: $showSuccessToast) {
