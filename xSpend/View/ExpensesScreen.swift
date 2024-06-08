@@ -24,7 +24,8 @@ enum ExpenseFilterFields {
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var fbViewModel = FirebaseViewModel()
+//    @ObservedObject var fbViewModel = FirebaseViewModel()
+    @EnvironmentObject var fbViewModel : FirebaseViewModel
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     
@@ -41,15 +42,18 @@ struct ExpensesScreen: View {
     @State var maxPrice:Float? = nil
     @State var filtersSize:CGFloat = 80
     @State var emptytext = ""
+    @State var isLoading = true
     @FocusState private var focusedField: ExpenseFilterFields?
     
     
     func setUp() async {
+        isLoading = true
         await exchangeRates.fetchExchangeRates()
         currency = countryCurrencyCode[currencySelection] ?? ""
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: startDate, to:limitDate, category: Constants.strings.any)
+        fbViewModel.getExpenses(from: startDate, to:limitDate, category: Constants.strings.any,min: minPrice,max: maxPrice)
+        isLoading = false
     }
     
     func loadMoreExpenses(){
@@ -129,64 +133,72 @@ struct ExpensesScreen: View {
                     }
                 }
             }.scrollDisabled(true).frame(height: filtersSize).ignoresSafeArea(.keyboard)
-            
-            List{
-                ForEach(fbViewModel.expenseSectioned) { section in
-                    Section(header: Text("\(section.id)")) {
-                        ForEach(section.expenses) { exp in
-                            HStack{
-                                VStack(alignment: .leading, spacing: 0){
-                                    HStack {
-                                        Text("-"+String(exp.amount))
-                                        Text(exp.currency)
-                                        if currency != exp.currency {
-                                            Text(" ->  - \(exchangeRates.getExchangeRate(baseCurrencyAmount: (Double(exp.amount)), currency: exp.currency), specifier: "%.2f")"
-                                            )
-                                            Text(currency)
+            if !isLoading {
+                List{
+                    ForEach(fbViewModel.expenseSectioned) { section in
+                        Section(header: Text("\(section.id)")) {
+                            ForEach(section.expenses) { exp in
+                                HStack{
+                                    VStack(alignment: .leading, spacing: 0){
+                                        HStack {
+                                            Text("-"+String(exp.amount))
+                                            Text(exp.currency)
+                                            if currency != exp.currency {
+                                                Text(" ->  - \(exchangeRates.getExchangeRate(baseCurrencyAmount: (Double(exp.amount)), currency: exp.currency), specifier: "%.2f")"
+                                                )
+                                                Text(currency)
+                                            }
                                         }
+                                        Text(exp.title).font(.system(size: 14)).opacity(0.6)
                                     }
-                                    Text(exp.title).font(.system(size: 14)).opacity(0.6)
-                                }
-                                Spacer()
-                                if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
-                                    Image(systemName: String(icon))
-                                }else{
-                                    Text(String(exp.type))
+                                    Spacer()
+                                    if let icon = fbViewModel.alltypesValueIcon[String(exp.type)]{
+                                        Image(systemName: String(icon))
+                                    }else{
+                                        Text(String(exp.type))
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<0)
-                        Spacer()
-                    }
-                }
-            }
-            VStack{}.frame(height: 100)
-        }.task{await setUp()}.onDisappear {fbViewModel.sectioned = [:]}
-            .toolbar {
-                ToolbarItem(placement: .keyboard) {
-                    HStack{
-                        Button(action: {
-                            setPriceRange(startDate,limitDate,filterType)
-                        }) {
-                            Text(Constants.strings.set).foregroundStyle(lightPurpleColor)
-                        }
-                        Spacer()
-                        Button(action: {
-                            focusedField = focusedField?.next
-                        }) {
-                            Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(lightPurpleColor)
+                    
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
+                            Spacer()
                         }
                     }
                 }
+                VStack{}.frame(height: 100)
+            }else{
+                Text("Loading").foregroundStyle(.white)
             }
-            .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
-            .ignoresSafeArea(.all, edges: [.bottom, .trailing])
+        }.task{
+            await setUp()
+        }
+        .onDisappear {
+            fbViewModel.expenseSectioned = []
+        }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                HStack{
+                    Button(action: {
+                        setPriceRange(startDate,limitDate,filterType)
+                    }) {
+                        Text(Constants.strings.set).foregroundStyle(lightPurpleColor)
+                    }
+                    Spacer()
+                    Button(action: {
+                        focusedField = focusedField?.next
+                    }) {
+                        Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(lightPurpleColor)
+                    }
+                }
+            }
+        }
+        .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
+        .ignoresSafeArea(.all, edges: [.bottom, .trailing])
     }
 }
 

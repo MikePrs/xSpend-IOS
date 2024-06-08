@@ -21,7 +21,7 @@ struct CustomTabBar: View {
     private var fillImage: String {
         switch selectedTab{
         case .house:
-            return Constants.icon.house
+            return Constants.icon.houseFill
         case .add:
             return Constants.icon.plusFill
         case .person:
@@ -32,9 +32,9 @@ struct CustomTabBar: View {
     private func getIcon(_ tab:Tab)->String{
         switch tab{
         case .house:
-            return Constants.icon.personFill
-        case .add:
             return Constants.icon.house
+        case .add:
+            return Constants.icon.plus
         case .person:
             return Constants.icon.personSimple
         }
@@ -98,6 +98,8 @@ import SwiftUI
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
     @State var title = Constants.strings.addExpenseType
+    @ObservedObject var fbViewModel = FirebaseViewModel()
+
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -107,13 +109,16 @@ struct TabManager: View {
         ZStack {
             VStack {
                 TabView(selection: $tabSelected) {
-                    AddNewExpense().tabItem {
+                    AddNewExpense().environmentObject(fbViewModel)
+                    .tabItem {
                     }.tag(Tab.add)
                     
-                    ExpensesScreen().tabItem {
+                    ExpensesScreen().environmentObject(fbViewModel)
+                    .tabItem {
                     }.tag(Tab.house)
                     
-                    Profile().tabItem {
+                    Profile().environmentObject(fbViewModel)
+                    .tabItem {
                     }.tag(Tab.person)
                 }
             }

@@ -39,7 +39,7 @@ struct AddNewExpense: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
     
-    @ObservedObject var fbViewModel = FirebaseViewModel()
+    @EnvironmentObject var fbViewModel : FirebaseViewModel
     @FocusState private var focusedField: AddExpensesField?
     
     
