@@ -59,7 +59,10 @@ struct ContentView_Previews: PreviewProvider {
 
 struct ContentView: View {
     @State var mainAppLink: Bool = false
+    @State var isLoading: Bool = true
+    
     func onLoad(){
+        isLoading = true
         if Auth.auth().currentUser != nil {
             self.mainAppLink = true
             print("user")
@@ -67,13 +70,21 @@ struct ContentView: View {
             self.mainAppLink = false
             print("no user")
         }
+        isLoading = false
     }
     var body: some View {
             NavigationStack{
-                if mainAppLink {
-                    TabManager()
+                if !isLoading {
+                    if mainAppLink {
+                        TabManager()
+                    }else{
+                        LandingScreen()
+                    }
                 }else{
-                    LandingScreen()
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                    Spacer()
                 }
             }.onAppear {onLoad()}
     }

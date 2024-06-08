@@ -52,18 +52,24 @@ struct ExpensesScreen: View {
     }
     
     func loadMoreExpenses(){
+        isLoading = true
         let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
         fbViewModel.getExpenses(from: olderEx, to:limitDate, category: filterType)
         startDate = olderEx
+        isLoading = false
     }
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
+        isLoading = true
         fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
+        isLoading = false
     }
     
     func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String){
+        isLoading = true
         hideKeyboard()
         fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice)
+        isLoading = false
     }
     
     
@@ -169,7 +175,10 @@ struct ExpensesScreen: View {
                 }
                 VStack{}.frame(height: 100)
             }else{
-                Text("Loading").foregroundStyle(.white)
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                Spacer()
             }
         }
         .task{
