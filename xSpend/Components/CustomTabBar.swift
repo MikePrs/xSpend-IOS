@@ -68,7 +68,7 @@ struct CustomTabBar: View {
                 .frame(width: nil, height: 60)
                 .background(colorScheme == .dark ? .thinMaterial : .bar)
                 .cornerRadius(20)
-                .padding()
+                .padding([.leading,.trailing,.bottom],2)
                 HStack{
                     Spacer()
                     Image(systemName: Constants.icon.plusFill)
@@ -126,7 +126,7 @@ struct TabManager: View {
                 Spacer()
                 CustomTabBar(selectedTab: $tabSelected)
             }
-            .onChange(of: tabSelected) { newValue in
+            .onChange(of: tabSelected) { oldValue, newValue in
                 if newValue == .add {
                     self.title = Constants.strings.addExpenseType
                 } else if newValue == .person {
@@ -135,8 +135,8 @@ struct TabManager: View {
                     self.title = Constants.strings.expenses
                 }
             }
-            .navigationBarBackButtonHidden(true)
-        }.ignoresSafeArea(.keyboard, edges: .bottom).navigationTitle(title)
+            .navigationBarHidden(true)
+        }.ignoresSafeArea(.keyboard, edges: .bottom)
     }
     
 }

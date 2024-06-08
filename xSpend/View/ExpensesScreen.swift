@@ -24,7 +24,7 @@ enum ExpenseFilterFields {
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
-//    @ObservedObject var fbViewModel = FirebaseViewModel()
+    //    @ObservedObject var fbViewModel = FirebaseViewModel()
     @EnvironmentObject var fbViewModel : FirebaseViewModel
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
@@ -40,7 +40,7 @@ struct ExpensesScreen: View {
     @State var enableFilters:Bool=false
     @State var minPrice:Float? = nil
     @State var maxPrice:Float? = nil
-    @State var filtersSize:CGFloat = 80
+    @State var filtersSize:CGFloat = 90
     @State var emptytext = ""
     @State var isLoading = true
     @FocusState private var focusedField: ExpenseFilterFields?
@@ -74,18 +74,17 @@ struct ExpensesScreen: View {
     
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading,spacing: 0){
+            HeaderTitle(title: Constants.strings.expenses)
             Form{
-                HStack {
-                    Button() {
-                        filtersSize = !enableFilters ? 300 : 80
-                        enableFilters.toggle()
-                    } label:{
-                        HStack {
-                            Text(Constants.strings.filters).foregroundStyle(.gray)
-                            Spacer()
-                            Image(systemName: enableFilters ? Constants.icon.up : Constants.icon.down ).foregroundStyle(.gray)
-                        }
+                Button() {
+                    filtersSize = !enableFilters ? 300 : 90
+                    enableFilters.toggle()
+                } label:{
+                    HStack {
+                        Text(Constants.strings.filters).foregroundStyle(.gray)
+                        Spacer()
+                        Image(systemName: enableFilters ? Constants.icon.up : Constants.icon.down).foregroundStyle(.gray)
                     }
                 }
                 if enableFilters {
@@ -94,18 +93,18 @@ struct ExpensesScreen: View {
                         ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
-                    }.onChange(of: filterType, perform: { value in
+                    }.onChange(of: filterType) { old, value in
                         filterExpensesDate(startDate,limitDate,value)
-                    })
+                    }
                     DatePicker(
                         Constants.strings.startDate,
                         selection: $startDate,
                         in: ...limitDate,
                         displayedComponents: [.date]
                     ).tint(lightPurpleColor)
-                    .onChange(of: startDate, perform: { newStartdate in
-                        filterExpensesDate(newStartdate,limitDate,filterType)
-                    })
+                        .onChange(of: startDate) { old, newStartdate in
+                            filterExpensesDate(newStartdate,limitDate,filterType)
+                        }
                     
                     DatePicker(
                         Constants.strings.endDate,
@@ -113,9 +112,9 @@ struct ExpensesScreen: View {
                         in: ...Date.now,
                         displayedComponents: [.date]
                     ).tint(lightPurpleColor)
-                    .onChange(of: limitDate, perform: { newEndDate in
-                        filterExpensesDate(startDate,newEndDate,filterType)
-                    })
+                        .onChange(of: limitDate) { old, newEndDate in
+                            filterExpensesDate(startDate,newEndDate,filterType)
+                        }
                     VStack {
                         Text(Constants.strings.priceRange).foregroundStyle(.gray)
                         HStack {
@@ -125,14 +124,16 @@ struct ExpensesScreen: View {
                             Text(Constants.strings.max).foregroundStyle(.gray)
                             TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
-                                
+                            
                             Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
                                 setPriceRange(startDate,limitDate,filterType)
                             }
                         }
                     }
                 }
-            }.scrollDisabled(true).frame(height: filtersSize).ignoresSafeArea(.keyboard)
+            }
+            .scrollDisabled(true)
+            .frame(height: filtersSize).ignoresSafeArea(.keyboard)
             if !isLoading {
                 List{
                     ForEach(fbViewModel.expenseSectioned) { section in
@@ -174,11 +175,14 @@ struct ExpensesScreen: View {
             }else{
                 Text("Loading").foregroundStyle(.white)
             }
-        }.task{
+        }
+        .task{
             await setUp()
         }
         .onDisappear {
             fbViewModel.expenseSectioned = []
+            enableFilters = false
+            filtersSize = 90
         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {

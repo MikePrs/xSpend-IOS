@@ -82,47 +82,46 @@ struct AddNewExpense: View {
     }
     
     var body: some View {
-        NavigationView{
-            ZStack{
-                Form {
-                    TextField(Constants.strings.title, text: $expenseTitle)
-                        .focused($focusedField, equals: .title)
-                    HStack{
-                        Text(Constants.strings.amountSpace)
-                        TextField(Constants.strings.amount, value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                            if let textField = obj.object as? UITextField {
-                                textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
-                            }
+        VStack(alignment: .leading,spacing: 0){
+            HeaderTitle(title: Constants.strings.addNewExpense)
+            Form {
+                TextField(Constants.strings.title, text: $expenseTitle)
+                    .focused($focusedField, equals: .title)
+                HStack{
+                    Text(Constants.strings.amountSpace)
+                    TextField(Constants.strings.amount, value: $expenseAmount,format:.number).keyboardType(.decimalPad).onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                        if let textField = obj.object as? UITextField {
+                            textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                         }
-                        .focused($focusedField, equals: .amount)
                     }
-                    Picker(Constants.strings.type, selection: $expenseType){
-                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                            Text(value).tag(value)
-                        }
-                    }.pickerStyle(.navigationLink)
-                    DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
-                        Text(Constants.strings.selectDate)
-                    }.tint(lightPurpleColor)
-                    TextField(Constants.strings.notes, text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
-                    Section {
-                        Button(role: .cancel) {addNewExpense()} label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
-                    }
+                    .focused($focusedField, equals: .amount)
                 }
-                .scrollDismissesKeyboard(.immediately)
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        HStack{
-                            Spacer()
-                            Button(action: {
-                                if focusedField == .notes {
-                                    addNewExpense()
-                                }else{
-                                    focusedField = focusedField?.next
-                                }
-                            }) {
-                                Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
+                Picker(Constants.strings.type, selection: $expenseType){
+                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                        Text(value).tag(value)
+                    }
+                }.pickerStyle(.navigationLink)
+                DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
+                    Text(Constants.strings.selectDate)
+                }.tint(lightPurpleColor)
+                TextField(Constants.strings.notes, text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
+                Section {
+                    Button(role: .cancel) {addNewExpense()} label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
+                }
+            }
+            .scrollDismissesKeyboard(.immediately)
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            if focusedField == .notes {
+                                addNewExpense()
+                            }else{
+                                focusedField = focusedField?.next
                             }
+                        }) {
+                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
                         }
                     }
                 }
