@@ -16,7 +16,6 @@ enum Tab: String, CaseIterable {
 struct CustomTabBar: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var selectedTab: Tab
-    let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
     
     private var fillImage: String {
         switch selectedTab{
@@ -73,7 +72,7 @@ struct CustomTabBar: View {
                     Spacer()
                     Image(systemName: Constants.icon.plusFill)
                         .scaleEffect(3)
-                        .foregroundColor(purpleColor)
+                        .foregroundColor(Constants.colors.purpleColor)
                         .font(.system(size: 20))
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.1)) {
@@ -97,7 +96,6 @@ import SwiftUI
 
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
-    @State var title = Constants.strings.addExpenseType
     @ObservedObject var fbViewModel = FirebaseViewModel()
 
     init() {
@@ -126,19 +124,9 @@ struct TabManager: View {
                 Spacer()
                 CustomTabBar(selectedTab: $tabSelected)
             }
-            .onChange(of: tabSelected) { oldValue, newValue in
-                if newValue == .add {
-                    self.title = Constants.strings.addExpenseType
-                } else if newValue == .person {
-                    self.title = Constants.strings.profile
-                } else {
-                    self.title = Constants.strings.expenses
-                }
-            }
             .navigationBarHidden(true)
         }.ignoresSafeArea(.keyboard, edges: .bottom)
     }
-    
 }
 
 

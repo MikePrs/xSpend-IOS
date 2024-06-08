@@ -13,6 +13,5 @@ struct HeaderTitle: View {
         Text(title)
             .font(.title)
             .fontWeight(.bold)
-            .padding(.leading,25)
     }
 }

@@ -24,14 +24,9 @@ enum ExpenseFilterFields {
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    //    @ObservedObject var fbViewModel = FirebaseViewModel()
     @EnvironmentObject var fbViewModel : FirebaseViewModel
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    
-    let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
-    
     @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
     @State var filterType = Constants.strings.any
     @State var limitDate = Date.now
@@ -40,7 +35,7 @@ struct ExpensesScreen: View {
     @State var enableFilters:Bool=false
     @State var minPrice:Float? = nil
     @State var maxPrice:Float? = nil
-    @State var filtersSize:CGFloat = 90
+    @State var filtersSize:CGFloat = 130
     @State var emptytext = ""
     @State var isLoading = true
     @FocusState private var focusedField: ExpenseFilterFields?
@@ -74,11 +69,12 @@ struct ExpensesScreen: View {
     
     
     var body: some View {
-        VStack(alignment: .leading,spacing: 0){
-            HeaderTitle(title: Constants.strings.expenses)
+        VStack{
             Form{
+                HeaderTitle(title: Constants.strings.expenses)
+                
                 Button() {
-                    filtersSize = !enableFilters ? 300 : 90
+                    filtersSize = !enableFilters ? 340 : 130
                     enableFilters.toggle()
                 } label:{
                     HStack {
@@ -101,7 +97,7 @@ struct ExpensesScreen: View {
                         selection: $startDate,
                         in: ...limitDate,
                         displayedComponents: [.date]
-                    ).tint(lightPurpleColor)
+                    ).tint(Constants.colors.lightPurpleColor)
                         .onChange(of: startDate) { old, newStartdate in
                             filterExpensesDate(newStartdate,limitDate,filterType)
                         }
@@ -111,7 +107,7 @@ struct ExpensesScreen: View {
                         selection: $limitDate,
                         in: ...Date.now,
                         displayedComponents: [.date]
-                    ).tint(lightPurpleColor)
+                    ).tint(Constants.colors.lightPurpleColor)
                         .onChange(of: limitDate) { old, newEndDate in
                             filterExpensesDate(startDate,newEndDate,filterType)
                         }
@@ -125,7 +121,7 @@ struct ExpensesScreen: View {
                             TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
                             
-                            Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor).onTapGesture {
+                            Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor).onTapGesture {
                                 setPriceRange(startDate,limitDate,filterType)
                             }
                         }
@@ -166,7 +162,7 @@ struct ExpensesScreen: View {
                     VStack {
                         HStack {
                             Spacer()
-                            Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
+                            Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
                             Spacer()
                         }
                     }
@@ -182,7 +178,7 @@ struct ExpensesScreen: View {
         .onDisappear {
             fbViewModel.expenseSectioned = []
             enableFilters = false
-            filtersSize = 90
+            filtersSize = 130
         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {
@@ -190,13 +186,13 @@ struct ExpensesScreen: View {
                     Button(action: {
                         setPriceRange(startDate,limitDate,filterType)
                     }) {
-                        Text(Constants.strings.set).foregroundStyle(lightPurpleColor)
+                        Text(Constants.strings.set).foregroundStyle(Constants.colors.lightPurpleColor)
                     }
                     Spacer()
                     Button(action: {
                         focusedField = focusedField?.next
                     }) {
-                        Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(lightPurpleColor)
+                        Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(Constants.colors.lightPurpleColor)
                     }
                 }
             }

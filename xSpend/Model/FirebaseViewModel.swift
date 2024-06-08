@@ -12,7 +12,6 @@ import FirebaseFirestore
 class FirebaseViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var alltypesValues = [String]()
-//    @Published var expenses = [Expense]()
     let standardTypes = Constants.staticList.standardStringType
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
@@ -30,15 +29,15 @@ class FirebaseViewModel: ObservableObject {
                         for doc in snapshotDocuments{
                             let data = doc.data()
                             if let name = data[Constants.firebase.name] as? String , let icon = data[Constants.firebase.icon] as? String{
-                                    alltypesValues.append(name)
-                                    alltypesValueIcon[name] = icon
+                                alltypesValues.append(name)
+                                alltypesValueIcon[name] = icon
                             }
                         }
                     }
                 }
             }
     }
-
+    
     func addNewExpense(newExpense:[String:Any])->Bool {
         var success = true
         self.db.collection(Constants.firebase.expenses)
@@ -56,7 +55,7 @@ class FirebaseViewModel: ObservableObject {
             .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: to.timeIntervalSince1970)
             .whereField(Constants.firebase.timestamp, isGreaterThanOrEqualTo: from.timeIntervalSince1970)
-               
+        
         if let minAmount = min , minAmount != 0  {
             query = query.whereField(Constants.firebase.amount,isGreaterThanOrEqualTo: minAmount)
         }
@@ -69,26 +68,26 @@ class FirebaseViewModel: ObservableObject {
             query = query.whereField(Constants.firebase.type,isEqualTo: category)
         }
         query.addSnapshotListener { [self] querySnapshot, error in
-                
-                    if error != nil {
-                        print("Error geting Expenses")
-                    }else{
-                        if let snapshotDocuments = querySnapshot?.documents{
-//                            expenses=[]
-                            self.sectioned = [:]
-                            for doc in snapshotDocuments{
-//                                print("snapshot proccess")
-                                let data = doc.data()
-                                print(doc.documentID)
-                                let exp = Expense(id: doc.documentID, title: data[Constants.firebase.title] as! String, amount: data[Constants.firebase.amount] as! Float, type: data[Constants.firebase.type] as! String, note:data[Constants.firebase.notes] as! String, date: data[Constants.firebase.date] as! String, currency: data[Constants.firebase.currency] as! String )
-//                                    expenses.append(exp)
-                                print(exp)
-                                self.sectioned[exp.date, default: []].append(exp)
-                            }
-                            formatData()
-                        }
+            
+            if error != nil {
+                print("Error geting Expenses")
+            }else{
+                if let snapshotDocuments = querySnapshot?.documents{
+                    //                            expenses=[]
+                    self.sectioned = [:]
+                    for doc in snapshotDocuments{
+                        //                                print("snapshot proccess")
+                        let data = doc.data()
+                        print(doc.documentID)
+                        let exp = Expense(id: doc.documentID, title: data[Constants.firebase.title] as! String, amount: data[Constants.firebase.amount] as! Float, type: data[Constants.firebase.type] as! String, note:data[Constants.firebase.notes] as! String, date: data[Constants.firebase.date] as! String, currency: data[Constants.firebase.currency] as! String )
+                        //                                    expenses.append(exp)
+                        print(exp)
+                        self.sectioned[exp.date, default: []].append(exp)
                     }
+                    formatData()
+                }
             }
+        }
     }
     
     

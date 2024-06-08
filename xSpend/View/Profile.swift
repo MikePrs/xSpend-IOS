@@ -32,38 +32,43 @@ struct Profile: View {
     
     
     var body: some View {
-        VStack(alignment: .leading,spacing: 0){
-            HeaderTitle(title: Constants.strings.profile)
-                Form{
-                    if let userEmail = Auth.auth().currentUser?.email{
-                        HStack {
-                            Image(systemName: Constants.icon.person).frame(width: 80,height: 80).font(.system(size: 50))
-                            Text(userEmail)
+        VStack{
+            Form{
+                HeaderTitle(title: Constants.strings.profile)
+                if let userEmail = Auth.auth().currentUser?.email{
+                    HStack {
+                        Image(systemName: Constants.icon.person).frame(width: 80,height: 80).font(.system(size: 50))
+                        Text(userEmail)
+                    }
+                    LabeledContent(Constants.strings.userName, value: userEmail.components(separatedBy: "@")[0])
+                }
+                Section {
+                    Toggle(Constants.strings.darkMode, isOn: $isDarkMode)
+                    Picker(Constants.strings.country, selection: $currencySelection){
+                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
+                            Text(key)
                         }
-                        LabeledContent(Constants.strings.userName, value: userEmail.components(separatedBy: "@")[0])
                     }
-                    Section {
-                        Toggle(Constants.strings.darkMode, isOn: $isDarkMode)
-                        Picker(Constants.strings.country, selection: $currencySelection){
-                            ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
-                                Text(key)
-                            }
+                    LabeledContent(Constants.strings.currentCurrency, value: countryCurrencyCode[currencySelection] ?? "")
+                } header: {
+                    Text(Constants.strings.appSettings)
+                }
+                Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
+                Section {
+                    Button(role: .destructive) {signOut()} label:{
+                        HStack{
+                            Image(systemName: Constants.icon.logOut)
+                            Text(Constants.strings.logOut)
                         }
-                        LabeledContent(Constants.strings.currentCurrency, value: countryCurrencyCode[currencySelection] ?? "")
-                    } header: {
-                        Text(Constants.strings.appSettings)
                     }
-                    Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
-                    Section {
-                        Button(role: .destructive) {signOut()} label:{Text(Constants.strings.logOut)}
-                    }
-                    .navigationDestination(isPresented: $logoutLink) {
-                        LandingScreen()
-                    }
-                    .navigationDestination(isPresented: $expenseTypesLink) {
-                        ExpenseTypes()
-                    }
-                }.padding(.top,1)
+                }
+                .navigationDestination(isPresented: $logoutLink) {
+                    LandingScreen()
+                }
+                .navigationDestination(isPresented: $expenseTypesLink) {
+                    ExpenseTypes()
+                }
+            }.padding(.top,1)
             
         }.onAppear{setUp()}
     }

@@ -36,9 +36,6 @@ struct AddNewExpense: View {
     @State var showingAlert = false
     @State var showSuccessToast = false
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
-    let lightPurpleColor = Color(red: 0.6, green: 0.6, blue: 1.0)
-    
     @EnvironmentObject var fbViewModel : FirebaseViewModel
     @FocusState private var focusedField: AddExpensesField?
     
@@ -82,9 +79,9 @@ struct AddNewExpense: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading,spacing: 0){
-            HeaderTitle(title: Constants.strings.addNewExpense)
+        VStack {
             Form {
+                HeaderTitle(title: Constants.strings.addNewExpense)
                 TextField(Constants.strings.title, text: $expenseTitle)
                     .focused($focusedField, equals: .title)
                 HStack{
@@ -103,10 +100,10 @@ struct AddNewExpense: View {
                 }.pickerStyle(.navigationLink)
                 DatePicker(selection: $expenseDate, in: ...Date.now, displayedComponents: .date) {
                     Text(Constants.strings.selectDate)
-                }.tint(lightPurpleColor)
+                }.tint(Constants.colors.lightPurpleColor)
                 TextField(Constants.strings.notes, text: $expenseNotes, axis: .vertical).frame(height: 200).focused($focusedField, equals: .notes)
                 Section {
-                    Button(role: .cancel) {addNewExpense()} label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? purpleColor : lightPurpleColor)}
+                    Button(role: .cancel) {addNewExpense()} label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor)}
                 }
             }
             .scrollDismissesKeyboard(.immediately)
@@ -121,7 +118,7 @@ struct AddNewExpense: View {
                                 focusedField = focusedField?.next
                             }
                         }) {
-                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? purpleColor : lightPurpleColor)
+                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor)
                         }
                     }
                 }
