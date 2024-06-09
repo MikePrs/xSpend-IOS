@@ -24,55 +24,15 @@ enum ExpenseFilterFields {
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var fbViewModel : FirebaseViewModel
-    private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
+    @ObservedObject var fbViewModel = FirebaseViewModel()
+    @ObservedObject var expenseViewModel = ExpensesViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    @State var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
-    @State var filterType = Constants.strings.any
-    @State var limitDate = Date.now
-    @State var currency = ""
-    @ObservedObject var exchangeRates = ExchangeRatesViewModel()
-    @State var enableFilters:Bool=false
-    @State var minPrice:Float? = nil
-    @State var maxPrice:Float? = nil
-    @State var filtersSize:CGFloat = 130
-    @State var emptytext = ""
-    @State var isLoading = true
     @FocusState private var focusedField: ExpenseFilterFields?
     
     
     func setUp() async {
-        isLoading = true
-        await exchangeRates.fetchExchangeRates()
-        currency = countryCurrencyCode[currencySelection] ?? ""
-        fbViewModel.getExpenseTypes()
-        fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(from: startDate, to:limitDate, category: Constants.strings.any,min: minPrice,max: maxPrice)
-        isLoading = false
+        await expenseViewModel.configure(fbViewModel: fbViewModel,currencySelection:currencySelection)
     }
-    
-    func loadMoreExpenses(){
-        isLoading = true
-        let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
-        fbViewModel.getExpenses(from: olderEx, to:limitDate, category: filterType)
-        startDate = olderEx
-        isLoading = false
-    }
-    
-    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
-        isLoading = true
-        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
-        isLoading = false
-    }
-    
-    func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String){
-        isLoading = true
-        hideKeyboard()
-        fbViewModel.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice)
-        isLoading = false
-    }
-    
-    
     
     var body: some View {
         VStack{
@@ -80,64 +40,81 @@ struct ExpensesScreen: View {
                 HeaderTitle(title: Constants.strings.expenses)
                 
                 Button() {
-                    filtersSize = !enableFilters ? 340 : 130
-                    enableFilters.toggle()
+                    expenseViewModel.filtersSize = !expenseViewModel.enableFilters ? 340 : 130
+                    expenseViewModel.enableFilters.toggle()
                 } label:{
                     HStack {
                         Text(Constants.strings.filters).foregroundStyle(.gray)
                         Spacer()
-                        Image(systemName: enableFilters ? Constants.icon.up : Constants.icon.down).foregroundStyle(.gray)
+                        Image(systemName: expenseViewModel.enableFilters ? Constants.icon.up : Constants.icon.down).foregroundStyle(.gray)
                     }
                 }
-                if enableFilters {
-                    Picker(Constants.strings.category, selection: $filterType) {
+                if expenseViewModel.enableFilters {
+                    Picker(Constants.strings.category, selection: $expenseViewModel.filterType) {
                         Text(Constants.strings.any).tag(Constants.strings.any)
                         ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                             Text(value).tag(value)
                         }
-                    }.onChange(of: filterType) { old, value in
-                        filterExpensesDate(startDate,limitDate,value)
+                    }.onChange(of: expenseViewModel.filterType) { old, value in
+                        expenseViewModel.filterExpensesDate(
+                            expenseViewModel.startDate,
+                            expenseViewModel.limitDate,
+                            value
+                        )
                     }
                     DatePicker(
                         Constants.strings.startDate,
-                        selection: $startDate,
-                        in: ...limitDate,
+                        selection: $expenseViewModel.startDate,
+                        in: ...expenseViewModel.limitDate,
                         displayedComponents: [.date]
                     ).tint(Constants.colors.lightPurpleColor)
-                        .onChange(of: startDate) { old, newStartdate in
-                            filterExpensesDate(newStartdate,limitDate,filterType)
+                        .onChange(of: expenseViewModel.startDate) { old, newStartdate in
+                            expenseViewModel.filterExpensesDate(
+                                newStartdate,
+                                expenseViewModel.limitDate,
+                                expenseViewModel.filterType
+                            )
                         }
                     
                     DatePicker(
                         Constants.strings.endDate,
-                        selection: $limitDate,
+                        selection: $expenseViewModel.limitDate,
                         in: ...Date.now,
                         displayedComponents: [.date]
                     ).tint(Constants.colors.lightPurpleColor)
-                        .onChange(of: limitDate) { old, newEndDate in
-                            filterExpensesDate(startDate,newEndDate,filterType)
+                        .onChange(of: expenseViewModel.limitDate) { old, newEndDate in
+                            expenseViewModel.filterExpensesDate(expenseViewModel.startDate,newEndDate,expenseViewModel.filterType)
                         }
                     VStack {
                         Text(Constants.strings.priceRange).foregroundStyle(.gray)
                         HStack {
                             Text(Constants.strings.min).foregroundStyle(.gray)
-                            TextField("", value: $minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                            TextField("", value: $expenseViewModel.minPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .min)
                             Text(Constants.strings.max).foregroundStyle(.gray)
-                            TextField("", value: $maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                            TextField("", value: $expenseViewModel.maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
                             
                             Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor).onTapGesture {
-                                setPriceRange(startDate,limitDate,filterType)
+                                expenseViewModel.setPriceRange(
+                                    expenseViewModel.startDate,
+                                    expenseViewModel.limitDate,
+                                    expenseViewModel.filterType
+                                )
                             }
                         }
                     }
                 }
             }
             .scrollDisabled(true)
-            .frame(height: filtersSize).ignoresSafeArea(.keyboard)
-            if !isLoading {
-                ExpensesList(fbViewModel: fbViewModel, exchangeRates: exchangeRates, currency: currency, loadMoreExpenses: loadMoreExpenses)
+            .frame(height: expenseViewModel.filtersSize).ignoresSafeArea(.keyboard)
+            if !expenseViewModel.isLoading {
+                ExpensesList(
+                    fbViewModel: fbViewModel,
+                    exchangeRates: expenseViewModel.exchangeRates,
+                    currency: expenseViewModel.currency,
+                    loadMoreExpenses: expenseViewModel.loadMoreExpenses
+                )
             }else{
                 Spacer()
                 ProgressView()
@@ -150,14 +127,18 @@ struct ExpensesScreen: View {
         }
         .onDisappear {
             fbViewModel.expenseSectioned = []
-            enableFilters = false
-            filtersSize = 130
+            expenseViewModel.enableFilters = false
+            expenseViewModel.filtersSize = 130
         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 HStack{
                     Button(action: {
-                        setPriceRange(startDate,limitDate,filterType)
+                        expenseViewModel.setPriceRange(
+                            expenseViewModel.startDate,
+                            expenseViewModel.limitDate,
+                            expenseViewModel.filterType
+                        )
                     }) {
                         Text(Constants.strings.set).foregroundStyle(Constants.colors.lightPurpleColor)
                     }
@@ -172,17 +153,5 @@ struct ExpensesScreen: View {
         }
         .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])
-    }
-}
-
-struct Expenses_Previews: PreviewProvider {
-    static var previews: some View {
-        ExpensesScreen()
-    }
-}
-
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

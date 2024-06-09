@@ -111,7 +111,7 @@ struct TabManager: View {
                     .tabItem {
                     }.tag(Tab.add)
                     
-                    ExpensesScreen().environmentObject(fbViewModel)
+                    ExpensesScreen()
                     .tabItem {
                     }.tag(Tab.house)
                     

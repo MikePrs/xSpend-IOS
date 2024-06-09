@@ -19,6 +19,7 @@
 		057978542C15FF9200550877 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978532C15FF9200550877 /* LoginViewModel.swift */; };
 		057978562C1602A400550877 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978552C1602A400550877 /* SignUpViewModel.swift */; };
 		0579785E2C160AC800550877 /* AddNewExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */; };
+		057978612C164BD200550877 /* ExpensesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978602C164BD200550877 /* ExpensesViewModel.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -47,6 +48,7 @@
 		057978532C15FF9200550877 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		057978552C1602A400550877 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewExpenseViewModel.swift; sourceTree = "<group>"; };
+		057978602C164BD200550877 /* ExpensesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesViewModel.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -143,7 +145,6 @@
 		057978412C1513C500550877 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				057978432C1513E400550877 /* Model */,
 				057978422C1513D400550877 /* ViewModel */,
 			);
 			path = Firebase;
@@ -152,6 +153,7 @@
 		057978422C1513D400550877 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				057978432C1513E400550877 /* Model */,
 				0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */,
 			);
 			path = ViewModel;
@@ -228,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				0579784E2C15FE9A00550877 /* Views */,
+				0579785F2C164BBD00550877 /* ViewModel */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				059CFA2E2AF0563300647653 /* ExpensesScreen.swift */,
+				057978472C151BAB00550877 /* ExpensesList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,12 +317,19 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		0579785F2C164BBD00550877 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				057978602C164BD200550877 /* ExpensesViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		059CDDED2A6094510006DF80 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */,
 				0579783A2C14F09500550877 /* HeaderTitle.swift */,
-				057978472C151BAB00550877 /* ExpensesList.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -456,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */,
+				057978612C164BD200550877 /* ExpensesViewModel.swift in Sources */,
 				05BE81212B404E390082087C /* ExchangeRatesViewModel.swift in Sources */,
 				059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */,
 				0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */,

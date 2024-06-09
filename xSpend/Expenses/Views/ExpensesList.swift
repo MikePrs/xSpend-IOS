@@ -10,7 +10,7 @@ import SwiftUI
 struct ExpensesList: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State var fbViewModel: FirebaseViewModel
+    @ObservedObject var fbViewModel: FirebaseViewModel
     @State var exchangeRates: ExchangeRatesViewModel
     @State var currency: String
     var loadMoreExpenses: () -> Void
