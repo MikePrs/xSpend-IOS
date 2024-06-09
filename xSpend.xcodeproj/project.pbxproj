@@ -16,6 +16,8 @@
 		057978372C0CD2C200550877 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* Constants.swift */; };
 		0579783B2C14F09500550877 /* HeaderTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579783A2C14F09500550877 /* HeaderTitle.swift */; };
 		057978482C151BAB00550877 /* ExpensesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978472C151BAB00550877 /* ExpensesList.swift */; };
+		057978542C15FF9200550877 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978532C15FF9200550877 /* LoginViewModel.swift */; };
+		057978562C1602A400550877 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978552C1602A400550877 /* SignUpViewModel.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -41,6 +43,8 @@
 		057978362C0CD2C200550877 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0579783A2C14F09500550877 /* HeaderTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitle.swift; sourceTree = "<group>"; };
 		057978472C151BAB00550877 /* ExpensesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesList.swift; sourceTree = "<group>"; };
+		057978532C15FF9200550877 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		057978552C1602A400550877 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -96,7 +100,13 @@
 				057978412C1513C500550877 /* Firebase */,
 				059CDDED2A6094510006DF80 /* Components */,
 				057978402C15134900550877 /* Constants */,
-				0565AE822A5AF2EC0050A9D8 /* View */,
+				0579785B2C16050400550877 /* Landing */,
+				057978492C15FDFC00550877 /* Login */,
+				057978572C1604B100550877 /* SignUp */,
+				0579784B2C15FE6000550877 /* AddNewExpense */,
+				0579784D2C15FE8800550877 /* Expenses */,
+				0579784F2C15FEA700550877 /* Profile */,
+				057978502C15FF0000550877 /* ExpenseTypes */,
 				0565AE782A5AF0BF0050A9D8 /* Assets.xcassets */,
 				0565AE7A2A5AF0BF0050A9D8 /* Preview Content */,
 			);
@@ -111,18 +121,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		0565AE822A5AF2EC0050A9D8 /* View */ = {
+		0565AE822A5AF2EC0050A9D8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */,
-				0565AE842A5B02310050A9D8 /* LoginScreen.swift */,
-				0565AE862A5B04A80050A9D8 /* SignupScreen.swift */,
-				059CDDF22A6096790006DF80 /* AddNewExpense.swift */,
 				059CDDF42A6096900006DF80 /* Profile.swift */,
-				05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */,
-				059CFA2E2AF0563300647653 /* ExpensesScreen.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		057978402C15134900550877 /* Constants */ = {
@@ -182,6 +186,120 @@
 				05BE81202B404E390082087C /* ExchangeRatesViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		057978492C15FDFC00550877 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				0579784A2C15FE1900550877 /* Views */,
+				057978522C15FF7200550877 /* ViewModel */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		0579784A2C15FE1900550877 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0565AE842A5B02310050A9D8 /* LoginScreen.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0579784B2C15FE6000550877 /* AddNewExpense */ = {
+			isa = PBXGroup;
+			children = (
+				0579784C2C15FE7100550877 /* Views */,
+			);
+			path = AddNewExpense;
+			sourceTree = "<group>";
+		};
+		0579784C2C15FE7100550877 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				059CDDF22A6096790006DF80 /* AddNewExpense.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0579784D2C15FE8800550877 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				0579784E2C15FE9A00550877 /* Views */,
+			);
+			path = Expenses;
+			sourceTree = "<group>";
+		};
+		0579784E2C15FE9A00550877 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				059CFA2E2AF0563300647653 /* ExpensesScreen.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0579784F2C15FEA700550877 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				0565AE822A5AF2EC0050A9D8 /* Views */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		057978502C15FF0000550877 /* ExpenseTypes */ = {
+			isa = PBXGroup;
+			children = (
+				057978512C15FF1100550877 /* View */,
+			);
+			path = ExpenseTypes;
+			sourceTree = "<group>";
+		};
+		057978512C15FF1100550877 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		057978522C15FF7200550877 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				057978532C15FF9200550877 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		057978572C1604B100550877 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				057978582C1604C200550877 /* View */,
+				057978592C1604C900550877 /* ViewModel */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		057978582C1604C200550877 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0565AE862A5B04A80050A9D8 /* SignupScreen.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		057978592C1604C900550877 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				057978552C1602A400550877 /* SignUpViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0579785B2C16050400550877 /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+				0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */,
+			);
+			path = Landing;
 			sourceTree = "<group>";
 		};
 		059CDDED2A6094510006DF80 /* Components */ = {
@@ -331,9 +449,11 @@
 				059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */,
 				0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */,
 				0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */,
+				057978562C1602A400550877 /* SignUpViewModel.swift in Sources */,
 				057978372C0CD2C200550877 /* Constants.swift in Sources */,
 				059CDDF52A6096900006DF80 /* Profile.swift in Sources */,
 				0579783B2C14F09500550877 /* HeaderTitle.swift in Sources */,
+				057978542C15FF9200550877 /* LoginViewModel.swift in Sources */,
 				05F6641D2A7052A800F5D701 /* Expense.swift in Sources */,
 				059CDDF32A6096790006DF80 /* AddNewExpense.swift in Sources */,
 				0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */,
