@@ -81,7 +81,11 @@ struct LoginScreen: View {
                     .padding(.top)
                 }
                 .navigationDestination(isPresented: $loginViewModel.loginLink) {
-                    TabManager()
+                    if Auth.auth().currentUser != nil {
+                        TabManager()
+                    }else{
+                        LandingScreen()
+                    }
                 }
             }
         }

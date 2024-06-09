@@ -90,7 +90,11 @@ struct SignupScreen: View {
                 .padding(.top,60)
             }.padding()
                 .navigationDestination(isPresented: $signUpViewModel.signupLink) {
-                TabManager()
+                    if Auth.auth().currentUser != nil {
+                        TabManager()
+                    }else{
+                        LandingScreen()
+                    }
               }
         }
     }
