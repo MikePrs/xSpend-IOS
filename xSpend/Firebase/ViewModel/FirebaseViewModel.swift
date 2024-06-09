@@ -12,11 +12,12 @@ import FirebaseFirestore
 class FirebaseViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var alltypesValues = [String]()
-    let standardTypes = Constants.staticList.standardStringType
+    let standardTypesString = Constants.staticList.standardStringType
+    let standardTypes = Constants.staticList.standardTypes
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
     @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
-    @State var allTypes = [ExpenseType]()
+    @Published var allTypes = [ExpenseType]()
     
     func getExpenseTypes(){
         db.collection(Constants.firebase.expenseTypes)
@@ -26,17 +27,30 @@ class FirebaseViewModel: ObservableObject {
                     print("Error geting Expense types")
                 }else{
                     if let snapshotDocuments = querySnapshot?.documents{
-                        alltypesValues=standardTypes
+                        alltypesValues=standardTypesString
+                        allTypes=standardTypes
                         for doc in snapshotDocuments{
                             let data = doc.data()
                             if let name = data[Constants.firebase.name] as? String , let icon = data[Constants.firebase.icon] as? String{
                                 alltypesValues.append(name)
                                 alltypesValueIcon[name] = icon
+                                allTypes.append(ExpenseType(id:doc.documentID,
+                                    name:name, icon:icon
+                                ))
                             }
                         }
                     }
                 }
             }
+    }
+    
+    func removeExpenseType(with docId:String) async -> Result<Bool, Error> {
+        do{
+            let _ = try await db.collection(Constants.firebase.expenseTypes).document(docId).delete()
+            return .success(true)
+        }catch{
+            return .success(false)
+        }
     }
     
     func addNewExpense(newExpense:[String:Any])->Bool {

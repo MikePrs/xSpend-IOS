@@ -17,20 +17,17 @@ struct ExpenseTypes: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var fbViewModel : FirebaseViewModel
 
-    let db = Firestore.firestore()
-    @State private var showingAlert = false
+    @State private var showingSheet = false
     @State private var showingErrAlert = false
     @State var showSuccessToast = false
+    @State var successToastText = ""
     @State private var ExpenseTypeName = ""
     @State private var iconPickerPresented = false
     @State private var icon = Constants.icon.noIcon
     @State private var alertMessage = ""
-    @State private var alltypesValues = [String]()
-    @State var standardTypes = Constants.staticList.standardTypes
-    @State var allTypes = [ExpenseType]()
 
-    func setUp() {
-        getExpenseTypes()
+    func setUp()  {
+        fbViewModel.getExpenseTypes()
     }
     
     func addNewExpenseType() async {
@@ -39,52 +36,41 @@ struct ExpenseTypes: View {
         
         switch result {
         case .success(true):
-            showSuccessToast = true
+            showToast(text: Constants.strings.expenseCreated)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                showingAlert = false
+                showingSheet = false
             }
         default:
-            alertMessage = ExpenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType
-            showingErrAlert = true
+            showAlert(message: ExpenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType)
         }
         
     }
     
-    func getExpenseTypes(){
-        db.collection(Constants.firebase.expenseTypes)
-            .whereField(Constants.strings.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
-            .addSnapshotListener { querySnapshot, error in
-                if error != nil {
-                    print("Error geting Expense types")
-                }else{
-                    if let snapshotDocuments = querySnapshot?.documents{
-                        allTypes=standardTypes
-                        for doc in snapshotDocuments{
-                            let data = doc.data()
-                            allTypes.append(ExpenseType(id:doc.documentID, name:data[Constants.firebase.name] as! String, icon:data[Constants.firebase.icon] as! String))
-                            alltypesValues.append(data[Constants.firebase.name] as! String)
-                        }
-                    }
-                }
-            }
+    func removeExpenseType(with docId:String) async{
+       let res = await fbViewModel.removeExpenseType(with: docId)
+        switch res {
+        case .success(true):
+            showToast(text:Constants.strings.deleteExpenseType)
+        default:
+            showAlert(message: Constants.strings.deleteExpenseTypeError)
+        }
     }
     
-    func removeExpenseType(with docId:String){
-        db.collection(Constants.firebase.expenseTypes).document(docId).delete() { err in
-            if let err = err {
-              print("Error removing document: \(err)")
-            }
-            else {
-              print("Document successfully removed!")
-            }
-          }
+    func showToast(text:String){
+        showSuccessToast = true
+        successToastText = Constants.strings.deleteExpenseType
+    }
+    
+    func showAlert(message:String?) {
+        alertMessage = message ?? ""
+        showingErrAlert = true
     }
     
     var body: some View {
         NavigationStack{
             List{
-                ForEach(allTypes) {type in
-                    if standardTypes.contains(where: { $0.name == type.name }){
+                ForEach(fbViewModel.allTypes) {type in
+                    if Constants.staticList.standardTypes.contains(where: { $0.name == type.name }){
                         HStack{
                             Text(type.name).foregroundColor(.gray)
                             Spacer()
@@ -102,7 +88,9 @@ struct ExpenseTypes: View {
                         }.frame(height: 40)
                             .swipeActions {
                                 Button(Constants.strings.delete) {
-                                    removeExpenseType(with: type.id)
+                                    Task{
+                                        await removeExpenseType(with: type.id)
+                                    }
                                 }
                                 .tint(.red)
                             }
@@ -110,18 +98,21 @@ struct ExpenseTypes: View {
                 }
             }
             .navigationTitle(Text(Constants.strings.expenseTypes))
+            .toast(isPresenting: $showSuccessToast) {
+                AlertToast(type: .systemImage("trash",.gray), title: successToastText, style: .style(titleColor: .white))
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        showingAlert = true
+                        showingSheet = true
                     } label: {
                         Label(Constants.strings.add, systemImage: Constants.icon.plus).padding(.trailing).font(.system(size: 24)).foregroundColor(colorScheme == .light ? .black : .white)
                     }
-                    .sheet(isPresented: $showingAlert) {
+                    .sheet(isPresented: $showingSheet) {
                         VStack(spacing: 20){
                             HStack {
                                 Button(Constants.strings.back) {
-                                    showingAlert = false
+                                    showingSheet = false
                                 }
                                 Spacer()
                             }.padding(.vertical)
@@ -157,7 +148,7 @@ struct ExpenseTypes: View {
                             Spacer()
                         }.padding(.horizontal,40)
                         .toast(isPresenting: $showSuccessToast) {
-                            AlertToast(type: .complete(.gray), title: Constants.strings.expenseCreated, style: .style(titleColor: .white))
+                            AlertToast(type: .complete(.gray), title: successToastText, style: .style(titleColor: .white))
                         }
                         .alert(alertMessage, isPresented: $showingErrAlert) {
                             Button(Constants.strings.ok, role: .cancel) { }
