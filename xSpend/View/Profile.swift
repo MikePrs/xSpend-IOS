@@ -11,6 +11,7 @@ import SymbolPicker
 
 struct Profile: View {
     @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
+    @EnvironmentObject var fbViewModel : FirebaseViewModel
     @State private var logoutLink: Bool = false
     @State private var expenseTypesLink: Bool = false
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
@@ -66,7 +67,7 @@ struct Profile: View {
                     LandingScreen()
                 }
                 .navigationDestination(isPresented: $expenseTypesLink) {
-                    ExpenseTypes()
+                    ExpenseTypes().environmentObject(fbViewModel)
                 }
             }.padding(.top,1)
             

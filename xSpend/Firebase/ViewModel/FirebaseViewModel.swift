@@ -16,6 +16,7 @@ class FirebaseViewModel: ObservableObject {
     var sectioned = [String:[Expense]]()
     @Published var expenseSectioned = [SectionedExpenses]()
     @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
+    @State var allTypes = [ExpenseType]()
     
     func getExpenseTypes(){
         db.collection(Constants.firebase.expenseTypes)
@@ -49,6 +50,25 @@ class FirebaseViewModel: ObservableObject {
             }
         return success
     }
+    
+    func addNewExpenseType(expenseTypeName:String, icon:String) async -> Result<Bool, Error> {
+        if (expenseTypeName == "" || alltypesValues.contains(expenseTypeName)){
+            return .success(false)
+        }else{
+            do {
+               _ = try await self.db.collection(Constants.firebase.expenseTypes)
+                    .addDocument(data: [
+                        Constants.firebase.name:expenseTypeName,
+                        Constants.firebase.icon:icon,
+                        Constants.firebase.user:Auth.auth().currentUser?.email as Any
+                    ])
+                return .success(true)
+            }catch{
+                return .success(false)
+            }
+        }
+    }
+    
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
         var query = db.collection(Constants.firebase.expenses)

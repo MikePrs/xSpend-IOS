@@ -15,6 +15,8 @@ import AlertToast
 struct ExpenseTypes: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var fbViewModel : FirebaseViewModel
+
     let db = Firestore.firestore()
     @State private var showingAlert = false
     @State private var showingErrAlert = false
@@ -31,28 +33,21 @@ struct ExpenseTypes: View {
         getExpenseTypes()
     }
     
-    func addNewExpenseType() {
-        if (ExpenseTypeName == "" || alltypesValues.contains(ExpenseTypeName)){
+    func addNewExpenseType() async {
+        
+        let result = await fbViewModel.addNewExpenseType(expenseTypeName: ExpenseTypeName, icon: icon)
+        
+        switch result {
+        case .success(true):
+            showSuccessToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                showingAlert = false
+            }
+        default:
             alertMessage = ExpenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType
             showingErrAlert = true
-        }else{
-            self.db.collection(Constants.firebase.expenseTypes)
-                .addDocument(data: [
-                    Constants.firebase.name:ExpenseTypeName,
-                    Constants.firebase.icon:icon,
-                    Constants.firebase.user:Auth.auth().currentUser?.email as Any
-                ]){ err in
-                    if let err = err {
-                        print("Error writing document: \(err)")
-                    } else {
-                        showSuccessToast = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                            showingAlert = false
-                        }
-                        print("Document successfully written!")
-                    }
-                }
         }
+        
     }
     
     func getExpenseTypes(){
@@ -154,7 +149,11 @@ struct ExpenseTypes: View {
                                     SymbolPicker(symbol: $icon)
                                 }
                             }
-                            Button(Constants.strings.add){addNewExpenseType()}.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
+                            Button(Constants.strings.add){
+                                Task{
+                                    await addNewExpenseType()
+                                }
+                            }.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
                             Spacer()
                         }.padding(.horizontal,40)
                         .toast(isPresenting: $showSuccessToast) {
