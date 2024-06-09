@@ -53,16 +53,16 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
-    func addNewExpense(newExpense:[String:Any])->Bool {
-        var success = true
-        self.db.collection(Constants.firebase.expenses)
-            .addDocument(data: newExpense){ err in
-                if let err = err {
-                    success = false
-                    print("Error writing document: \(err)")
-                }
-            }
-        return success
+    func addNewExpense(newExpense:[String:Any]) async -> Result<Bool, Error> {
+        do {
+            let _ = try await self.db.collection(Constants.firebase.expenses)
+                .addDocument(data: newExpense)
+            return .success(true)
+        }catch{
+            print("Error adding expense")
+            return .success(false)
+        }
+        
     }
     
     func addNewExpenseType(expenseTypeName:String, icon:String) async -> Result<Bool, Error> {

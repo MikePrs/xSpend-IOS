@@ -5,7 +5,7 @@
 //  Created by Mike Paraskevopoulos on 25/7/23.
 //
 
-import SwiftUI
+import Foundation
 
 struct Expense:Identifiable {
     var id:String

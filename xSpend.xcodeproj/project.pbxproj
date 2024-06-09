@@ -18,6 +18,7 @@
 		057978482C151BAB00550877 /* ExpensesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978472C151BAB00550877 /* ExpensesList.swift */; };
 		057978542C15FF9200550877 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978532C15FF9200550877 /* LoginViewModel.swift */; };
 		057978562C1602A400550877 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978552C1602A400550877 /* SignUpViewModel.swift */; };
+		0579785E2C160AC800550877 /* AddNewExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -45,6 +46,7 @@
 		057978472C151BAB00550877 /* ExpensesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesList.swift; sourceTree = "<group>"; };
 		057978532C15FF9200550877 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		057978552C1602A400550877 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewExpenseViewModel.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				0579784C2C15FE7100550877 /* Views */,
+				0579785C2C160AAC00550877 /* ViewModel */,
 			);
 			path = AddNewExpense;
 			sourceTree = "<group>";
@@ -300,6 +303,14 @@
 				0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */,
 			);
 			path = Landing;
+			sourceTree = "<group>";
+		};
+		0579785C2C160AAC00550877 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		059CDDED2A6094510006DF80 /* Components */ = {
@@ -458,6 +469,7 @@
 				059CDDF32A6096790006DF80 /* AddNewExpense.swift in Sources */,
 				0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */,
 				057978482C151BAB00550877 /* ExpensesList.swift in Sources */,
+				0579785E2C160AC800550877 /* AddNewExpenseViewModel.swift in Sources */,
 				059CFA2F2AF0563300647653 /* ExpensesScreen.swift in Sources */,
 				059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */,
 				0565AE872A5B04A80050A9D8 /* SignupScreen.swift in Sources */,

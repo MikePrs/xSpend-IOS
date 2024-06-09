@@ -107,7 +107,7 @@ struct TabManager: View {
         ZStack {
             VStack {
                 TabView(selection: $tabSelected) {
-                    AddNewExpense().environmentObject(fbViewModel)
+                    AddNewExpense()
                     .tabItem {
                     }.tag(Tab.add)
                     
