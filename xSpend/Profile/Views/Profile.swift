@@ -11,26 +11,13 @@ import SymbolPicker
 
 struct Profile: View {
     @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
-    @EnvironmentObject var fbViewModel : FirebaseViewModel
-    @State private var logoutLink: Bool = false
-    @State private var expenseTypesLink: Bool = false
+    @ObservedObject var fbViewModel = FirebaseViewModel()
+    @ObservedObject var profileViewModel = ProfileViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
-    @State private var uniqueCurrencyCodes = Set<String>()
-    
-    func signOut(){
-        do {
-            try Auth.auth().signOut()
-            logoutLink.toggle()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-    }
     
     func setUp() {
-        uniqueCurrencyCodes = Set<String>(countryCurrencyCode.values)
+        profileViewModel.configure()
     }
-    
     
     var body: some View {
         VStack{
@@ -46,27 +33,27 @@ struct Profile: View {
                 Section {
                     Toggle(Constants.strings.darkMode, isOn: $isDarkMode)
                     Picker(Constants.strings.country, selection: $currencySelection){
-                        ForEach(countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
+                        ForEach(profileViewModel.countryCurrencyCode.sorted(by: <), id: \.key) { key, value in
                             Text(key)
                         }
                     }
-                    LabeledContent(Constants.strings.currentCurrency, value: countryCurrencyCode[currencySelection] ?? "")
+                    LabeledContent(Constants.strings.currentCurrency, value: profileViewModel.countryCurrencyCode[currencySelection] ?? "")
                 } header: {
                     Text(Constants.strings.appSettings)
                 }
-                Button(role: .cancel) {expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
+                Button(role: .cancel) {profileViewModel.expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
                 Section {
-                    Button(role: .destructive) {signOut()} label:{
+                    Button(role: .destructive) {profileViewModel.signOut()} label:{
                         HStack{
                             Image(systemName: Constants.icon.logOut)
                             Text(Constants.strings.logOut)
                         }
                     }
                 }
-                .navigationDestination(isPresented: $logoutLink) {
+                .navigationDestination(isPresented: $profileViewModel.logoutLink) {
                     LandingScreen()
                 }
-                .navigationDestination(isPresented: $expenseTypesLink) {
+                .navigationDestination(isPresented: $profileViewModel.expenseTypesLink) {
                     ExpenseTypes().environmentObject(fbViewModel)
                 }
             }.padding(.top,1)

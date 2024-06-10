@@ -20,6 +20,7 @@
 		057978562C1602A400550877 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978552C1602A400550877 /* SignUpViewModel.swift */; };
 		0579785E2C160AC800550877 /* AddNewExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */; };
 		057978612C164BD200550877 /* ExpensesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978602C164BD200550877 /* ExpensesViewModel.swift */; };
+		057978672C1796E200550877 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978662C1796E200550877 /* ProfileViewModel.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -49,6 +50,7 @@
 		057978552C1602A400550877 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		0579785D2C160AC800550877 /* AddNewExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewExpenseViewModel.swift; sourceTree = "<group>"; };
 		057978602C164BD200550877 /* ExpensesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesViewModel.swift; sourceTree = "<group>"; };
+		057978662C1796E200550877 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				0565AE822A5AF2EC0050A9D8 /* Views */,
+				057978652C1796C900550877 /* ViewModel */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -321,6 +324,14 @@
 			isa = PBXGroup;
 			children = (
 				057978602C164BD200550877 /* ExpensesViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		057978652C1796C900550877 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				057978662C1796E200550877 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -484,6 +495,7 @@
 				0579785E2C160AC800550877 /* AddNewExpenseViewModel.swift in Sources */,
 				059CFA2F2AF0563300647653 /* ExpensesScreen.swift in Sources */,
 				059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */,
+				057978672C1796E200550877 /* ProfileViewModel.swift in Sources */,
 				0565AE872A5B04A80050A9D8 /* SignupScreen.swift in Sources */,
 				05BE81242B4095970082087C /* ExchangeRate.swift in Sources */,
 				05F6641F2A797BE000F5D701 /* ExpenseTypes.swift in Sources */,
