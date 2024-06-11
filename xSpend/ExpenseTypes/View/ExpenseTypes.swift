@@ -15,56 +15,16 @@ import AlertToast
 struct ExpenseTypes: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var fbViewModel : FirebaseViewModel
+    @ObservedObject var fbViewModel = FirebaseViewModel()
+    @ObservedObject var expenseTypesViewModel = ExpenseTypesViewModel()
 
-    @State private var showingSheet = false
-    @State private var showingErrAlert = false
-    @State var showSuccessToast = false
-    @State var successToastText = ""
-    @State private var ExpenseTypeName = ""
-    @State private var iconPickerPresented = false
-    @State private var icon = Constants.icon.noIcon
-    @State private var alertMessage = ""
+
 
     func setUp()  {
-        fbViewModel.getExpenseTypes()
+        expenseTypesViewModel.configure(fbViewModel: fbViewModel)
     }
     
-    func addNewExpenseType() async {
-        
-        let result = await fbViewModel.addNewExpenseType(expenseTypeName: ExpenseTypeName, icon: icon)
-        
-        switch result {
-        case .success(true):
-            showToast(text: Constants.strings.expenseCreated)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                showingSheet = false
-            }
-        default:
-            showAlert(message: ExpenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType)
-        }
-        
-    }
-    
-    func removeExpenseType(with docId:String) async{
-       let res = await fbViewModel.removeExpenseType(with: docId)
-        switch res {
-        case .success(true):
-            showToast(text:Constants.strings.deleteExpenseType)
-        default:
-            showAlert(message: Constants.strings.deleteExpenseTypeError)
-        }
-    }
-    
-    func showToast(text:String){
-        showSuccessToast = true
-        successToastText = Constants.strings.deleteExpenseType
-    }
-    
-    func showAlert(message:String?) {
-        alertMessage = message ?? ""
-        showingErrAlert = true
-    }
+
     
     var body: some View {
         NavigationStack{
@@ -89,7 +49,7 @@ struct ExpenseTypes: View {
                             .swipeActions {
                                 Button(Constants.strings.delete) {
                                     Task{
-                                        await removeExpenseType(with: type.id)
+                                        await expenseTypesViewModel.removeExpenseType(with: type.id)
                                     }
                                 }
                                 .tint(.red)
@@ -98,28 +58,28 @@ struct ExpenseTypes: View {
                 }
             }
             .navigationTitle(Text(Constants.strings.expenseTypes))
-            .toast(isPresenting: $showSuccessToast) {
-                AlertToast(type: .systemImage("trash",.gray), title: successToastText, style: .style(titleColor: .white))
+            .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
+                AlertToast(type: .systemImage("trash",.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        showingSheet = true
+                        expenseTypesViewModel.showingSheet = true
                     } label: {
                         Label(Constants.strings.add, systemImage: Constants.icon.plus).padding(.trailing).font(.system(size: 24)).foregroundColor(colorScheme == .light ? .black : .white)
                     }
-                    .sheet(isPresented: $showingSheet) {
+                    .sheet(isPresented: $expenseTypesViewModel.showingSheet) {
                         VStack(spacing: 20){
                             HStack {
                                 Button(Constants.strings.back) {
-                                    showingSheet = false
+                                    expenseTypesViewModel.showingSheet = false
                                 }
                                 Spacer()
                             }.padding(.vertical)
                             Spacer()
                             Text(Constants.strings.newExpenseType).font(.system(size: 30))
                             HStack {
-                                TextField(Constants.strings.enterNewExpenseType, text: $ExpenseTypeName)
+                                TextField(Constants.strings.enterNewExpenseType, text: $expenseTypesViewModel.expenseTypeName)
                                     .frame(height: 45)
                                     .textFieldStyle(PlainTextFieldStyle())
                                     .padding([.horizontal], 4)
@@ -127,30 +87,30 @@ struct ExpenseTypes: View {
                                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
                                     .padding([.horizontal], 4)
                                 Button {
-                                    iconPickerPresented = true
+                                    expenseTypesViewModel.iconPickerPresented = true
                                 } label: {
                                     ZStack{
                                         Rectangle()
                                             .fill(.gray)
                                             .frame(width: 45, height:45).cornerRadius(10)
-                                        Image(systemName: icon).resizable().frame(width: 30,height: 30).foregroundColor(.white)
+                                        Image(systemName: expenseTypesViewModel.icon).resizable().frame(width: 30,height: 30).foregroundColor(.white)
                                     }
                                 }
-                                .sheet(isPresented: $iconPickerPresented) {
-                                    SymbolPicker(symbol: $icon)
+                                .sheet(isPresented: $expenseTypesViewModel.iconPickerPresented) {
+                                    SymbolPicker(symbol: $expenseTypesViewModel.icon)
                                 }
                             }
                             Button(Constants.strings.add){
                                 Task{
-                                    await addNewExpenseType()
+                                    await expenseTypesViewModel.addNewExpenseType()
                                 }
                             }.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
                             Spacer()
                         }.padding(.horizontal,40)
-                        .toast(isPresenting: $showSuccessToast) {
-                            AlertToast(type: .complete(.gray), title: successToastText, style: .style(titleColor: .white))
+                            .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
+                                AlertToast(type: .complete(.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
                         }
-                        .alert(alertMessage, isPresented: $showingErrAlert) {
+                            .alert(expenseTypesViewModel.alertMessage, isPresented: $expenseTypesViewModel.showingErrAlert) {
                             Button(Constants.strings.ok, role: .cancel) { }
                         }
                     }
