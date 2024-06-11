@@ -53,6 +53,10 @@ class ExpenseTypesViewModel:ObservableObject{
         }
     }
     
+    func editExpenseType(with docId:String) async {
+        
+    }
+    
     func showToast(text:String){
         DispatchQueue.main.async {
             self.showSuccessToast = true

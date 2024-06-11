@@ -47,7 +47,7 @@ struct ExpensesList: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
+                    Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(Utils.getPurpleColor(colorScheme)).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
                     Spacer()
                 }
             }

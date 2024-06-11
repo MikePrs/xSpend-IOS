@@ -95,7 +95,7 @@ struct ExpensesScreen: View {
                             TextField("", value: $expenseViewModel.maxPrice,format:.number).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
                                 .focused($focusedField, equals: .max)
                             
-                            Text(Constants.strings.set).foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor).onTapGesture {
+                            Text(Constants.strings.set).foregroundStyle(Utils.getPurpleColor(colorScheme)).onTapGesture {
                                 expenseViewModel.setPriceRange(
                                     expenseViewModel.startDate,
                                     expenseViewModel.limitDate,

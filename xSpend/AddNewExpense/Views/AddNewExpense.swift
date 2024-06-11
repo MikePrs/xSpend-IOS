@@ -63,7 +63,7 @@ struct AddNewExpense: View {
                         Task{
                             await addNewExpense()
                         }
-                    } label:{Text(Constants.strings.add).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor)}
+                    } label:{Text(Constants.strings.add).foregroundColor(Utils.getPurpleColor(colorScheme))}
                 }
             }
             .scrollDismissesKeyboard(.immediately)
@@ -80,7 +80,7 @@ struct AddNewExpense: View {
                                 focusedField = focusedField?.next
                             }
                         }) {
-                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor)
+                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(Utils.getPurpleColor(colorScheme))
                         }
                     }
                 }

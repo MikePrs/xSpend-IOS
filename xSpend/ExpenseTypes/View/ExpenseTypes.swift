@@ -13,54 +13,71 @@ import AlertToast
 
 
 struct ExpenseTypes: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var expenseTypesViewModel = ExpenseTypesViewModel()
-
+    
     func setUp()  {
         expenseTypesViewModel.configure(fbViewModel: fbViewModel)
+    }
+    
+    func isStandartType(_ type:ExpenseType) -> Bool{
+        return Constants.staticList.standardTypes.contains(where: { $0.name == type.name })
     }
     
     var body: some View {
         NavigationStack{
             List{
                 ForEach(fbViewModel.allTypes) {type in
-                    if Constants.staticList.standardTypes.contains(where: { $0.name == type.name }){
-                        HStack{
-                            Text(type.name).foregroundColor(.gray)
-                            Spacer()
-                            Image(systemName: type.icon).resizable().foregroundColor(.gray)
-                                .frame(width: 25, height: 25)
-                            
-                        }.frame(height: 40)
-                    }else{
-                        HStack{
-                            Text(type.name)
-                            Spacer()
-                            Image(systemName: type.icon).resizable()
-                                .frame(width: 25, height: 25)
-                            
-                        }.frame(height: 40)
-                            .swipeActions {
+                    HStack{
+                        Text(type.name).foregroundColor(isStandartType(type) ? .gray : .none)
+                        Spacer()
+                        Image(systemName: type.icon).resizable()
+                            .frame(width: 25, height: 25).foregroundColor((isStandartType(type) ? .gray : .none))
+                        
+                    }.frame(height: 40)
+                        .swipeActions {
+                            if !(isStandartType(type)){
                                 Button(Constants.strings.delete) {
                                     Task{
                                         await expenseTypesViewModel.removeExpenseType(with: type.id)
                                     }
                                 }
                                 .tint(.red)
+                                
+                                Button(Constants.strings.edit) {
+                                    Task{
+                                        await expenseTypesViewModel.editExpenseType(with: type.id)
+                                    }
+                                }
+                                .tint(Utils.getPurpleColor(colorScheme))
                             }
-                    }
+                        }
                 }
             }
             .navigationTitle(Text(Constants.strings.expenseTypes))
+            .navigationBarBackButtonHidden(true)
             .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
                 AlertToast(type: .systemImage("trash",.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
             }
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    AddExpenseTypeSheet(expenseTypesViewModel: expenseTypesViewModel)
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    HStack{
+                        Image(systemName: Constants.icon.left)
+                            .foregroundColor(Utils.getPurpleColor(colorScheme))
+                        Text(Constants.strings.back)
+                            .foregroundColor(Utils.getPurpleColor(colorScheme))
+                    }.onTapGesture {
+                        dismiss()
                     }
-            }
+                }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    AddExpenseTypeSheet(expenseTypesViewModel: expenseTypesViewModel)
+                        
+                }
+            }.tint(Utils.getPurpleColor(colorScheme))
         }.onAppear {
             setUp()
         }
