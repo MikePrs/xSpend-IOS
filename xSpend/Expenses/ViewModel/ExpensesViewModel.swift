@@ -23,15 +23,24 @@ class ExpensesViewModel: ObservableObject {
     @Published var filtersSize:CGFloat = 130
     @Published var emptytext = ""
     @Published var isLoading = true
+    @Published var showSuccessToast = false
+    @Published var successToastText = ""
+    @Published var expenseId = ""
+    @Published var showingErrAlert:Bool = false
+    @Published var alertMessage = ""
+
+    
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
 
-    func configure(fbViewModel:FirebaseViewModel,currencySelection:String) async{
+    func configure(fbViewModel:FirebaseViewModel,currencySelection:String?=nil) async{
         self.fbViewModel = fbViewModel
         
         
         isLoading = true
         await exchangeRates.fetchExchangeRates()
-        currency = countryCurrencyCode[currencySelection] ?? ""
+        if let currencySelection {
+            currency = countryCurrencyCode[currencySelection] ?? ""
+        }
         fbViewModel.getExpenseTypes()
         fbViewModel.sectioned = [:]
         fbViewModel.getExpenses(
@@ -42,6 +51,33 @@ class ExpensesViewModel: ObservableObject {
             max: maxPrice
         )
         isLoading = false
+    }
+    
+    func removeExpense() async {
+        let res = await fbViewModel?.firebaseDelete(with: expenseId, at: Constants.firebase.expenses)
+        DispatchQueue.main.async {
+            switch res {
+            case .success(true):
+                self.showToast(text:Constants.strings.deleteExpense)
+            default:
+                self.showAlert(message: Constants.strings.deleteExpenseError)
+            }
+            self.expenseId = ""
+        }
+    }
+    
+    func showToast(text:String){
+        DispatchQueue.main.async {
+            self.showSuccessToast = true
+            self.successToastText = text
+        }
+    }
+    
+    func showAlert(message:String?) {
+        DispatchQueue.main.async {
+            self.alertMessage = message ?? ""
+            self.showingErrAlert = true
+        }
     }
     
     func loadMoreExpenses(){

@@ -69,12 +69,12 @@ struct ExpenseTypes: View {
                 }
                 Button(Constants.strings.delete, role: .destructive) { 
                     Task{
-                        await expenseTypesViewModel.removeExpenseType(with: expenseTypesViewModel.expenseTypeId)
+                        await expenseTypesViewModel.removeExpenseType()
                     }
                 }
             }
             .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
-                AlertToast(type: .systemImage("trash",.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
+                AlertToast(type: .systemImage(Constants.icon.trash,.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {

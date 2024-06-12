@@ -44,9 +44,9 @@ class FirebaseViewModel: ObservableObject {
             }
     }
     
-    func removeExpenseType(with docId:String) async -> Result<Bool, Error> {
+    func firebaseDelete(with docId:String, at collectionName:String) async -> Result<Bool, Error> {
         do{
-            let _ = try await db.collection(Constants.firebase.expenseTypes).document(docId).delete()
+            let _ = try await db.collection(collectionName).document(docId).delete()
             return .success(true)
         }catch{
             return .success(false)

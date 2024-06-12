@@ -6,17 +6,26 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct ExpensesList: View {
     @Environment(\.colorScheme) var colorScheme
     
     @ObservedObject var fbViewModel: FirebaseViewModel
     @ObservedObject var addNewExpenseViewModel = AddNewExpenseViewModel()
+    @ObservedObject var expensesViewModel : ExpensesViewModel
     @State var exchangeRates: ExchangeRatesViewModel
     @State var currency: String
     @State var showSheet = false
+    @State var showingDeleteAlert = false
     var loadMoreExpenses: () -> Void
     @State var detailViewType:ExpenseDetailViewType = .view
+    
+    @State var test = true
+    
+    func setUp(){
+        
+    }
     
     var body: some View {
         List{
@@ -51,7 +60,8 @@ struct ExpensesList: View {
                         }
                         .swipeActions {
                             Button(Constants.strings.delete) {
-                                
+                                showingDeleteAlert = true
+                                expensesViewModel.expenseId = exp.id
                             }
                             .tint(.red)
                             
@@ -75,7 +85,20 @@ struct ExpensesList: View {
             }.sheet(isPresented: $showSheet) {
                 ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel, viewType: detailViewType)
             }
-        }
+            .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
+                Button(Constants.strings.no, role: .cancel) {
+                    expensesViewModel.expenseId = ""
+                }
+                Button(Constants.strings.delete, role: .destructive) {
+                    Task{
+                        await expensesViewModel.removeExpense()
+                    }
+                }
+            }
+            .alert(expensesViewModel.alertMessage, isPresented: $expensesViewModel.showingErrAlert) {
+                Button(Constants.strings.ok, role: .cancel) { }
+            }
+        }.onAppear{setUp()}
         VStack{}.frame(height: 100)
     }
 }

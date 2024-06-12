@@ -43,8 +43,8 @@ class ExpenseTypesViewModel:ObservableObject{
         }
     }
     
-    func removeExpenseType(with docId:String) async{
-        let res = await fbViewModel?.removeExpenseType(with: docId)
+    func removeExpenseType() async{
+        let res = await fbViewModel?.firebaseDelete(with: expenseTypeId, at: Constants.firebase.expenseTypes)
         DispatchQueue.main.async {
             switch res {
             case .success(true):
