@@ -41,7 +41,18 @@ struct ExpensesList: View {
                             }
                         }
                     }
-                }
+                }.swipeActions {
+                        Button(Constants.strings.delete) {
+                            
+                        }
+                        .tint(.red)
+                        
+                        Button(Constants.strings.edit) {
+                          
+                        }
+                        .tint(Utils.getPurpleColor(colorScheme))
+                    }
+                
             }
             
             VStack {
