@@ -37,10 +37,11 @@ enum ExpenseDetailViewType {
         switch self {
         case .add, .update:
             return false
-        default:
+        case .view:
             return true
         }
     }
+
 }
 
 struct ExpenseDetail: View {
@@ -51,32 +52,34 @@ struct ExpenseDetail: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @State var viewType: ExpenseDetailViewType
-    
+        
     var body: some View {
+        if viewType != .add{
+            HStack {
+                Button(Constants.strings.back) {
+                    dismiss()
+                }.tint(Utils.getPurpleColor(colorScheme))
+                Spacer()
+                Button(viewType.isDisabled ? Constants.strings.edit : Constants.strings.cancel) {
+                    viewType =  viewType == .view ? .update : .view
+                }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
+            }.padding()
+        }
         Form {
-            if viewType != .add{
-                HStack {
-                    Button(Constants.strings.back) {
-                        dismiss()
-                    }.tint(Utils.getPurpleColor(colorScheme))
-                    Spacer()
-                }.padding(.vertical)
-            }
-            
             Text(viewType.title)
                 .font(.title)
                 .fontWeight(.bold)
+                
             HStack{
                 Text(Constants.strings.title+": ")
                 TextField("", text: $addNewExpenseViewModel.expenseTitle)
-                    .focused($focusedField, equals: .title).disabled(viewType.isDisabled)
+                    .focused($focusedField, equals: .title)
             }
             
             HStack{
                 Text(Constants.strings.amountSpace)
                 TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
                 .keyboardType(.decimalPad)
-                .disabled(viewType.isDisabled)
                 .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
                     if let textField = obj.object as? UITextField {
                         textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
@@ -84,16 +87,31 @@ struct ExpenseDetail: View {
                 }
                 .focused($focusedField, equals: .amount)
             }
-            Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                    Text(value).tag(value)
+            
+            if viewType == .update {
+                Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                        Text(value).tag(value)
+                    }
                 }
-            }.pickerStyle(.navigationLink).disabled(viewType.isDisabled)
+                .pickerStyle(DefaultPickerStyle())
+            }else{
+                Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                        Text(value).tag(value)
+                    }
+                }
+                .pickerStyle(NavigationLinkPickerStyle())
+            }
+            
             DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
                 Text(Constants.strings.selectDate)
-            }.disabled(viewType.isDisabled).tint(Constants.colors.lightPurpleColor)
-            TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical).disabled(viewType.isDisabled)
-                .frame(height: 200).focused($focusedField, equals: .notes)
+            }.tint(Constants.colors.lightPurpleColor)
+            TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
+                .frame(height: 200)
+                .focused($focusedField, equals: .notes)
+            
+            if viewType != .view {
                 Section {
                     Button(role: .cancel) {
                         Task{
@@ -101,8 +119,6 @@ struct ExpenseDetail: View {
                                 await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
                             }else if (viewType == .update){
                                 
-                            }else {
-                                viewType = .update
                             }
                         }
                     } label:{
@@ -110,8 +126,8 @@ struct ExpenseDetail: View {
                             .foregroundColor(Utils.getPurpleColor(colorScheme))
                     }
                 }
-            
-        }
+            }
+        }.disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
             ToolbarItem(placement: .keyboard) {
