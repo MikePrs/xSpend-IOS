@@ -34,8 +34,21 @@ class AddNewExpenseViewModel: ObservableObject {
     @Published var showingAlert = false
     @Published var showSuccessToast = false
     
-    func configure(fbViewModel:FirebaseViewModel){
+    @Published var expense : Expense?
+    
+    func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil){
         self.fbViewModel = fbViewModel
+        
+        if let exp = expense {
+            self.expenseTitle = exp.title
+            self.expenseType = exp.type
+            if let date = Utils.convertStringToDate(exp.date){
+                self.expenseDate = date
+            }
+            self.expenseNotes = exp.note
+            self.expenseAmount = exp.amount
+        }
+        
     }
     
     func addNewExpense(currencySelection:String) async {
