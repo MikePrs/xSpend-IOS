@@ -19,7 +19,7 @@ class ExpenseTypesViewModel:ObservableObject{
     @Published var iconPickerPresented:Bool = false
     @Published var icon = Constants.icon.noIcon
     @Published var alertMessage = ""
-    @Published var action : ExpenseTypeAction = .add
+    @Published var action : ExpenseDetailViewType = .add
     @Published var expenseTypeId = ""
     
     func configure(fbViewModel:FirebaseViewModel){

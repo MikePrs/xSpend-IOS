@@ -9,9 +9,6 @@ import SwiftUI
 import SymbolPicker
 import AlertToast
 
-enum ExpenseTypeAction {
-    case add, update
-}
 
 struct AddExpenseTypeSheet: View {
     @Environment(\.colorScheme) var colorScheme
@@ -36,7 +33,7 @@ struct AddExpenseTypeSheet: View {
                     Spacer()
                 }.padding(.vertical)
                 Spacer()
-                Text(expenseTypesViewModel.action == .add ? Constants.strings.newExpenseType : Constants.strings.updateExpenseType)
+                Text(expenseTypesViewModel.action.title)
                     .font(.system(size: 30))
                 HStack {
                     TextField(Constants.strings.enterExpenseType, text: $expenseTypesViewModel.expenseTypeName)
@@ -60,7 +57,7 @@ struct AddExpenseTypeSheet: View {
                         SymbolPicker(symbol: $expenseTypesViewModel.icon)
                     }
                 }
-                Button(expenseTypesViewModel.action == .add ? Constants.strings.add : Constants.strings.update){
+                Button(expenseTypesViewModel.action.butotnLabel){
                     Task{
                         expenseTypesViewModel.action == .add ?
                         await expenseTypesViewModel.addNewExpenseType()

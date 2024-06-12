@@ -30,7 +30,7 @@ struct AddNewExpense: View {
     
     var body: some View {
         VStack {
-            ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel)
+            ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add)
         }.onAppear{onAppear()}
     }
 }

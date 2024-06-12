@@ -16,6 +16,7 @@ struct ExpensesList: View {
     @State var currency: String
     @State var showSheet = false
     var loadMoreExpenses: () -> Void
+    @State var detailViewType:ExpenseDetailViewType = .view
     
     var body: some View {
         List{
@@ -23,6 +24,7 @@ struct ExpensesList: View {
                 Section(header: Text("\(section.id)")) {
                     ForEach(section.expenses) { exp in
                         Button {
+                            self.detailViewType = .view
                             addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
                             showSheet = true
                         } label: {
@@ -54,7 +56,8 @@ struct ExpensesList: View {
                             .tint(.red)
                             
                             Button(Constants.strings.edit) {
-                                
+                                detailViewType = .update
+                                showSheet = true
                             }
                             .tint(Utils.getPurpleColor(colorScheme))
                         }
@@ -70,7 +73,7 @@ struct ExpensesList: View {
                     Spacer()
                 }
             }.sheet(isPresented: $showSheet) {
-                ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel)
+                ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel, viewType: detailViewType)
             }
         }
         VStack{}.frame(height: 100)
