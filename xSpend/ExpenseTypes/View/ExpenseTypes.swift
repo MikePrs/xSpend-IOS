@@ -19,6 +19,7 @@ struct ExpenseTypes: View {
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var expenseTypesViewModel = ExpenseTypesViewModel()
     
+    
     func setUp()  {
         expenseTypesViewModel.configure(fbViewModel: fbViewModel)
     }
@@ -41,15 +42,18 @@ struct ExpenseTypes: View {
                         .swipeActions {
                             if !(isStandartType(type)){
                                 Button(Constants.strings.delete) {
-                                    Task{
-                                        await expenseTypesViewModel.removeExpenseType(with: type.id)
-                                    }
+                                    expenseTypesViewModel.expenseTypeId = type.id
+                                    expenseTypesViewModel.showingDeleteAlert = true
                                 }
                                 .tint(.red)
                                 
                                 Button(Constants.strings.edit) {
                                     Task{
-                                        await expenseTypesViewModel.editExpenseType(with: type.id)
+                                        expenseTypesViewModel.showingSheet = true
+                                        expenseTypesViewModel.icon = type.icon
+                                        expenseTypesViewModel.expenseTypeName = type.name
+                                        expenseTypesViewModel.expenseTypeId = type.id
+                                        expenseTypesViewModel.action = .update
                                     }
                                 }
                                 .tint(Utils.getPurpleColor(colorScheme))
@@ -59,6 +63,16 @@ struct ExpenseTypes: View {
             }
             .navigationTitle(Text(Constants.strings.expenseTypes))
             .navigationBarBackButtonHidden(true)
+            .alert(Constants.strings.expensetypeDelete, isPresented: $expenseTypesViewModel.showingDeleteAlert) {
+                Button(Constants.strings.no, role: .cancel) { 
+                    expenseTypesViewModel.expenseTypeId = ""
+                }
+                Button(Constants.strings.delete, role: .destructive) { 
+                    Task{
+                        await expenseTypesViewModel.removeExpenseType(with: expenseTypesViewModel.expenseTypeId)
+                    }
+                }
+            }
             .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
                 AlertToast(type: .systemImage("trash",.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
             }
@@ -75,7 +89,6 @@ struct ExpenseTypes: View {
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     AddExpenseTypeSheet(expenseTypesViewModel: expenseTypesViewModel)
-                        
                 }
             }.tint(Utils.getPurpleColor(colorScheme))
         }.onAppear {
@@ -84,8 +97,8 @@ struct ExpenseTypes: View {
     }
 }
 
-struct ExpenseTypes_Previews: PreviewProvider {
-    static var previews: some View {
-        ExpenseTypes()
-    }
-}
+//struct ExpenseTypes_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ExpenseTypes()
+//    }
+//}

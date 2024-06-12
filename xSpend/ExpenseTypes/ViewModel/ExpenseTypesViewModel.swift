@@ -12,12 +12,15 @@ class ExpenseTypesViewModel:ObservableObject{
 
     @Published var showingSheet:Bool = false
     @Published var showingErrAlert:Bool = false
+    @Published var showingDeleteAlert:Bool = false
     @Published var showSuccessToast:Bool = false
     @Published var successToastText = ""
     @Published var expenseTypeName = ""
     @Published var iconPickerPresented:Bool = false
     @Published var icon = Constants.icon.noIcon
     @Published var alertMessage = ""
+    @Published var action : ExpenseTypeAction = .add
+    @Published var expenseTypeId = ""
     
     func configure(fbViewModel:FirebaseViewModel){
         self.fbViewModel = fbViewModel
@@ -26,7 +29,6 @@ class ExpenseTypesViewModel:ObservableObject{
     
     
     func addNewExpenseType() async {
-        
         let result = await fbViewModel?.addNewExpenseType(expenseTypeName: expenseTypeName, icon: icon)
         DispatchQueue.main.async {
             switch result {
@@ -50,11 +52,23 @@ class ExpenseTypesViewModel:ObservableObject{
             default:
                 self.showAlert(message: Constants.strings.deleteExpenseTypeError)
             }
+            self.expenseTypeId = ""
         }
     }
     
     func editExpenseType(with docId:String) async {
-        
+        let result = await fbViewModel?.updateExpenseType(expenseTypeName: expenseTypeName, icon: icon, docId: docId)
+        DispatchQueue.main.async {
+            switch result {
+            case .success(true):
+                self.showToast(text: Constants.strings.expenseUpdated)
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                    self.showingSheet = false
+                }
+            default:
+                self.showAlert(message: self.expenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType)
+            }
+        }
     }
     
     func showToast(text:String){

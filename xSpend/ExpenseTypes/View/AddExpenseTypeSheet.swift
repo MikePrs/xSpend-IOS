@@ -9,6 +9,10 @@ import SwiftUI
 import SymbolPicker
 import AlertToast
 
+enum ExpenseTypeAction {
+    case add, update
+}
+
 struct AddExpenseTypeSheet: View {
     @Environment(\.colorScheme) var colorScheme
 
@@ -17,6 +21,9 @@ struct AddExpenseTypeSheet: View {
     var body: some View {
         Button {
             expenseTypesViewModel.showingSheet = true
+            expenseTypesViewModel.action = .add
+            expenseTypesViewModel.icon = Constants.icon.noIcon
+            expenseTypesViewModel.expenseTypeName = ""
         } label: {
             Label(Constants.strings.add, systemImage: Constants.icon.plus).padding(.trailing).font(.system(size: 24)).foregroundColor(colorScheme == .light ? .black : .white)
         }
@@ -29,9 +36,10 @@ struct AddExpenseTypeSheet: View {
                     Spacer()
                 }.padding(.vertical)
                 Spacer()
-                Text(Constants.strings.newExpenseType).font(.system(size: 30))
+                Text(expenseTypesViewModel.action == .add ? Constants.strings.newExpenseType : Constants.strings.updateExpenseType)
+                    .font(.system(size: 30))
                 HStack {
-                    TextField(Constants.strings.enterNewExpenseType, text: $expenseTypesViewModel.expenseTypeName)
+                    TextField(Constants.strings.enterExpenseType, text: $expenseTypesViewModel.expenseTypeName)
                         .frame(height: 45)
                         .textFieldStyle(PlainTextFieldStyle())
                         .padding([.horizontal], 4)
@@ -52,9 +60,12 @@ struct AddExpenseTypeSheet: View {
                         SymbolPicker(symbol: $expenseTypesViewModel.icon)
                     }
                 }
-                Button(Constants.strings.add){
+                Button(expenseTypesViewModel.action == .add ? Constants.strings.add : Constants.strings.update){
                     Task{
+                        expenseTypesViewModel.action == .add ?
                         await expenseTypesViewModel.addNewExpenseType()
+                        :
+                        await expenseTypesViewModel.editExpenseType(with: expenseTypesViewModel.expenseTypeId)
                     }
                 }.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
                 Spacer()

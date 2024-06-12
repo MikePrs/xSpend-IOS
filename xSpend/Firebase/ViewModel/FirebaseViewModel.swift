@@ -83,6 +83,24 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
+    func updateExpenseType(expenseTypeName:String, icon:String, docId:String) async -> Result<Bool, Error> {
+        if (expenseTypeName == "" || alltypesValues.contains(expenseTypeName)){
+            return .success(false)
+        }else{
+            do {
+               _ = try await self.db.collection(Constants.firebase.expenseTypes).document(docId)
+                    .updateData([
+                        Constants.firebase.name:expenseTypeName,
+                        Constants.firebase.icon:icon,
+                        Constants.firebase.user:Auth.auth().currentUser?.email as Any
+                    ])
+                return .success(true)
+            }catch{
+                return .success(false)
+            }
+        }
+    }
+    
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
         var query = db.collection(Constants.firebase.expenses)
