@@ -20,4 +20,11 @@ struct Utils {
         
         return inputFormatter.date(from: dateString)
     }
+    
+    static func startOfDayTimestamp(for date: Date) -> TimeInterval {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        let startOfDay = calendar.date(from: components)!
+        return startOfDay.timeIntervalSince1970
+    }
 }

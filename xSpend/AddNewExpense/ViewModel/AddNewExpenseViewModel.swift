@@ -88,7 +88,7 @@ class AddNewExpenseViewModel: ObservableObject {
             Constants.firebase.type : expenseType,
             Constants.firebase.notes : expenseNotes,
             Constants.firebase.user : Auth.auth().currentUser?.email as Any,
-            Constants.firebase.timestamp :  expenseDate.timeIntervalSince1970,
+            Constants.firebase.timestamp : Utils.startOfDayTimestamp(for:   Date(timeIntervalSince1970:expenseDate.timeIntervalSince1970) ) ,
             Constants.firebase.date : formatter4.string(from: expenseDate),
             Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection] as Any
         ]
