@@ -29,7 +29,7 @@ struct ExpensesScreen: View {
     @ObservedObject var  expensesViewModel = ExpensesViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @FocusState private var focusedField: ExpenseFilterFields?
-    
+    @State var showToolBar = true
     
     func setUp() async {
         await  expensesViewModel.configure(fbViewModel: fbViewModel,currencySelection:currencySelection)
@@ -115,7 +115,7 @@ struct ExpensesScreen: View {
                     expensesViewModel:expensesViewModel,
                     exchangeRates:  expensesViewModel.exchangeRates,
                     currency:  expensesViewModel.currency,
-                    loadMoreExpenses:  expensesViewModel.loadMoreExpenses
+                    loadMoreExpenses:  expensesViewModel.loadMoreExpenses, detailOpened: {self.showToolBar = false}
                 )
             }else{
                 Spacer()
@@ -134,22 +134,24 @@ struct ExpensesScreen: View {
              expensesViewModel.filtersSize = 130
         }
         .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                HStack{
-                    Button(action: {
-                         expensesViewModel.setPriceRange(
-                             expensesViewModel.startDate,
-                             expensesViewModel.limitDate,
-                             expensesViewModel.filterType
-                        )
-                    }) {
-                        Text(Constants.strings.set).foregroundStyle(Constants.colors.lightPurpleColor)
-                    }
-                    Spacer()
-                    Button(action: {
-                        focusedField = focusedField?.next
-                    }) {
-                        Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(Constants.colors.lightPurpleColor)
+            if showToolBar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack{
+                        Button(action: {
+                            expensesViewModel.setPriceRange(
+                                expensesViewModel.startDate,
+                                expensesViewModel.limitDate,
+                                expensesViewModel.filterType
+                            )
+                        }) {
+                            Text(Constants.strings.set).foregroundStyle(Constants.colors.lightPurpleColor)
+                        }
+                        Spacer()
+                        Button(action: {
+                            focusedField = focusedField?.next
+                        }) {
+                            Image(systemName: focusedField == .min ? Constants.icon.right : Constants.icon.left ).foregroundStyle(Constants.colors.lightPurpleColor)
+                        }
                     }
                 }
             }

@@ -52,7 +52,14 @@ struct ExpenseDetail: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @State var viewType: ExpenseDetailViewType
-        
+    var detailOpened: (() -> Void?)? = nil
+    
+    func onAppear(){
+        if let detailOpened {
+            detailOpened()
+        }
+    }
+
     var body: some View {
         if viewType != .add{
             HStack {
@@ -129,6 +136,7 @@ struct ExpenseDetail: View {
             }
         }.disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
         .scrollDismissesKeyboard(.immediately)
+        .onAppear{onAppear()}
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 HStack{

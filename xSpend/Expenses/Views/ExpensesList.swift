@@ -19,6 +19,7 @@ struct ExpensesList: View {
     @State var showSheet = false
     @State var showingDeleteAlert = false
     var loadMoreExpenses: () -> Void
+    var detailOpened: () -> Void
     @State var detailViewType:ExpenseDetailViewType = .view
     
     @State var test = true
@@ -83,7 +84,7 @@ struct ExpensesList: View {
                     Spacer()
                 }
             }.sheet(isPresented: $showSheet) {
-                ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel, viewType: detailViewType)
+                ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel, viewType: detailViewType, detailOpened: detailOpened)
             }
             .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
                 Button(Constants.strings.no, role: .cancel) {
