@@ -77,7 +77,7 @@ struct ExpenseDetail: View {
                             if viewType == .add {
                                 await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
                             }else if (viewType == .update){
-                                
+                                await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
                             }
                         }
                     } label:{
@@ -108,7 +108,7 @@ struct ExpenseDetail: View {
                 }
             }
         }.toast(isPresenting: $addNewExpenseViewModel.showSuccessToast) {
-            AlertToast(type: .complete(.gray), title: Constants.strings.expenseCreated, style: .style(titleColor: colorScheme == .light ? .black: .white))
+            AlertToast(type: .complete(.gray), title:addNewExpenseViewModel.successToastTitle , style: .style(titleColor: colorScheme == .light ? .black: .white))
         }
         .alert(Constants.strings.titleAmountErr, isPresented: $addNewExpenseViewModel.showingAlert) {
             Button(Constants.strings.ok, role: .cancel) { }

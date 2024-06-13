@@ -18,7 +18,8 @@ class AddNewExpenseViewModel: ObservableObject {
     @Published var expenseAmount: Float? = nil
     @Published var showingAlert = false
     @Published var showSuccessToast = false
-    
+    @Published var successToastTitle = ""
+    @Published var expensedocId = ""
     @Published var expense : Expense?
     
     @Published var detailViewType:ExpenseDetailViewType = .view
@@ -27,6 +28,7 @@ class AddNewExpenseViewModel: ObservableObject {
         self.fbViewModel = fbViewModel
         
         if let exp = expense {
+            self.expensedocId = exp.id
             self.expenseTitle = exp.title
             self.expenseType = exp.type
             if let date = Utils.convertStringToDate(exp.date){
@@ -38,38 +40,64 @@ class AddNewExpenseViewModel: ObservableObject {
         
     }
     
-    func addNewExpense(currencySelection:String) async {
+    func updateExpense(currencySelection:String) async {
         if (expenseAmount == 0 || expenseAmount == nil ){
             showingAlert = true
         }else{
-            let formatter4 = DateFormatter()
-            formatter4.dateFormat = "d/M/YYYY"
-            let newExpense = [
-                Constants.firebase.title : expenseTitle,
-                Constants.firebase.amount : expenseAmount ?? 0,
-                Constants.firebase.type : expenseType,
-                Constants.firebase.notes : expenseNotes,
-                Constants.firebase.user : Auth.auth().currentUser?.email as Any,
-                Constants.firebase.timestamp :  expenseDate.timeIntervalSince1970,
-                Constants.firebase.date : formatter4.string(from: expenseDate),
-                Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection] as Any
-            ]
-            let result = await self.fbViewModel?.addNewExpense(newExpense: newExpense as [String : Any])
+            let result = await self.fbViewModel?.updateExpense(docId: expensedocId, expense:getExpense(currencySelection) as [String : Any] )
             switch result {
             case .success(true):
                 DispatchQueue.main.async {
-                    self.expenseTitle = ""
-                    self.expenseType = ""
-                    self.expenseNotes = ""
-                    self.expenseAmount = nil
                     self.showSuccessToast = true
+                    self.successToastTitle = Constants.strings.expenseUpdated
                 }
             default:
                 DispatchQueue.main.async {
                     self.showingAlert = true
                 }
             }
-            
         }
+    }
+    
+    func addNewExpense(currencySelection:String) async {
+        if (expenseAmount == 0 || expenseAmount == nil ){
+            showingAlert = true
+        }else{
+            let result = await self.fbViewModel?.addNewExpense(newExpense: getExpense(currencySelection) as [String : Any])
+            switch result {
+            case .success(true):
+                DispatchQueue.main.async {
+                    self.resetFields()
+                    self.showSuccessToast = true
+                    self.successToastTitle = Constants.strings.expenseCreated
+                }
+            default:
+                DispatchQueue.main.async {
+                    self.showingAlert = true
+                }
+            }
+        }
+    }
+    
+    private func getExpense(_ currencySelection:String) -> [String:Any]{
+        let formatter4 = DateFormatter()
+        formatter4.dateFormat = "d/M/YYYY"
+        return [
+            Constants.firebase.title : expenseTitle,
+            Constants.firebase.amount : expenseAmount ?? 0,
+            Constants.firebase.type : expenseType,
+            Constants.firebase.notes : expenseNotes,
+            Constants.firebase.user : Auth.auth().currentUser?.email as Any,
+            Constants.firebase.timestamp :  expenseDate.timeIntervalSince1970,
+            Constants.firebase.date : formatter4.string(from: expenseDate),
+            Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection] as Any
+        ]
+    }
+    
+    private func resetFields(){
+            self.expenseTitle = ""
+            self.expenseType = ""
+            self.expenseNotes = ""
+            self.expenseAmount = nil
     }
 }

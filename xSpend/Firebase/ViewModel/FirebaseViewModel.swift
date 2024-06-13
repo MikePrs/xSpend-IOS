@@ -101,6 +101,17 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
+    func updateExpense(docId:String, expense:[String:Any]) async -> Result<Bool, Error> {
+        do {
+            _ = try await self.db.collection(Constants.firebase.expenses).document(docId)
+                .updateData(expense)
+            return .success(true)
+        }catch{
+            return .success(false)
+        }
+    }
+    
+    
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
         var query = db.collection(Constants.firebase.expenses)
