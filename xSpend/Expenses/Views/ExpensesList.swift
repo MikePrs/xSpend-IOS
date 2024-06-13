@@ -12,16 +12,12 @@ struct ExpensesList: View {
     @Environment(\.colorScheme) var colorScheme
     
     @ObservedObject var fbViewModel: FirebaseViewModel
-    @ObservedObject var addNewExpenseViewModel = AddNewExpenseViewModel()
+    @ObservedObject var addNewExpenseViewModel : AddNewExpenseViewModel
     @ObservedObject var expensesViewModel : ExpensesViewModel
     @State var exchangeRates: ExchangeRatesViewModel
     @State var currency: String
-    @State var showSheet = false
     @State var showingDeleteAlert = false
     var loadMoreExpenses: () -> Void
-    var detailOpened: () -> Void
-    @State var detailViewType:ExpenseDetailViewType = .view
-    
     
     func setUp(){
         
@@ -33,9 +29,9 @@ struct ExpensesList: View {
                 Section(header: Text("\(section.id)")) {
                     ForEach(section.expenses) { exp in
                         Button {
-                            self.detailViewType = .view
                             addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
-                            showSheet = true
+                            addNewExpenseViewModel.detailViewType = .view
+                            expensesViewModel.openDetails = true
                         } label: {
                             HStack{
                                 VStack(alignment: .leading, spacing: 0){
@@ -66,8 +62,9 @@ struct ExpensesList: View {
                             .tint(.red)
                             
                             Button(Constants.strings.edit) {
-                                detailViewType = .update
-                                showSheet = true
+                                addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
+                                addNewExpenseViewModel.detailViewType = .update
+                                expensesViewModel.openDetails = true
                             }
                             .tint(Utils.getPurpleColor(colorScheme))
                         }
@@ -82,8 +79,6 @@ struct ExpensesList: View {
                     Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(Utils.getPurpleColor(colorScheme)).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
                     Spacer()
                 }
-            }.sheet(isPresented: $showSheet) {
-                ExpenseDetail(addNewExpenseViewModel:addNewExpenseViewModel, fbViewModel: fbViewModel, viewType: detailViewType, detailOpened: detailOpened)
             }
             .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
                 Button(Constants.strings.no, role: .cancel) {

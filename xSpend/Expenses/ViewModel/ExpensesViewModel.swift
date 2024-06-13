@@ -28,6 +28,7 @@ class ExpensesViewModel: ObservableObject {
     @Published var expenseId = ""
     @Published var showingErrAlert:Bool = false
     @Published var alertMessage = ""
+    @Published var openDetails = false
 
     
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency

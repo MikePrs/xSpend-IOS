@@ -36,6 +36,8 @@ class AddNewExpenseViewModel: ObservableObject {
     
     @Published var expense : Expense?
     
+    @Published var detailViewType:ExpenseDetailViewType = .view
+    
     func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil){
         self.fbViewModel = fbViewModel
         
