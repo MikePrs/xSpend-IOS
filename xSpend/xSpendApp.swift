@@ -28,7 +28,7 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView().preferredColorScheme(isDarkMode ? .dark : .light)
+        LandingPage().preferredColorScheme(isDarkMode ? .dark : .light)
       }
     }
   }

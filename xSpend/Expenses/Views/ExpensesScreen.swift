@@ -10,19 +10,6 @@ import FirebaseFirestore
 import FirebaseAuth
 import AlertToast
 
-enum ExpenseFilterFields {
-    case min,max
-    
-    var next:ExpenseFilterFields{
-        switch self {
-        case .min:
-            return .max
-        case .max:
-            return .min
-        }
-    }
-}
-
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var fbViewModel = FirebaseViewModel()
@@ -30,7 +17,6 @@ struct ExpensesScreen: View {
     @ObservedObject var addNewExpenseViewModel = AddNewExpenseViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @FocusState private var focusedField: ExpenseFilterFields?
-//    @EnvironmentObject var globalData: GlobalData
     @State var detailViewType:ExpenseDetailViewType = .view
 
     func setUp() async {
@@ -133,7 +119,7 @@ struct ExpensesScreen: View {
                 addNewExpenseViewModel:addNewExpenseViewModel,
                 fbViewModel: fbViewModel,
                 viewType: addNewExpenseViewModel.detailViewType
-            )
+            ).navigationBarBackButtonHidden()
         }
         .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])

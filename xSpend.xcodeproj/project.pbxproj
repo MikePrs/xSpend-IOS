@@ -25,6 +25,9 @@
 		0579786C2C19019800550877 /* AddExpenseTypeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786B2C19019800550877 /* AddExpenseTypeSheet.swift */; };
 		0579786E2C190E8B00550877 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786D2C190E8B00550877 /* Utils.swift */; };
 		057978702C19D6F400550877 /* ExpenseDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786F2C19D6F400550877 /* ExpenseDetail.swift */; };
+		057978732C1B777F00550877 /* AddExpensesField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978722C1B777F00550877 /* AddExpensesField.swift */; };
+		057978762C1B783400550877 /* ExpenseFilterFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978752C1B783400550877 /* ExpenseFilterFields.swift */; };
+		057978782C1B81F300550877 /* ExpenseDetailViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978772C1B81F300550877 /* ExpenseDetailViewType.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -59,6 +62,9 @@
 		0579786B2C19019800550877 /* AddExpenseTypeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseTypeSheet.swift; sourceTree = "<group>"; };
 		0579786D2C190E8B00550877 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0579786F2C19D6F400550877 /* ExpenseDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetail.swift; sourceTree = "<group>"; };
+		057978722C1B777F00550877 /* AddExpensesField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpensesField.swift; sourceTree = "<group>"; };
+		057978752C1B783400550877 /* ExpenseFilterFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFilterFields.swift; sourceTree = "<group>"; };
+		057978772C1B81F300550877 /* ExpenseDetailViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailViewType.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 		0579784B2C15FE6000550877 /* AddNewExpense */ = {
 			isa = PBXGroup;
 			children = (
+				057978712C1B776C00550877 /* Model */,
 				0579784C2C15FE7100550877 /* Views */,
 				0579785C2C160AAC00550877 /* ViewModel */,
 			);
@@ -241,6 +248,7 @@
 		0579784D2C15FE8800550877 /* Expenses */ = {
 			isa = PBXGroup;
 			children = (
+				057978742C1B782800550877 /* Model */,
 				0579784E2C15FE9A00550877 /* Views */,
 				0579785F2C164BBD00550877 /* ViewModel */,
 			);
@@ -354,6 +362,23 @@
 				057978692C18F10000550877 /* ExpenseTypesViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		057978712C1B776C00550877 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				057978722C1B777F00550877 /* AddExpensesField.swift */,
+				057978772C1B81F300550877 /* ExpenseDetailViewType.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		057978742C1B782800550877 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				057978752C1B783400550877 /* ExpenseFilterFields.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		059CDDED2A6094510006DF80 /* Components */ = {
@@ -497,12 +522,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				057978732C1B777F00550877 /* AddExpensesField.swift in Sources */,
 				0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */,
 				057978612C164BD200550877 /* ExpensesViewModel.swift in Sources */,
 				05BE81212B404E390082087C /* ExchangeRatesViewModel.swift in Sources */,
 				059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */,
 				0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */,
 				0579786E2C190E8B00550877 /* Utils.swift in Sources */,
+				057978762C1B783400550877 /* ExpenseFilterFields.swift in Sources */,
 				0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */,
 				057978562C1602A400550877 /* SignUpViewModel.swift in Sources */,
 				057978372C0CD2C200550877 /* Constants.swift in Sources */,
@@ -521,6 +548,7 @@
 				0579786A2C18F10000550877 /* ExpenseTypesViewModel.swift in Sources */,
 				057978672C1796E200550877 /* ProfileViewModel.swift in Sources */,
 				0565AE872A5B04A80050A9D8 /* SignupScreen.swift in Sources */,
+				057978782C1B81F300550877 /* ExpenseDetailViewType.swift in Sources */,
 				05BE81242B4095970082087C /* ExchangeRate.swift in Sources */,
 				05F6641F2A797BE000F5D701 /* ExpenseTypes.swift in Sources */,
 			);

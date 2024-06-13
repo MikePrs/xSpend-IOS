@@ -57,7 +57,8 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct ContentView: View {
+struct LandingPage: View {
+    @Environment(\.colorScheme) var colorScheme
     @State var mainAppLink: Bool = false
     @State var isLoading: Bool = true
     

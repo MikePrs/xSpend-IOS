@@ -8,42 +8,6 @@
 import SwiftUI
 import AlertToast
 
-enum ExpenseDetailViewType {
-    case add, update, view
-    
-    var title : String{
-        switch self {
-        case .add:
-            return Constants.strings.addNewExpense
-        case .update:
-            return Constants.strings.updateExpense
-        case .view:
-            return Constants.strings.reviewExpense
-        }
-    }
-    
-    var butotnLabel:String{
-        switch self {
-        case . add:
-            return Constants.strings.add
-        case .update:
-            return Constants.strings.update
-        case .view:
-            return Constants.strings.edit
-        }
-    }
-    
-    var isDisabled:Bool{
-        switch self {
-        case .add, .update:
-            return false
-        case .view:
-            return true
-        }
-    }
-
-}
-
 struct ExpenseDetail: View {
     @FocusState private var focusedField: AddExpensesField?
     @ObservedObject var addNewExpenseViewModel : AddNewExpenseViewModel
@@ -52,13 +16,13 @@ struct ExpenseDetail: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @State var viewType: ExpenseDetailViewType
-//    @ObservedObject var expensesViewModel: ExpensesViewModel
-//    @EnvironmentObject var globalData: GlobalData
    
 
     var body: some View {
         if viewType != .add{
             HStack {
+                Image(systemName: Constants.icon.left)
+                    .foregroundStyle(Utils.getPurpleColor(colorScheme))
                 Button(Constants.strings.back) {
                     dismiss()
                 }.tint(Utils.getPurpleColor(colorScheme))
@@ -91,21 +55,13 @@ struct ExpenseDetail: View {
                 .focused($focusedField, equals: .amount)
             }
             
-            if viewType == .update {
-                Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                        Text(value).tag(value)
-                    }
+            Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                    Text(value).tag(value)
                 }
-                .pickerStyle(DefaultPickerStyle())
-            }else{
-                Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                    ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                        Text(value).tag(value)
-                    }
-                }
-                .pickerStyle(NavigationLinkPickerStyle())
             }
+            .pickerStyle(DefaultPickerStyle())
+        
             
             DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
                 Text(Constants.strings.selectDate)
@@ -130,10 +86,10 @@ struct ExpenseDetail: View {
                     }
                 }
             }
-        }.disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
+            
+        }
+        .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
         .scrollDismissesKeyboard(.immediately)
-//        .onAppear{globalData.showFiltersToolbar = false}
-//        .onDisappear{globalData.showFiltersToolbar = true}
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 HStack{

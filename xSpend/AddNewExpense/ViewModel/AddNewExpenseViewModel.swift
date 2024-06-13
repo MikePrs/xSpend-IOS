@@ -8,21 +8,6 @@
 import Foundation
 import FirebaseAuth
 
-enum AddExpensesField: Hashable {
-    case title,amount,type,date,notes,end
-    
-    var next:AddExpensesField? {
-        switch self {
-        case .title:
-            return .amount
-        case .amount:
-            return .notes
-        default:
-            return nil
-        }
-    }
-}
-
 class AddNewExpenseViewModel: ObservableObject {
     private var fbViewModel : FirebaseViewModel?
     
