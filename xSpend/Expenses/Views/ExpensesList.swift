@@ -22,7 +22,6 @@ struct ExpensesList: View {
     var detailOpened: () -> Void
     @State var detailViewType:ExpenseDetailViewType = .view
     
-    @State var test = true
     
     func setUp(){
         

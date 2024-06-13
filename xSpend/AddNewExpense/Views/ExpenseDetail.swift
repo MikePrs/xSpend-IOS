@@ -55,6 +55,10 @@ struct ExpenseDetail: View {
     var detailOpened: (() -> Void?)? = nil
     
     func onAppear(){
+        toggleDetail()
+    }
+    
+    func toggleDetail(){
         if let detailOpened {
             detailOpened()
         }
@@ -137,6 +141,7 @@ struct ExpenseDetail: View {
         }.disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
         .scrollDismissesKeyboard(.immediately)
         .onAppear{onAppear()}
+        .onDisappear{toggleDetail()}
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 HStack{

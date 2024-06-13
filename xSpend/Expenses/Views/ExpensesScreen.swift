@@ -115,7 +115,7 @@ struct ExpensesScreen: View {
                     expensesViewModel:expensesViewModel,
                     exchangeRates:  expensesViewModel.exchangeRates,
                     currency:  expensesViewModel.currency,
-                    loadMoreExpenses:  expensesViewModel.loadMoreExpenses, detailOpened: {self.showToolBar = false}
+                    loadMoreExpenses:  expensesViewModel.loadMoreExpenses, detailOpened: {self.showToolBar.toggle()}
                 )
             }else{
                 Spacer()
@@ -125,8 +125,10 @@ struct ExpensesScreen: View {
             }
         }.background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])
-        .task{
-            await setUp()
+        .onAppear{
+            Task{
+                await setUp()
+            }
         }
         .onDisappear {
             fbViewModel.expenseSectioned = []
