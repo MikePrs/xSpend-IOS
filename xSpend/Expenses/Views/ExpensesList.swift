@@ -80,20 +80,22 @@ struct ExpensesList: View {
                     Spacer()
                 }
             }
-            .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
-                Button(Constants.strings.no, role: .cancel) {
-                    expensesViewModel.expenseId = ""
-                }
-                Button(Constants.strings.delete, role: .destructive) {
-                    Task{
-                        await expensesViewModel.removeExpense()
-                    }
+        }
+        .onAppear{setUp()}
+        .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
+            Button(Constants.strings.no, role: .cancel) {
+                expensesViewModel.expenseId = ""
+            }
+            Button(Constants.strings.delete, role: .destructive) {
+                Task{
+                    await expensesViewModel.removeExpense()
                 }
             }
-            .alert(expensesViewModel.alertMessage, isPresented: $expensesViewModel.showingErrAlert) {
-                Button(Constants.strings.ok, role: .cancel) { }
-            }
-        }.onAppear{setUp()}
+        }
+        .alert(expensesViewModel.alertMessage, isPresented: $expensesViewModel.showingErrAlert) {
+            Button(Constants.strings.ok, role: .cancel) { }
+        }
+        
         VStack{}.frame(height: 100)
     }
 }
