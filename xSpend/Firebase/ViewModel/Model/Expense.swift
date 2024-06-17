@@ -15,6 +15,7 @@ struct Expense:Identifiable {
     var note:String
     var date:String
     var currency:String
+    var amountConverted:String
 }
 
 struct ExpenseType:Identifiable {

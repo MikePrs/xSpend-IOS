@@ -39,8 +39,7 @@ struct ExpensesList: View {
                                         Text("-"+String(exp.amount))
                                         Text(exp.currency)
                                         if currency != exp.currency {
-                                            Text(" ->  - \(exchangeRates.getExchangeRate(baseCurrencyAmount: (Double(exp.amount)), currency: exp.currency), specifier: "%.2f")"
-                                            )
+                                            Text(" ->  -\(exp.amountConverted)")
                                             Text(currency)
                                         }
                                     }

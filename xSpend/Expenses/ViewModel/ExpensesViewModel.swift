@@ -49,7 +49,8 @@ class ExpensesViewModel: ObservableObject {
             to: limitDate,
             category: Constants.strings.any,
             min: minPrice,
-            max: maxPrice
+            max: maxPrice,
+            currency: currency
         )
         isLoading = false
     }
@@ -84,21 +85,21 @@ class ExpensesViewModel: ObservableObject {
     func loadMoreExpenses(){
         isLoading = true
         let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
-        fbViewModel?.getExpenses(from: olderEx, to:limitDate, category: filterType)
+        fbViewModel?.getExpenses(from: olderEx, to:limitDate, category: filterType, currency: currency)
         startDate = olderEx
         isLoading = false
     }
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
         isLoading = true
-        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory)
+        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, currency: currency)
         isLoading = false
     }
     
     func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String){
         isLoading = true
         hideKeyboard()
-        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice)
+        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice, currency: currency)
         isLoading = false
     }
     

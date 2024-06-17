@@ -18,6 +18,8 @@ class FirebaseViewModel: ObservableObject {
     @Published var expenseSectioned = [SectionedExpenses]()
     @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
     @Published var allTypes = [ExpenseType]()
+    @Published var exchangeRates = ExchangeRatesViewModel()
+
     
     func getExpenseTypes(){
         db.collection(Constants.firebase.expenseTypes)
@@ -111,9 +113,20 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
+    func getConvertedValue(baseCurrencyAmount:Double, from: String, to: String) async -> String {
+       let res = await exchangeRates.getExchangeRate(baseCurrencyAmount: baseCurrencyAmount, from: from, to: to)
+        
+        switch res {
+        case .success(let conversion):
+            return String(format: "%.2f", conversion)
+        default:
+            return ""
+        }
+    }
     
     
-    func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil ) {
+    
+    func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String ) {
         var query = db.collection(Constants.firebase.expenses)
             .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: to.timeIntervalSince1970)
@@ -135,19 +148,42 @@ class FirebaseViewModel: ObservableObject {
             if error != nil {
                 print("Error geting Expenses")
             }else{
-                if let snapshotDocuments = querySnapshot?.documents{
-                    //                            expenses=[]
-                    self.sectioned = [:]
-                    for doc in snapshotDocuments{
-                        //                                print("snapshot proccess")
-                        let data = doc.data()
-                        print(doc.documentID)
-                        let exp = Expense(id: doc.documentID, title: data[Constants.firebase.title] as! String, amount: data[Constants.firebase.amount] as! Float, type: data[Constants.firebase.type] as! String, note:data[Constants.firebase.notes] as! String, date: data[Constants.firebase.date] as! String, currency: data[Constants.firebase.currency] as! String )
-                        //                                    expenses.append(exp)
-                        print(exp)
-                        self.sectioned[exp.date, default: []].append(exp)
+                query.addSnapshotListener { [self] querySnapshot, error in
+                    if let error = error {
+                        print("Error getting Expenses: \(error)")
+                    } else {
+                        if let snapshotDocuments = querySnapshot?.documents {
+                            self.sectioned = [:]
+                            formatData()
+                            for doc in snapshotDocuments {
+                                let data = doc.data()
+                                
+                                Task {
+                                    var convertedAmount = ""
+                                    if data[Constants.firebase.currency] as! String != currency {
+                                        convertedAmount = await getConvertedValue(baseCurrencyAmount: Double( data[Constants.firebase.amount] as! Float), from: data[Constants.firebase.currency] as! String, to: currency)
+                                        
+                                        
+                                        let exp = Expense(
+                                            id: doc.documentID,
+                                            title: data[Constants.firebase.title] as! String,
+                                            amount: data[Constants.firebase.amount] as! Float,
+                                            type: data[Constants.firebase.type] as! String,
+                                            note: data[Constants.firebase.notes] as! String,
+                                            date: data[Constants.firebase.date] as! String,
+                                            currency: data[Constants.firebase.currency] as! String,
+                                            amountConverted: convertedAmount
+                                        )
+                                        
+                                        DispatchQueue.main.async {
+                                            self.sectioned[exp.date, default: []].append(exp)
+                                            self.formatData()
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    formatData()
                 }
             }
         }

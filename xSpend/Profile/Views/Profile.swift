@@ -14,10 +14,21 @@ struct Profile: View {
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var profileViewModel = ProfileViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
+    @AppStorage(Constants.appStorage.monthGoal) private var monthGoal: String = ""
     
-    func setUp() {
-        profileViewModel.configure()
+    func setUp() async {}
+    
+    func setMonthGoal(oldValue: String, newValue: String) async {
+        do{
+            let amountConverted = try await profileViewModel.setMonthGoal(oldValue: oldValue, newValue: newValue, monthGoal: monthGoal )
+            DispatchQueue.main.async {
+                monthGoal = amountConverted
+            }
+        }catch{
+            print("Error")
+        }
     }
+    
     
     var body: some View {
         VStack{
@@ -37,7 +48,23 @@ struct Profile: View {
                             Text(key)
                         }
                     }
+                    
                     LabeledContent(Constants.strings.currentCurrency, value: profileViewModel.countryCurrencyCode[currencySelection] ?? "")
+                        .onChange(of: currencySelection) { oldValue, newValue in
+                            if oldValue != newValue {
+                                Task{
+                                    await setMonthGoal(oldValue: oldValue, newValue: newValue)
+                                    
+                                }
+                            }
+                        }
+                    
+                    LabeledContent(Constants.strings.monthGoal, value: monthGoal )
+                        .onTapGesture {
+                            profileViewModel.showMonthGoalAlert.toggle()
+                            
+                            
+                    }
                 } header: {
                     Text(Constants.strings.appSettings)
                 }
@@ -58,7 +85,21 @@ struct Profile: View {
                 }
             }.padding(.top,1)
             
-        }.onAppear{setUp()}
+        }
+        .onAppear{Task{await setUp()}}
+        .alert(Constants.strings.monthGoal, isPresented: $profileViewModel.showMonthGoalAlert) {
+            HStack{
+                TextField(
+                    "",
+                    text: $monthGoal
+                ).keyboardType(.decimalPad)
+            }
+            Button(Constants.strings.cancel, role: .cancel) { }
+            Button(Constants.strings.save, role: .none) {
+                
+            }
+        }
+
     }
 }
 
