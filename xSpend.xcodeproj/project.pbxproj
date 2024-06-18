@@ -152,6 +152,7 @@
 		057978402C15134900550877 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				057978362C0CD2C200550877 /* ConstantsXspend.swift */,
 				059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */,
 				0579786D2C190E8B00550877 /* Utils.swift */,
 			);
@@ -383,7 +384,6 @@
 		059CDDED2A6094510006DF80 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				057978362C0CD2C200550877 /* ConstantsXspend.swift */,
 				059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */,
 				0579783A2C14F09500550877 /* HeaderTitle.swift */,
 			);
