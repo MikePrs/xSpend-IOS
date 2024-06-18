@@ -39,7 +39,8 @@ struct ExpensesList: View {
                                         Text("-"+String(exp.amount))
                                         Text(exp.currency)
                                         if currency != exp.currency {
-                                            Text(" ->  -\(exp.amountConverted)")
+                                            Text(" -> ").foregroundStyle(.gray)
+                                            Text("-\(exp.amountConverted)")
                                             Text(currency)
                                         }
                                     }

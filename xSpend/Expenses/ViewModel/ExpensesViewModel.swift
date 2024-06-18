@@ -85,7 +85,7 @@ class ExpensesViewModel: ObservableObject {
     func loadMoreExpenses(){
         isLoading = true
         let olderEx = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: startDate)!
-        fbViewModel?.getExpenses(from: olderEx, to:limitDate, category: filterType, currency: currency)
+        // by changing startDate fbViewModel?.getExpenses is triggered
         startDate = olderEx
         isLoading = false
     }
