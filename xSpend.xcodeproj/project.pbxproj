@@ -13,7 +13,7 @@
 		0565AE7C2A5AF0BF0050A9D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0565AE7B2A5AF0BF0050A9D8 /* Preview Assets.xcassets */; };
 		0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE842A5B02310050A9D8 /* LoginScreen.swift */; };
 		0565AE872A5B04A80050A9D8 /* SignupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE862A5B04A80050A9D8 /* SignupScreen.swift */; };
-		057978372C0CD2C200550877 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* Constants.swift */; };
+		057978372C0CD2C200550877 /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
 		0579783B2C14F09500550877 /* HeaderTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579783A2C14F09500550877 /* HeaderTitle.swift */; };
 		057978482C151BAB00550877 /* ExpensesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978472C151BAB00550877 /* ExpensesList.swift */; };
 		057978542C15FF9200550877 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978532C15FF9200550877 /* LoginViewModel.swift */; };
@@ -50,7 +50,7 @@
 		0565AE7B2A5AF0BF0050A9D8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0565AE842A5B02310050A9D8 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0565AE862A5B04A80050A9D8 /* SignupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupScreen.swift; sourceTree = "<group>"; };
-		057978362C0CD2C200550877 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		057978362C0CD2C200550877 /* ConstantsXspend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsXspend.swift; sourceTree = "<group>"; };
 		0579783A2C14F09500550877 /* HeaderTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitle.swift; sourceTree = "<group>"; };
 		057978472C151BAB00550877 /* ExpensesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesList.swift; sourceTree = "<group>"; };
 		057978532C15FF9200550877 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 		059CDDED2A6094510006DF80 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				057978362C0CD2C200550877 /* Constants.swift */,
+				057978362C0CD2C200550877 /* ConstantsXspend.swift */,
 				059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */,
 				0579783A2C14F09500550877 /* HeaderTitle.swift */,
 			);
@@ -532,7 +532,7 @@
 				057978762C1B783400550877 /* ExpenseFilterFields.swift in Sources */,
 				0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */,
 				057978562C1602A400550877 /* SignUpViewModel.swift in Sources */,
-				057978372C0CD2C200550877 /* Constants.swift in Sources */,
+				057978372C0CD2C200550877 /* ConstantsXspend.swift in Sources */,
 				059CDDF52A6096900006DF80 /* Profile.swift in Sources */,
 				0579783B2C14F09500550877 /* HeaderTitle.swift in Sources */,
 				057978542C15FF9200550877 /* LoginViewModel.swift in Sources */,
