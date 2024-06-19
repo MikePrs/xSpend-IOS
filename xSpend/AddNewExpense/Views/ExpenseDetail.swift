@@ -32,63 +32,69 @@ struct ExpenseDetail: View {
                 }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
             }.padding()
         }
-        Form {
-            Text(viewType.title)
-                .font(.title)
-                .fontWeight(.bold)
-                
-            HStack{
-                Text(Constants.strings.title+": ")
-                TextField("", text: $addNewExpenseViewModel.expenseTitle)
-                    .focused($focusedField, equals: .title)
-            }
-            
-            HStack{
-                Text(Constants.strings.amountSpace)
-                TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
-                .keyboardType(.decimalPad)
-                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                    if let textField = obj.object as? UITextField {
-                        textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+        ScrollView{
+            VStack{
+                Form {
+                    Text(viewType.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    HStack{
+                        Text(Constants.strings.title+": ")
+                        TextField("", text: $addNewExpenseViewModel.expenseTitle)
+                            .focused($focusedField, equals: .title)
                     }
-                }
-                .focused($focusedField, equals: .amount)
-            }
-            
-            QuickAmounts()
-            
-            Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                    Text(value).tag(value)
-                }
-            }
-            .pickerStyle(DefaultPickerStyle())
-        
-            
-            DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
-                Text(Constants.strings.selectDate)
-            }.tint(Constants.colors.lightPurpleColor)
-            TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
-                .frame(height: 200)
-                .focused($focusedField, equals: .notes)
-            
-            if viewType != .view {
-                Section {
-                    Button(role: .cancel) {
-                        Task{
-                            if viewType == .add {
-                                await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
-                            }else if (viewType == .update){
-                                await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
+                    
+                    HStack{
+                        Text(Constants.strings.amountSpace)
+                        TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
+                            .keyboardType(.decimalPad)
+                            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                                if let textField = obj.object as? UITextField {
+                                    textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                                }
+                            }
+                            .focused($focusedField, equals: .amount)
+                    }
+                }.frame(height: 200).scrollDisabled(true)
+                
+                QuickAmounts()
+                
+                Form{
+                    Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                            Text(value).tag(value)
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                    
+                    
+                    DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
+                        Text(Constants.strings.selectDate)
+                    }.tint(Constants.colors.lightPurpleColor)
+                    TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
+                        .frame(height: 200)
+                        .focused($focusedField, equals: .notes)
+                    
+                    if viewType != .view {
+                        Section {
+                            Button(role: .cancel) {
+                                Task{
+                                    if viewType == .add {
+                                        await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                                    }else if (viewType == .update){
+                                        await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
+                                    }
+                                }
+                            } label:{
+                                Text(viewType.butotnLabel)
+                                    .foregroundColor(Utils.getPurpleColor(colorScheme))
                             }
                         }
-                    } label:{
-                        Text(viewType.butotnLabel)
-                            .foregroundColor(Utils.getPurpleColor(colorScheme))
                     }
-                }
+                    
+                }.frame(height: 500).scrollDisabled(true)
             }
-            
         }
         .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
         .scrollDismissesKeyboard(.immediately)

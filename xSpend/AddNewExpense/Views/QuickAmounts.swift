@@ -14,17 +14,15 @@ struct QuickAmounts: View {
     }
     
     var body: some View {
-        
         HStack{
-            Spacer(minLength: 1)
-            QuickAmountButton(value: "1", buttonAction: quickBtnAction )
-            QuickAmountButton(value: "2", buttonAction: quickBtnAction)
-            QuickAmountButton(value: "5", buttonAction: quickBtnAction)
-            QuickAmountButton(value: "10", buttonAction: quickBtnAction)
-            QuickAmountButton(value: "20", buttonAction: quickBtnAction)
-            QuickAmountButton(value: "50", buttonAction: quickBtnAction)
-            Spacer(minLength: 1)
+            QuickAmountButton(value: "1") {quickBtnAction("1")}
+            QuickAmountButton(value: "2") {quickBtnAction("2")}
+            QuickAmountButton(value: "5") {quickBtnAction("5")}
+            QuickAmountButton(value: "10") {quickBtnAction("10")}
+            QuickAmountButton(value: "20") {quickBtnAction("20")}
+            QuickAmountButton(value: "50") {quickBtnAction("50")}
         }
+
     }
 
 }
@@ -32,17 +30,17 @@ struct QuickAmounts: View {
 
 struct QuickAmountButton: View {
     var value: String
-    var buttonAction: (_ value:String) -> Void
+    var action: () -> Void
     
     var body: some View {
-        HStack{
-            Button(action: {
-                buttonAction(value)
-            }) {
-                Text("+\(value)").padding(10).tint(.white)
-            }
-            .background(Constants.colors.lightPurpleColor)
-            .cornerRadius(10)
+        Button(action: {
+            action()
+        }) {
+            Text("+\(value)").padding(10).tint(.white)
         }
+        .background(Constants.colors.lightPurpleColor)
+        .cornerRadius(10)
     }
 }
+
+
