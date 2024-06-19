@@ -162,7 +162,7 @@ class FirebaseViewModel: ObservableObject {
                                     var convertedAmount = ""
                                     if data[Constants.firebase.currency] as! String != currency {
                                         convertedAmount = await getConvertedValue(baseCurrencyAmount: Double( data[Constants.firebase.amount] as! Float), from: data[Constants.firebase.currency] as! String, to: currency)
-                                        
+                                    }
                                         
                                         let exp = Expense(
                                             id: doc.documentID,
@@ -180,7 +180,6 @@ class FirebaseViewModel: ObservableObject {
                                             self.formatData()
                                         }
                                     }
-                                }
                             }
                         }
                     }
