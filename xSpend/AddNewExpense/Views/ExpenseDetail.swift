@@ -33,7 +33,7 @@ struct ExpenseDetail: View {
             }.padding()
         }
         ScrollView{
-            VStack{
+            VStack(){
                 Form {
                     Text(viewType.title)
                         .font(.title)
@@ -44,6 +44,17 @@ struct ExpenseDetail: View {
                         TextField("", text: $addNewExpenseViewModel.expenseTitle)
                             .focused($focusedField, equals: .title)
                     }
+                    
+                    Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                            Text(value).tag(value)
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                    
+                    DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
+                        Text(Constants.strings.selectDate)
+                    }.tint(Constants.colors.lightPurpleColor)
                     
                     HStack{
                         Text(Constants.strings.amountSpace)
@@ -56,21 +67,11 @@ struct ExpenseDetail: View {
                             }
                             .focused($focusedField, equals: .amount)
                     }
-                }.frame(height: 200).scrollDisabled(true)
+                }.frame(height: 280).scrollDisabled(true)
                 
                 QuickAmounts(addNewExpenseViewModel: addNewExpenseViewModel)
                 
                 Form{
-                    Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                            Text(value).tag(value)
-                        }
-                    }
-                    .pickerStyle(DefaultPickerStyle())
-                    
-                    DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
-                        Text(Constants.strings.selectDate)
-                    }.tint(Constants.colors.lightPurpleColor)
                     TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
                         .frame(height: 200)
                         .focused($focusedField, equals: .notes)
@@ -92,7 +93,7 @@ struct ExpenseDetail: View {
                         }
                     }
                     
-                }.frame(height: 500).scrollDisabled(true)
+                }.frame(height: 400).scrollDisabled(true)
             }
         }
         .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)

@@ -32,6 +32,9 @@ struct AddNewExpense: View {
         VStack {
             ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add
             )
-        }.onAppear{onAppear()}
+        }
+        .background(Color(UIColor.systemGroupedBackground))
+        .ignoresSafeArea(.all, edges: [.bottom, .trailing])
+        .onAppear{onAppear()}
     }
 }

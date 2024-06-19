@@ -86,6 +86,8 @@ struct Profile: View {
             }.padding(.top,1)
             
         }
+        .background(Color(UIColor.systemGroupedBackground))
+        .ignoresSafeArea(.all, edges: [.bottom, .trailing])
         .onAppear{Task{await setUp()}}
         .alert(Constants.strings.monthGoal, isPresented: $profileViewModel.showMonthGoalAlert) {
             HStack{

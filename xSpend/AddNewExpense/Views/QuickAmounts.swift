@@ -33,6 +33,7 @@ struct QuickAmounts: View {
 
 
 struct QuickAmountButton: View {
+    @Environment(\.colorScheme) var colorScheme
     var value: String
     var action: () -> Void
     
@@ -42,7 +43,7 @@ struct QuickAmountButton: View {
         }) {
             Text("+\(value)").padding(10).tint(.white)
         }
-        .background(Constants.colors.lightPurpleColor)
+        .background(Utils.getPurpleColor(colorScheme))
         .cornerRadius(10)
     }
 }
