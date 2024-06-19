@@ -55,6 +55,8 @@ struct ExpenseDetail: View {
                 .focused($focusedField, equals: .amount)
             }
             
+            QuickAmounts()
+            
             Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
                 ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                     Text(value).tag(value)

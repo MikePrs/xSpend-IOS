@@ -43,6 +43,6 @@ class ProfileViewModel:ObservableObject{
                 return "Err"
             }
         }
-        return "Err"
+        return " "
     }
 }
