@@ -58,7 +58,7 @@ struct ExpenseDetail: View {
                     }
                 }.frame(height: 200).scrollDisabled(true)
                 
-                QuickAmounts()
+                QuickAmounts(addNewExpenseViewModel: addNewExpenseViewModel)
                 
                 Form{
                     Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
@@ -67,7 +67,6 @@ struct ExpenseDetail: View {
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
-                    
                     
                     DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
                         Text(Constants.strings.selectDate)

@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct QuickAmounts: View {
+    @ObservedObject var addNewExpenseViewModel:AddNewExpenseViewModel
     
     func quickBtnAction(_ value:String ){
-        print(value)
+        if let floatValue = Float(value) {
+            addNewExpenseViewModel.expenseAmount =
+            (addNewExpenseViewModel.expenseAmount ?? 0) + floatValue
+        }
     }
     
     var body: some View {
