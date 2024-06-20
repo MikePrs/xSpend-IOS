@@ -96,7 +96,6 @@ class AddNewExpenseViewModel: ObservableObject {
     
     private func resetFields(){
             self.expenseTitle = ""
-            self.expenseType = ""
             self.expenseNotes = ""
             self.expenseAmount = nil
     }

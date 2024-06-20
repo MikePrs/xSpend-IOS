@@ -43,7 +43,7 @@ struct ExpensesList: View {
                                             Text("-\(exp.amountConverted)")
                                             Text(currency)
                                         }
-                                    }
+                                    }.padding(.vertical,2)
                                     Text(exp.title).font(.system(size: 14)).opacity(0.6)
                                 }
                                 Spacer()

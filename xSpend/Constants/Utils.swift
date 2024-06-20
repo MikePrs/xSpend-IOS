@@ -9,8 +9,12 @@ import SwiftUI
 
 struct Utils {
 
-    static func getPurpleColor(_ colorScheme:ColorScheme) -> Color{
+    static func getPurpleColor(_ colorScheme:ColorScheme) -> Color {
        return colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor
+    }
+    
+    static func getAlertColor(_ colorScheme:ColorScheme) -> Color {
+        return colorScheme == .light ? .gray : .white
     }
     
     static func convertStringToDate(_ dateString: String) -> Date? {

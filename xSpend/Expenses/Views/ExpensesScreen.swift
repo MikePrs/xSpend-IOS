@@ -165,7 +165,11 @@ struct ExpensesScreen: View {
             }
         }
         .toast(isPresenting: $expensesViewModel.showSuccessToast  ) {
-            AlertToast(type: .systemImage(Constants.icon.trash,.gray), title:  expensesViewModel.successToastText, style: .style(titleColor: .white))
+            AlertToast(
+                type: .systemImage(Constants.icon.trash,Utils.getAlertColor(colorScheme)),
+                title:  expensesViewModel.successToastText,
+                style: .style(titleColor: Utils.getAlertColor(colorScheme))
+            )
         }
 
     }
