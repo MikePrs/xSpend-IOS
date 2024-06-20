@@ -53,6 +53,10 @@ class ExpensesViewModel: ObservableObject {
             currency: currency
         )
         
+        if expenseList.map({return $0.expenses}).flatMap({$0}).map({$0.amountConverted}).contains("Api Error") {
+            showAlert(message:"Api Error Limit Reached")
+        }
+        
         isLoading = false
     }
     

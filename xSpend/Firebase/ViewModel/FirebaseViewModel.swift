@@ -111,14 +111,14 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
-    func getConvertedValue(baseCurrencyAmount:Double, from: String, to: String) async -> String {
+    func getConvertedValue(baseCurrencyAmount:Double, from: String, to: String) async -> (String) {
        let res = await exchangeRates.getExchangeRate(baseCurrencyAmount: baseCurrencyAmount, from: from, to: to)
         
         switch res {
         case .success(let conversion):
             return String(format: "%.2f", conversion)
-        default:
-            return ""
+        case .failure(let err):
+            return err.errString
         }
     }
     

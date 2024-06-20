@@ -38,7 +38,7 @@ struct ExpensesList: View {
                                     HStack {
                                         Text("-"+String(exp.amount))
                                         Text(exp.currency)
-                                        if currency != exp.currency {
+                                        if currency != exp.currency, exp.amountConverted != "Api Error" {
                                             Text(" -> ").foregroundStyle(.gray)
                                             Text("-\(exp.amountConverted)")
                                             Text(currency)
