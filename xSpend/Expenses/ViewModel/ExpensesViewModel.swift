@@ -29,6 +29,7 @@ class ExpensesViewModel: ObservableObject {
     @Published var showingErrAlert:Bool = false
     @Published var alertMessage = ""
     @Published var openDetails = false
+    @Published var expenseList = [SectionedExpenses]()
 
     
     private var countryCurrencyCode = CountryCurrencyCode().countryCurrency
@@ -43,8 +44,7 @@ class ExpensesViewModel: ObservableObject {
             currency = countryCurrencyCode[currencySelection] ?? ""
         }
         fbViewModel.getExpenseTypes()
-        fbViewModel.sectioned = [:]
-        fbViewModel.getExpenses(
+        expenseList = await fbViewModel.fetchExpenses(
             from: startDate,
             to: limitDate,
             category: Constants.strings.any,
@@ -52,10 +52,13 @@ class ExpensesViewModel: ObservableObject {
             max: maxPrice,
             currency: currency
         )
+        
         isLoading = false
     }
     
     func removeExpense() async {
+        isLoading = true
+        
         let res = await fbViewModel?.firebaseDelete(with: expenseId, at: Constants.firebase.expenses)
         DispatchQueue.main.async {
             switch res {
@@ -66,7 +69,18 @@ class ExpensesViewModel: ObservableObject {
             }
             self.expenseId = ""
         }
-    }
+        
+        if let fbVM = fbViewModel {
+            self.expenseList = await fbVM.fetchExpenses(
+                from: startDate,
+                to: limitDate,
+                category: Constants.strings.any,
+                min: minPrice,
+                max: maxPrice,
+                currency: currency
+            )
+        }
+        isLoading = false    }
     
     func showToast(text:String){
         DispatchQueue.main.async {
@@ -90,16 +104,34 @@ class ExpensesViewModel: ObservableObject {
         isLoading = false
     }
     
-    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) {
+    func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) async {
         isLoading = true
-        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, currency: currency)
+        if let fbVM = fbViewModel {
+            self.expenseList = await fbVM.fetchExpenses(
+                from: filterStartDate,
+                to: filterEndDate,
+                category: newFilterCategory,
+                min: minPrice,
+                max: maxPrice,
+                currency: currency
+            )
+        }
         isLoading = false
     }
     
-    func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String){
+    func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) async{
         isLoading = true
         hideKeyboard()
-        fbViewModel?.getExpenses(from: filterStartDate, to:filterEndDate, category: newFilterCategory, min: minPrice, max: maxPrice, currency: currency)
+        if let fbVM = fbViewModel {
+            self.expenseList = await fbVM.fetchExpenses(
+                from: filterStartDate,
+                to:filterEndDate,
+                category: newFilterCategory,
+                min: minPrice,
+                max: maxPrice,
+                currency: currency
+            )
+        }
         isLoading = false
     }
     

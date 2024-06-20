@@ -46,11 +46,13 @@ struct ExpensesScreen: View {
                                 Text(value).tag(value)
                             }
                         }.onChange(of:  expensesViewModel.filterType) { old, value in
-                            expensesViewModel.filterExpensesDate(
-                                expensesViewModel.startDate,
-                                expensesViewModel.limitDate,
-                                value
-                            )
+                            Task{
+                                await expensesViewModel.filterExpensesDate(
+                                    expensesViewModel.startDate,
+                                    expensesViewModel.limitDate,
+                                    value
+                                )
+                            }
                         }
                         DatePicker(
                             Constants.strings.startDate,
@@ -59,11 +61,13 @@ struct ExpensesScreen: View {
                             displayedComponents: [.date]
                         ).tint(Constants.colors.lightPurpleColor)
                             .onChange(of:  expensesViewModel.startDate) { old, newStartdate in
-                                expensesViewModel.filterExpensesDate(
-                                    newStartdate,
-                                    expensesViewModel.limitDate,
-                                    expensesViewModel.filterType
-                                )
+                                Task{
+                                    await expensesViewModel.filterExpensesDate(
+                                        newStartdate,
+                                        expensesViewModel.limitDate,
+                                        expensesViewModel.filterType
+                                    )
+                                }
                             }
                         
                         DatePicker(
@@ -73,7 +77,9 @@ struct ExpensesScreen: View {
                             displayedComponents: [.date]
                         ).tint(Constants.colors.lightPurpleColor)
                             .onChange(of:  expensesViewModel.limitDate) { old, newEndDate in
-                                expensesViewModel.filterExpensesDate( expensesViewModel.startDate,newEndDate, expensesViewModel.filterType)
+                                Task{
+                                    await expensesViewModel.filterExpensesDate( expensesViewModel.startDate,newEndDate, expensesViewModel.filterType)
+                                }
                             }
                         VStack {
                             Text(Constants.strings.priceRange).foregroundStyle(.gray)
@@ -86,11 +92,13 @@ struct ExpensesScreen: View {
                                     .focused($focusedField, equals: .max)
                                 
                                 Text(Constants.strings.set).foregroundStyle(Utils.getPurpleColor(colorScheme)).onTapGesture {
-                                    expensesViewModel.setPriceRange(
-                                        expensesViewModel.startDate,
-                                        expensesViewModel.limitDate,
-                                        expensesViewModel.filterType
-                                    )
+                                    Task{
+                                        await expensesViewModel.setPriceRange(
+                                            expensesViewModel.startDate,
+                                            expensesViewModel.limitDate,
+                                            expensesViewModel.filterType
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -106,7 +114,6 @@ struct ExpensesScreen: View {
                         currency:  expensesViewModel.currency,
                         loadMoreExpenses:  expensesViewModel.loadMoreExpenses
                     )
-                    //                .environmentObject(globalData)
                 }else{
                     Spacer()
                     ProgressView()
@@ -129,7 +136,6 @@ struct ExpensesScreen: View {
             }
         }
         .onDisappear {
-            fbViewModel.expenseSectioned = []
              expensesViewModel.enableFilters = false
              expensesViewModel.filtersSize = 130
         }
@@ -138,11 +144,13 @@ struct ExpensesScreen: View {
                 ToolbarItem(placement: .keyboard) {
                     HStack{
                         Button(action: {
-                            expensesViewModel.setPriceRange(
-                                expensesViewModel.startDate,
-                                expensesViewModel.limitDate,
-                                expensesViewModel.filterType
-                            )
+                            Task{
+                                await expensesViewModel.setPriceRange(
+                                    expensesViewModel.startDate,
+                                    expensesViewModel.limitDate,
+                                    expensesViewModel.filterType
+                                )
+                            }
                         }) {
                             Text(Constants.strings.set).foregroundStyle(Constants.colors.lightPurpleColor)
                         }

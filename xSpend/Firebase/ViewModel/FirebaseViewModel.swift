@@ -14,8 +14,6 @@ class FirebaseViewModel: ObservableObject {
     @Published var alltypesValues = [String]()
     let standardTypesString = Constants.staticList.standardStringType
     let standardTypes = Constants.staticList.standardTypes
-    var sectioned = [String:[Expense]]()
-    @Published var expenseSectioned = [SectionedExpenses]()
     @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
     @Published var allTypes = [ExpenseType]()
     @Published var exchangeRates = ExchangeRatesViewModel()
@@ -124,9 +122,9 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
-    
-    
-    func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String ) {
+    func fetchExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> [SectionedExpenses] {
+        var sectioned = [String:[Expense]]()
+        
         var query = db.collection(Constants.firebase.expenses)
             .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
             .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: to.timeIntervalSince1970)
@@ -143,61 +141,54 @@ class FirebaseViewModel: ObservableObject {
         if(category != Constants.strings.any){
             query = query.whereField(Constants.firebase.type,isEqualTo: category)
         }
-        query.addSnapshotListener { [self] querySnapshot, error in
-            
-            if error != nil {
-                print("Error geting Expenses")
-            }else{
-                query.addSnapshotListener { [self] querySnapshot, error in
-                    if let error = error {
-                        print("Error getting Expenses: \(error)")
-                    } else {
-                        if let snapshotDocuments = querySnapshot?.documents {
-                            self.sectioned = [:]
-                            formatData()
-                            for doc in snapshotDocuments {
-                                let data = doc.data()
-                                
-                                Task {
-                                    var convertedAmount = ""
-                                    if data[Constants.firebase.currency] as! String != currency {
-                                        convertedAmount = await getConvertedValue(baseCurrencyAmount: Double( data[Constants.firebase.amount] as! Float), from: data[Constants.firebase.currency] as! String, to: currency)
-                                    }
-                                        
-                                        let exp = Expense(
-                                            id: doc.documentID,
-                                            title: data[Constants.firebase.title] as! String,
-                                            amount: data[Constants.firebase.amount] as! Float,
-                                            type: data[Constants.firebase.type] as! String,
-                                            note: data[Constants.firebase.notes] as! String,
-                                            date: data[Constants.firebase.date] as! String,
-                                            currency: data[Constants.firebase.currency] as! String,
-                                            amountConverted: convertedAmount
-                                        )
-                                        
-                                        DispatchQueue.main.async {
-                                            self.sectioned[exp.date, default: []].append(exp)
-                                            self.formatData()
-                                        }
-                                    }
-                            }
-                        }
+        
+        do {
+            let snapshot = try await query.getDocuments()
+                
+                for data in snapshot.documents {
+                    
+                    var convertedAmount = ""
+                    if data[Constants.firebase.currency] as! String != currency {
+                        convertedAmount = await getConvertedValue(
+                            baseCurrencyAmount: Double( data[Constants.firebase.amount] as! Float),
+                            from: data[Constants.firebase.currency] as! String, to: currency
+                        )
                     }
+                    
+                    let exp = Expense(
+                        id: data.documentID,
+                        title: data[Constants.firebase.title] as! String,
+                        amount: data[Constants.firebase.amount] as! Float,
+                        type: data[Constants.firebase.type] as! String,
+                        note: data[Constants.firebase.notes] as! String,
+                        date: data[Constants.firebase.date] as! String,
+                        currency: data[Constants.firebase.currency] as! String,
+                        amountConverted: convertedAmount
+                    )
+                    
+                 
+                        sectioned[exp.date, default: []].append(exp)
+                        
+                    
                 }
-            }
+            return self.formatExpenseData(sectioned: sectioned)
+        } catch {
+            print("Error fetching items: \(error)")
+            return []
         }
     }
     
-    
-    func formatData() {
-        expenseSectioned=[]
+    func formatExpenseData(sectioned:[String:[Expense]]) -> [SectionedExpenses] {
+        var expenseSect = [SectionedExpenses]()
         for expense in sectioned.values {
-            expenseSectioned.append(SectionedExpenses(id: expense[0].date, expenses: expense))
+            expenseSect.append(SectionedExpenses(id: expense[0].date, expenses: expense))
         }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
-        expenseSectioned = expenseSectioned.sorted{dateFormatter.date(from: $0.id)! > dateFormatter.date(from: $1.id)!}
+        expenseSect = expenseSect.sorted{dateFormatter.date(from: $0.id)! > dateFormatter.date(from: $1.id)!}
+        
+        return expenseSect
     }
 }
 

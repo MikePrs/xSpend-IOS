@@ -25,7 +25,7 @@ struct ExpensesList: View {
     
     var body: some View {
         List{
-            ForEach(fbViewModel.expenseSectioned) { section in
+            ForEach(expensesViewModel.expenseList) { section in
                 Section(header: Text("\(section.id)")) {
                     ForEach(section.expenses) { exp in
                         Button {
@@ -76,7 +76,7 @@ struct ExpensesList: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button() {loadMoreExpenses()} label:{Text(fbViewModel.expenseSectioned.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(Utils.getPurpleColor(colorScheme)).frame(alignment: .center)}.disabled(fbViewModel.expenseSectioned.count<=0)
+                    Button() {loadMoreExpenses()} label:{Text(expensesViewModel.expenseList.count>0 ? Constants.strings.loadMore : Constants.strings.noExpense).foregroundColor(Utils.getPurpleColor(colorScheme)).frame(alignment: .center)}.disabled(expensesViewModel.expenseList.count<=0)
                     Spacer()
                 }
             }
