@@ -76,12 +76,29 @@ struct Constants {
         static var alltypesValueIcon : [String:String] = ["Coffee":"cup.and.saucer.fill","Gas":"fuelpump.circle","Rent":"house.circle","Electricity":"bolt.circle"]
     }
     
+    struct error {
+        static var amountAmountErr = "Amout should be filled."
+        static let passwordErr = "Password change error."
+        static let emailFillErr = "Fill email error."
+        static var deleteExpenseTypeError = "Error deleting expense type"
+        static var addExpenseTypeError = "Error adding expense type"
+        static var updateExpenseTypeError = "Error updating expense type"
+        static var deleteExpenseError = "Error deleting expense"
+        static var apiErrorLimitReached = "Api Error Limit Reached"
+        static var apiError = "Api Error"
+        static var unknown = "Unknown"
+        static var addingExpenseErr = "Error adding expense"
+        static var updatingExpenseErr = "Error updating expense"
+        static var expenseNameFilled = "Expense name should be filled."
+        static var duplicateExpenseType = "This expense type already exists."
+        static var getExpensesErr = "Error getting expenses"
+        static var firebaseViewModelErr = "Error with firebase view model."
+    }
+    
     
     struct strings {
         static let welcomTo = "Welcome to "
         static let signUp = "SignUp"
-        static let passwordErr = "Password change error."
-        static let emailFillErr = "Fill email error."
         static let loginTo = "Login to "
         static let login = "Login"
         static let xSpend = "xSpend"
@@ -105,7 +122,6 @@ struct Constants {
         static var next = "Next"
         static var expenseCreated = "Expense Created"
         static var expenseUpdated = "Expense Updated"
-        static var titleAmountErr = "Title and Amout should be filled."
         static var darkMode = "Dark Mode"
         static var country = "Country"
         static var currentCurrency = "Current Currency"
@@ -113,8 +129,6 @@ struct Constants {
         static var addExpenseType = "Add new expense type"
         static var logOut = "Log Out"
         static var userName = "Username"
-        static var duplicateExpenseType = "This expense type already exists."
-        static var expenseNameFilled = "Expense name should be filled."
         static var user = "user"
         static var delete = "Delete"
         static var edit = "Edit"
@@ -139,8 +153,6 @@ struct Constants {
         static var addNewExpense = "Add new expense"
         static var updateExpense = "Update expense"
         static var reviewExpense = "Review expense"
-        static var deleteExpenseTypeError = "Error deleting expense type"
-        static var deleteExpenseError = "Error deleting expense"
         static var deleteExpenseType = "Expense type Deleted"
         static var deleteExpense = "Expense deleted"
         static var expensetypeDelete = "Are you sure you want to delete this expense type?"

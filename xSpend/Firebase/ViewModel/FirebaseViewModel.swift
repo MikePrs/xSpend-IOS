@@ -44,30 +44,29 @@ class FirebaseViewModel: ObservableObject {
             }
     }
     
-    func firebaseDelete(with docId:String, at collectionName:String) async -> Result<Bool, Error> {
+    func firebaseDelete(with docId:String, at collectionName:String) async -> Result<Bool, FirebaseError> {
         do{
             let _ = try await db.collection(collectionName).document(docId).delete()
             return .success(true)
         }catch{
-            return .success(false)
+            return .failure(.firebaseErrDelete)
         }
     }
     
-    func addNewExpense(newExpense:[String:Any]) async -> Result<Bool, Error> {
+    func addNewExpense(newExpense:[String:Any]) async -> Result<Bool, FirebaseError> {
         do {
             let _ = try await self.db.collection(Constants.firebase.expenses)
                 .addDocument(data: newExpense)
             return .success(true)
         }catch{
-            print("Error adding expense")
-            return .success(false)
+            return .failure(.firebaseAddExpenseErr)
         }
         
     }
     
-    func addNewExpenseType(expenseTypeName:String, icon:String) async -> Result<Bool, Error> {
+    func addNewExpenseType(expenseTypeName:String, icon:String) async -> Result<Bool, FirebaseError> {
         if (expenseTypeName == "" || alltypesValues.contains(expenseTypeName)){
-            return .success(false)
+            return .failure(.firebaseExpenseTypeFillErr(expenseTypeName))
         }else{
             do {
                _ = try await self.db.collection(Constants.firebase.expenseTypes)
@@ -78,12 +77,12 @@ class FirebaseViewModel: ObservableObject {
                     ])
                 return .success(true)
             }catch{
-                return .success(false)
+                return .failure(.firebaseAddExpenseTypeErr)
             }
         }
     }
     
-    func updateExpenseType(expenseTypeName:String, icon:String, docId:String) async -> Result<Bool, Error> {
+    func updateExpenseType(expenseTypeName:String, icon:String, docId:String) async -> Result<Bool, FirebaseError> {
         if (expenseTypeName == "" || alltypesValues.contains(expenseTypeName)){
             return .success(false)
         }else{
@@ -96,18 +95,18 @@ class FirebaseViewModel: ObservableObject {
                     ])
                 return .success(true)
             }catch{
-                return .success(false)
+                return .failure(.firebaseUpdateExpenseTypeErr)
             }
         }
     }
     
-    func updateExpense(docId:String, expense:[String:Any]) async -> Result<Bool, Error> {
+    func updateExpense(docId:String, expense:[String:Any]) async -> Result<Bool, FirebaseError> {
         do {
             _ = try await self.db.collection(Constants.firebase.expenses).document(docId)
                 .updateData(expense)
             return .success(true)
         }catch{
-            return .success(false)
+            return .failure(.firebaseUpdateExpenseErr)
         }
     }
     
@@ -122,7 +121,7 @@ class FirebaseViewModel: ObservableObject {
         }
     }
     
-    func fetchExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> [SectionedExpenses] {
+    func fetchExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> Result<[SectionedExpenses], FirebaseError> {
         var sectioned = [String:[Expense]]()
         
         var query = db.collection(Constants.firebase.expenses)
@@ -166,15 +165,11 @@ class FirebaseViewModel: ObservableObject {
                         amountConverted: convertedAmount
                     )
                     
-                 
-                        sectioned[exp.date, default: []].append(exp)
-                        
-                    
+                    sectioned[exp.date, default: []].append(exp)
                 }
-            return self.formatExpenseData(sectioned: sectioned)
+            return .success(self.formatExpenseData(sectioned: sectioned))
         } catch {
-            print("Error fetching items: \(error)")
-            return []
+            return .failure(.firebaseErrGetExpense)
         }
     }
     

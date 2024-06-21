@@ -37,8 +37,10 @@ class ExpenseTypesViewModel:ObservableObject{
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
                     self.showingSheet = false
                 }
+            case .failure(let err):
+                self.showAlert(message:err.errString)
             default:
-                self.showAlert(message: self.expenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType)
+                self.showAlert(message: FirebaseError.unknown.errString)
             }
         }
     }
@@ -49,8 +51,10 @@ class ExpenseTypesViewModel:ObservableObject{
             switch res {
             case .success(true):
                 self.showToast(text:Constants.strings.deleteExpenseType)
+            case .failure(let err):
+                self.showAlert(message: err.errString)
             default:
-                self.showAlert(message: Constants.strings.deleteExpenseTypeError)
+                self.showAlert(message: FirebaseError.unknown.errString)
             }
             self.expenseTypeId = ""
         }
@@ -65,8 +69,10 @@ class ExpenseTypesViewModel:ObservableObject{
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
                     self.showingSheet = false
                 }
+            case .failure(let err):
+                self.showAlert(message: err.errString)
             default:
-                self.showAlert(message: self.expenseTypeName == "" ? Constants.strings.expenseNameFilled : Constants.strings.duplicateExpenseType)
+                self.showAlert(message:FirebaseError.unknown.errString)
             }
         }
     }

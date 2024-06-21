@@ -33,7 +33,7 @@ class LoginViewModel: ObservableObject {
     func sendPasswordReset(withEmail email: String){
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             self.errorAlert = true
-            self.errorAlertMessage = Constants.strings.passwordErr
+            self.errorAlertMessage = Constants.error.passwordErr
         }
     }
     
@@ -42,7 +42,7 @@ class LoginViewModel: ObservableObject {
             sendPasswordReset(withEmail: usernameEmail)
         }else{
             errorAlert = true
-            errorAlertMessage = Constants.strings.emailFillErr
+            errorAlertMessage = Constants.error.emailFillErr
         }
     }
 }

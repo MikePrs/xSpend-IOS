@@ -9,23 +9,6 @@ import SwiftUI
 
 class ExchangeRatesViewModel:ObservableObject {
     @AppStorage("currencySelection") private var currencySelection: String = ""
-    @Published var exchangeRates = ExchangeRate()
-    private let countryCurrencyCode = CountryCurrencyCode()
-    
-    func fetchExchangeRates() async{
-        do{
-            let url = URL(string: "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_kBOUEH953DGP0oGcrAE3MObeATpJT9BSA1k2VIV1&currency&base_currency="+countryCurrencyCode.countryCurrency[currencySelection]!)
-            let (data, _) = try await URLSession.shared.data(from: url!)
-            let decodedData = try JSONDecoder().decode(ExchangeRate.self, from: data)
-            DispatchQueue.main.async {
-                self.exchangeRates = decodedData
-            }
-        }catch{
-            print("Error\(error)")
-        }
-    }
-    
-
     
     func getConversion(_ from: String, _ to: String) async -> Result<ExchangeRate, FetchError> {
         do {
@@ -50,14 +33,6 @@ class ExchangeRatesViewModel:ObservableObject {
             print("Error: \(error)")
             return .failure(.decodingError(error))
         }
-    }
-    
-    func getAmountsExchageRate(currency:String,baseCurrencyAmount:Double)->Double{
-        var res = 0.0
-        if let rate = exchangeRates.data[currency]{
-            res = baseCurrencyAmount * rate
-        }
-        return res
     }
     
     func getExchangeRate(baseCurrencyAmount:Double,from:String,to:String) async -> Result<Double, FetchError>{

@@ -37,14 +37,13 @@ class ExpensesViewModel: ObservableObject {
     func configure(fbViewModel:FirebaseViewModel,currencySelection:String?=nil) async{
         self.fbViewModel = fbViewModel
         
-        
         isLoading = true
-        await exchangeRates.fetchExchangeRates()
+//        await exchangeRates.fetchExchangeRates()
         if let currencySelection {
             currency = countryCurrencyCode[currencySelection] ?? ""
         }
         fbViewModel.getExpenseTypes()
-        expenseList = await fbViewModel.fetchExpenses(
+        expenseList = await getExpenses(
             from: startDate,
             to: limitDate,
             category: Constants.strings.any,
@@ -53,8 +52,8 @@ class ExpensesViewModel: ObservableObject {
             currency: currency
         )
         
-        if expenseList.map({return $0.expenses}).flatMap({$0}).map({$0.amountConverted}).contains("Api Error") {
-            showAlert(message:"Api Error Limit Reached")
+        if expenseList.map({return $0.expenses}).flatMap({$0}).map({$0.amountConverted}).contains(Constants.error.apiError) {
+            showAlert(message:Constants.error.apiErrorLimitReached)
         }
         
         isLoading = false
@@ -68,14 +67,16 @@ class ExpensesViewModel: ObservableObject {
             switch res {
             case .success(true):
                 self.showToast(text:Constants.strings.deleteExpense)
+            case .failure(let err):
+                self.showAlert(message: err.errString)
             default:
-                self.showAlert(message: Constants.strings.deleteExpenseError)
+                self.showAlert(message: FirebaseError.unknown.errString)
             }
             self.expenseId = ""
         }
         
         if let fbVM = fbViewModel {
-            self.expenseList = await fbVM.fetchExpenses(
+            expenseList = await getExpenses(
                 from: startDate,
                 to: limitDate,
                 category: Constants.strings.any,
@@ -111,7 +112,7 @@ class ExpensesViewModel: ObservableObject {
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) async {
         isLoading = true
         if let fbVM = fbViewModel {
-            self.expenseList = await fbVM.fetchExpenses(
+            expenseList = await getExpenses(
                 from: filterStartDate,
                 to: filterEndDate,
                 category: newFilterCategory,
@@ -127,7 +128,7 @@ class ExpensesViewModel: ObservableObject {
         isLoading = true
         hideKeyboard()
         if let fbVM = fbViewModel {
-            self.expenseList = await fbVM.fetchExpenses(
+            expenseList = await getExpenses(
                 from: filterStartDate,
                 to:filterEndDate,
                 category: newFilterCategory,
@@ -139,6 +140,29 @@ class ExpensesViewModel: ObservableObject {
         isLoading = false
     }
     
+    
+    func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> [SectionedExpenses] {
+        if let fbVM = fbViewModel {
+            let result = await fbVM.fetchExpenses(
+                from: from,
+                to:to,
+                category: category,
+                min: minPrice,
+                max: maxPrice,
+                currency: currency)
+            
+            switch result {
+            case .success(let expenses):
+                return expenses
+            case .failure(let err):
+                showAlert(message: err.errString)
+                return []
+            }
+        }else{
+            showAlert(message: Constants.error.firebaseViewModelErr)
+            return []
+        }
+    }
     
     
     func hideKeyboard() {

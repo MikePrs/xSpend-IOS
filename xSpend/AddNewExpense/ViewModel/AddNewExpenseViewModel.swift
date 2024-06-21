@@ -17,6 +17,7 @@ class AddNewExpenseViewModel: ObservableObject {
     @Published var expenseNotes: String = ""
     @Published var expenseAmount: Float? = nil
     @Published var showingAlert = false
+    @Published var alertMessage = ""
     @Published var showSuccessToast = false
     @Published var successToastTitle = ""
     @Published var expensedocId = ""
@@ -42,7 +43,7 @@ class AddNewExpenseViewModel: ObservableObject {
     
     func updateExpense(currencySelection:String) async {
         if (expenseAmount == 0 || expenseAmount == nil ){
-            showingAlert = true
+            self.showAlert(message: Constants.error.amountAmountErr)
         }else{
             let result = await self.fbViewModel?.updateExpense(docId: expensedocId, expense:getExpense(currencySelection) as [String : Any] )
             switch result {
@@ -51,17 +52,17 @@ class AddNewExpenseViewModel: ObservableObject {
                     self.showSuccessToast = true
                     self.successToastTitle = Constants.strings.expenseUpdated
                 }
+            case .failure(let err):
+                self.showAlert(message: err.errString)
             default:
-                DispatchQueue.main.async {
-                    self.showingAlert = true
-                }
+                self.showAlert(message: "\(FirebaseError.unknown)")
             }
         }
     }
     
     func addNewExpense(currencySelection:String) async {
         if (expenseAmount == 0 || expenseAmount == nil ){
-            showingAlert = true
+            self.showAlert(message: Constants.error.amountAmountErr)
         }else{
             let result = await self.fbViewModel?.addNewExpense(newExpense: getExpense(currencySelection) as [String : Any])
             switch result {
@@ -71,10 +72,10 @@ class AddNewExpenseViewModel: ObservableObject {
                     self.showSuccessToast = true
                     self.successToastTitle = Constants.strings.expenseCreated
                 }
+            case .failure(let err):
+                self.showAlert(message: err.errString)
             default:
-                DispatchQueue.main.async {
-                    self.showingAlert = true
-                }
+                self.showAlert(message: FirebaseError.unknown.errString)
             }
         }
     }
@@ -98,5 +99,13 @@ class AddNewExpenseViewModel: ObservableObject {
             self.expenseTitle = ""
             self.expenseNotes = ""
             self.expenseAmount = nil
+    }
+    
+    
+    private func showAlert(message:String){
+        DispatchQueue.main.async {
+            self.showingAlert = true
+            self.alertMessage = message
+        }
     }
 }

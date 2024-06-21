@@ -118,7 +118,7 @@ struct ExpenseDetail: View {
         }.toast(isPresenting: $addNewExpenseViewModel.showSuccessToast) {
             AlertToast(type: .complete(.gray), title:addNewExpenseViewModel.successToastTitle , style: .style(titleColor: colorScheme == .light ? .black: .white))
         }
-        .alert(Constants.strings.titleAmountErr, isPresented: $addNewExpenseViewModel.showingAlert) {
+        .alert(addNewExpenseViewModel.alertMessage, isPresented: $addNewExpenseViewModel.showingAlert) {
             Button(Constants.strings.ok, role: .cancel) { }
         }
     }
