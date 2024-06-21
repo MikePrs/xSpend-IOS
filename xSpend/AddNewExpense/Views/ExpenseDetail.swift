@@ -66,6 +66,7 @@ struct ExpenseDetail: View {
                                 }
                             }
                             .focused($focusedField, equals: .amount)
+                        Text(CountryCurrencyCode().countryCurrency[currencySelection] ?? "")
                     }
                 }.frame(height: 280).scrollDisabled(true)
                 
@@ -73,7 +74,7 @@ struct ExpenseDetail: View {
                 
                 Form{
                     TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
-                        .frame(height: 200)
+                        .frame(height: 100)
                         .focused($focusedField, equals: .notes)
                     
                     if viewType != .view {
@@ -93,7 +94,7 @@ struct ExpenseDetail: View {
                         }
                     }
                     
-                }.frame(height: 400).scrollDisabled(true)
+                }.frame(height: 300).scrollDisabled(true)
             }
         }
         .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
