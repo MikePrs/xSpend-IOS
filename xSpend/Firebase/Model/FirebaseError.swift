@@ -1,33 +1,11 @@
 //
-//  Expense.swift
+//  FirebaseError.swift
 //  xSpend
 //
-//  Created by Mike Paraskevopoulos on 25/7/23.
+//  Created by Mike Paraskevopoulos on 22/6/24.
 //
 
 import Foundation
-
-struct Expense:Identifiable {
-    var id:String
-    var title:String
-    var amount:Float
-    var type:String
-    var note:String
-    var date:String
-    var currency:String
-    var amountConverted:String
-}
-
-struct ExpenseType:Identifiable {
-    var id:String
-    var name:String
-    var icon:String
-}
-
-struct SectionedExpenses:Identifiable{
-    var id:String
-    var expenses:[Expense]
-}
 
 enum FirebaseError:Error {
     case firebaseErrGetExpense
