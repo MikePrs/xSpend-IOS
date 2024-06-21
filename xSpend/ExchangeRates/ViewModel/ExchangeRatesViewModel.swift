@@ -41,7 +41,7 @@ class ExchangeRatesViewModel:ObservableObject {
         
         
         var res = Double()
-        if let savedRate = savedRates[to]{
+        if let savedRate = savedRates[from]{
             res = baseCurrencyAmount * savedRate
             return .success(res)
         }else{
@@ -51,7 +51,7 @@ class ExchangeRatesViewModel:ObservableObject {
             case .success(let conversion):
                 if let rate = conversion.data[to]{
                     res = baseCurrencyAmount * rate
-                    savedRates[to] = rate
+                    savedRates[from] = rate
                 }
                 return .success(res)
             case .failure(let err):
