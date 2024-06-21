@@ -126,7 +126,9 @@ struct ExpensesScreen: View {
                 addNewExpenseViewModel:addNewExpenseViewModel,
                 fbViewModel: fbViewModel,
                 viewType: addNewExpenseViewModel.detailViewType
-            ).navigationBarBackButtonHidden()
+            )
+            .navigationBarBackButtonHidden()
+            .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground) : .black)
         }
         .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])
@@ -171,6 +173,5 @@ struct ExpensesScreen: View {
                 style: .style(titleColor: Utils.getAlertColor(colorScheme))
             )
         }
-
     }
 }

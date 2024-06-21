@@ -19,108 +19,112 @@ struct ExpenseDetail: View {
    
 
     var body: some View {
-        if viewType != .add{
-            HStack {
-                Image(systemName: Constants.icon.left)
-                    .foregroundStyle(Utils.getPurpleColor(colorScheme))
-                Button(Constants.strings.back) {
-                    dismiss()
-                }.tint(Utils.getPurpleColor(colorScheme))
-                Spacer()
-                Button(viewType.isDisabled ? Constants.strings.edit : Constants.strings.cancel) {
-                    viewType =  viewType == .view ? .update : .view
-                }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
-            }.padding()
-        }
-        ScrollView{
-            VStack(){
-                Form {
-                    Text(viewType.title)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    HStack{
-                        Text(Constants.strings.title+": ")
-                        TextField("", text: $addNewExpenseViewModel.expenseTitle)
-                            .focused($focusedField, equals: .title)
-                    }
-                    
-                    Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
-                        ForEach(fbViewModel.alltypesValues, id: \.self) { value in
-                            Text(value).tag(value)
+        VStack{
+            if viewType != .add{
+                HStack {
+                    Image(systemName: Constants.icon.left)
+                        .foregroundStyle(Utils.getPurpleColor(colorScheme))
+                    Button(Constants.strings.back) {
+                        dismiss()
+                    }.tint(Utils.getPurpleColor(colorScheme))
+                    Spacer()
+                    Button(viewType.isDisabled ? Constants.strings.edit : Constants.strings.cancel) {
+                        viewType =  viewType == .view ? .update : .view
+                    }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
+                }.padding().background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
+            }
+            ScrollView{
+                VStack(){
+                    Form {
+                        Text(viewType.title)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        HStack{
+                            Text(Constants.strings.title+": ")
+                            TextField("", text: $addNewExpenseViewModel.expenseTitle)
+                                .focused($focusedField, equals: .title)
                         }
-                    }
-                    .pickerStyle(DefaultPickerStyle())
-                    
-                    DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
-                        Text(Constants.strings.selectDate)
-                    }.tint(Constants.colors.lightPurpleColor)
-                    
-                    HStack{
-                        Text(Constants.strings.amountSpace)
-                        TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
-                            .keyboardType(.decimalPad)
-                            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                                if let textField = obj.object as? UITextField {
-                                    textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
-                                }
+                        
+                        Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                            ForEach(fbViewModel.alltypesValues, id: \.self) { value in
+                                Text(value).tag(value)
                             }
-                            .focused($focusedField, equals: .amount)
-                        Text(CountryCurrencyCode().countryCurrency[currencySelection] ?? "")
-                    }
-                }.frame(height: 280).scrollDisabled(true)
-                
-                QuickAmounts(addNewExpenseViewModel: addNewExpenseViewModel)
-                
-                Form{
-                    TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
-                        .frame(height: 100)
-                        .focused($focusedField, equals: .notes)
-                    
-                    if viewType != .view {
-                        Section {
-                            Button(role: .cancel) {
-                                Task{
-                                    if viewType == .add {
-                                        await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
-                                    }else if (viewType == .update){
-                                        await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
+                        }
+                        .pickerStyle(DefaultPickerStyle())
+                        
+                        DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
+                            Text(Constants.strings.selectDate)
+                        }.tint(Constants.colors.lightPurpleColor)
+                        
+                        HStack{
+                            Text(Constants.strings.amountSpace)
+                            TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
+                                .keyboardType(.decimalPad)
+                                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                                    if let textField = obj.object as? UITextField {
+                                        textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                                     }
                                 }
-                            } label:{
-                                Text(viewType.butotnLabel)
-                                    .foregroundColor(Utils.getPurpleColor(colorScheme))
-                            }
+                                .focused($focusedField, equals: .amount)
+                            Text(CountryCurrencyCode().countryCurrency[currencySelection] ?? "")
                         }
+                    }.frame(height: 280).scrollDisabled(true)
+                    
+                    if viewType != .view{
+                        QuickAmounts(addNewExpenseViewModel: addNewExpenseViewModel)
                     }
                     
-                }.frame(height: 300).scrollDisabled(true)
-            }
-        }
-        .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
-        .scrollDismissesKeyboard(.immediately)
-        .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                HStack{
-                    Spacer()
-                    Button(action: {
-                        if focusedField == .notes {
-                            Task{
-                                await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                    Form{
+                        TextField(Constants.strings.notes, text: $addNewExpenseViewModel.expenseNotes, axis: .vertical)
+                            .frame(height: 100)
+                            .focused($focusedField, equals: .notes)
+                        
+                        if viewType != .view {
+                            Section {
+                                Button(role: .cancel) {
+                                    Task{
+                                        if viewType == .add {
+                                            await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                                        }else if (viewType == .update){
+                                            await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
+                                        }
+                                    }
+                                } label:{
+                                    Text(viewType.butotnLabel)
+                                        .foregroundColor(Utils.getPurpleColor(colorScheme))
+                                }
                             }
-                        }else{
-                            focusedField = focusedField?.next
                         }
-                    }) {
-                        Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(Utils.getPurpleColor(colorScheme))
-                    }
+                        
+                    }.frame(height: 300).scrollDisabled(true)
                 }
             }
-        }.toast(isPresenting: $addNewExpenseViewModel.showSuccessToast) {
-            AlertToast(type: .complete(.gray), title:addNewExpenseViewModel.successToastTitle , style: .style(titleColor: colorScheme == .light ? .black: .white))
-        }
-        .alert(addNewExpenseViewModel.alertMessage, isPresented: $addNewExpenseViewModel.showingAlert) {
-            Button(Constants.strings.ok, role: .cancel) { }
+            .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
+            .scrollDismissesKeyboard(.immediately)
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            if focusedField == .notes {
+                                Task{
+                                    await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                                }
+                            }else{
+                                focusedField = focusedField?.next
+                            }
+                        }) {
+                            Text(focusedField == .notes ? Constants.strings.add : Constants.strings.next).foregroundStyle(Utils.getPurpleColor(colorScheme))
+                        }
+                    }
+                }
+            }.toast(isPresenting: $addNewExpenseViewModel.showSuccessToast) {
+                AlertToast(type: .complete(.gray), title:addNewExpenseViewModel.successToastTitle , style: .style(titleColor: colorScheme == .light ? .black: .white))
+            }
+            .alert(addNewExpenseViewModel.alertMessage, isPresented: $addNewExpenseViewModel.showingAlert) {
+                Button(Constants.strings.ok, role: .cancel) { }
+            }
         }
     }
 }
