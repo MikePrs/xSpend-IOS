@@ -51,10 +51,7 @@ class ExpensesViewModel: ObservableObject {
             max: maxPrice,
             currency: currency
         )
-        
-        if expenseList.map({return $0.expenses}).flatMap({$0}).map({$0.amountConverted}).contains(Constants.error.apiError) {
-            showAlert(message:Constants.error.apiErrorLimitReached)
-        }
+        checkForExchangeRatesLimits()
         
         isLoading = false
     }
@@ -75,17 +72,17 @@ class ExpensesViewModel: ObservableObject {
             self.expenseId = ""
         }
         
-        if let fbVM = fbViewModel {
-            expenseList = await getExpenses(
-                from: startDate,
-                to: limitDate,
-                category: Constants.strings.any,
-                min: minPrice,
-                max: maxPrice,
-                currency: currency
-            )
-        }
-        isLoading = false    }
+        expenseList = await getExpenses(
+            from: startDate,
+            to: limitDate,
+            category: Constants.strings.any,
+            min: minPrice,
+            max: maxPrice,
+            currency: currency
+        )
+        checkForExchangeRatesLimits()
+        isLoading = false
+    }
     
     func showToast(text:String){
         DispatchQueue.main.async {
@@ -111,35 +108,38 @@ class ExpensesViewModel: ObservableObject {
     
     func filterExpensesDate(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) async {
         isLoading = true
-        if let fbVM = fbViewModel {
-            expenseList = await getExpenses(
-                from: filterStartDate,
-                to: filterEndDate,
-                category: newFilterCategory,
-                min: minPrice,
-                max: maxPrice,
-                currency: currency
-            )
-        }
+        expenseList = await getExpenses(
+            from: filterStartDate,
+            to: filterEndDate,
+            category: newFilterCategory,
+            min: minPrice,
+            max: maxPrice,
+            currency: currency
+        )
+        checkForExchangeRatesLimits()
         isLoading = false
     }
     
     func setPriceRange(_ filterStartDate:Date, _ filterEndDate:Date, _ newFilterCategory:String) async{
         isLoading = true
         hideKeyboard()
-        if let fbVM = fbViewModel {
-            expenseList = await getExpenses(
-                from: filterStartDate,
-                to:filterEndDate,
-                category: newFilterCategory,
-                min: minPrice,
-                max: maxPrice,
-                currency: currency
-            )
-        }
+        expenseList = await getExpenses(
+            from: filterStartDate,
+            to:filterEndDate,
+            category: newFilterCategory,
+            min: minPrice,
+            max: maxPrice,
+            currency: currency
+        )
+        checkForExchangeRatesLimits()
         isLoading = false
     }
     
+    func checkForExchangeRatesLimits(){
+        if expenseList.map({return $0.expenses}).flatMap({$0}).map({$0.amountConverted}).contains(Constants.error.apiError) {
+            showAlert(message:Constants.error.apiErrorLimitReached)
+        }
+    }
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> [SectionedExpenses] {
         if let fbVM = fbViewModel {
