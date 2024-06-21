@@ -34,7 +34,7 @@ struct AddExpenseTypeSheet: View {
                 }.padding(.vertical)
                 Spacer()
                 Text(expenseTypesViewModel.action.title)
-                    .font(.system(size: 30))
+                    .font(.system(size: 30)) .foregroundColor(colorScheme == .light ? .black : .white)
                 HStack {
                     TextField(Constants.strings.enterExpenseType, text: $expenseTypesViewModel.expenseTypeName)
                         .frame(height: 45)
@@ -64,9 +64,10 @@ struct AddExpenseTypeSheet: View {
                         :
                         await expenseTypesViewModel.editExpenseType(with: expenseTypesViewModel.expenseTypeId)
                     }
-                }.buttonStyle(.bordered).foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: .white)
+                }.buttonStyle(.bordered)
+                .foregroundColor(colorScheme == .light ? Constants.colors.purpleColor: Constants.colors.lightPurpleColor)
                 Spacer()
-            }.padding(.horizontal,40)
+            }.padding(.horizontal,40).background(colorScheme == .light ? .white : .black)
                 .toast(isPresenting: $expenseTypesViewModel.showSuccessToast) {
                     AlertToast(type: .complete(.gray), title: expenseTypesViewModel.successToastText, style: .style(titleColor: .white))
                 }
