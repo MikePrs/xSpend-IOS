@@ -17,14 +17,3 @@ struct Expense:Identifiable {
     var currency:String
     var amountConverted:String
 }
-
-struct ExpenseType:Identifiable {
-    var id:String
-    var name:String
-    var icon:String
-}
-
-struct SectionedExpenses:Identifiable{
-    var id:String
-    var expenses:[Expense]
-}
