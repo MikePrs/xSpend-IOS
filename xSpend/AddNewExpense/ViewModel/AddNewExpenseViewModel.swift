@@ -13,6 +13,7 @@ class AddNewExpenseViewModel: ObservableObject {
     
     @Published var expenseTitle: String = ""
     @Published var expenseType: String = "Coffee"
+    @Published var expenseCurrency: String = ""
     @Published var expenseDate = Date.now
     @Published var expenseNotes: String = ""
     @Published var expenseAmount: Float? = nil
@@ -22,11 +23,12 @@ class AddNewExpenseViewModel: ObservableObject {
     @Published var successToastTitle = ""
     @Published var expensedocId = ""
     @Published var expense : Expense?
-    
+    @Published var countryCourency = CountryCurrencyCode()
     @Published var detailViewType:ExpenseDetailViewType = .view
     
-    func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil){
+    func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil, currencySelection:String? = nil){
         self.fbViewModel = fbViewModel
+        
         
         if let exp = expense {
             self.expensedocId = exp.id
@@ -37,6 +39,11 @@ class AddNewExpenseViewModel: ObservableObject {
             }
             self.expenseNotes = exp.note
             self.expenseAmount = exp.amount
+            self.expenseCurrency = exp.currency
+        }else{
+            if let country = currencySelection{
+                self.expenseCurrency = countryCourency.countryCurrency[country] ?? ""
+            }
         }
         
     }

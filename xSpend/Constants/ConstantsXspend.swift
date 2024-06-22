@@ -157,7 +157,7 @@ struct Constants {
         static var deleteExpense = "Expense deleted"
         static var expensetypeDelete = "Are you sure you want to delete this expense type?"
         static var expenseDelete = "Are you sure you want to delete this expense ?"
-        static var monthGoal = "Set a monthly spending goal."
+        static var monthGoal = "Monthly spending goal."
         
 
     }

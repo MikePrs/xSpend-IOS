@@ -25,7 +25,7 @@ struct AddNewExpense: View {
                 }
             }
         }
-        addNewExpenseViewModel.configure(fbViewModel: fbViewModel)
+        addNewExpenseViewModel.configure(fbViewModel: fbViewModel, currencySelection:currencySelection)
     }
     
     var body: some View {

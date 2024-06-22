@@ -67,7 +67,14 @@ struct ExpenseDetail: View {
                                     }
                                 }
                                 .focused($focusedField, equals: .amount)
-                            Text(CountryCurrencyCode().countryCurrency[currencySelection] ?? "")
+                            
+                            
+                            Picker("", selection: $addNewExpenseViewModel.expenseCurrency){
+                                ForEach(addNewExpenseViewModel.countryCourency.currencies, id: \.self) { value in
+                                    Text(value).tag(value)
+                                }
+                            }
+                            .pickerStyle(DefaultPickerStyle())
                         }
                     }.frame(height: 280).scrollDisabled(true)
                     
