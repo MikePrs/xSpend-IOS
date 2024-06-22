@@ -52,7 +52,7 @@ class AddNewExpenseViewModel: ObservableObject {
         if (expenseAmount == 0 || expenseAmount == nil ){
             self.showAlert(message: Constants.error.amountAmountErr)
         }else{
-            let result = await self.fbViewModel?.updateExpense(docId: expensedocId, expense:getExpense(currencySelection) as [String : Any] )
+            let result = await self.fbViewModel?.updateExpense(docId: expensedocId, expense:getExpense() as [String : Any] )
             switch result {
             case .success(true):
                 DispatchQueue.main.async {
@@ -87,7 +87,7 @@ class AddNewExpenseViewModel: ObservableObject {
         }
     }
     
-    private func getExpense(_ currencySelection:String) -> [String:Any]{
+    private func getExpense(_ currencySelection:String? = nil) -> [String:Any]{
         let formatter4 = DateFormatter()
         formatter4.dateFormat = "d/M/YYYY"
         return [
@@ -98,7 +98,10 @@ class AddNewExpenseViewModel: ObservableObject {
             Constants.firebase.user : Auth.auth().currentUser?.email as Any,
             Constants.firebase.timestamp : Utils.startOfDayTimestamp(for:   Date(timeIntervalSince1970:expenseDate.timeIntervalSince1970) ) ,
             Constants.firebase.date : formatter4.string(from: expenseDate),
-            Constants.firebase.currency :  CountryCurrencyCode().countryCurrency[currencySelection] as Any
+            Constants.firebase.currency :
+                currencySelection != nil ?
+            CountryCurrencyCode().countryCurrency[currencySelection!] as Any :
+                expenseCurrency
         ]
     }
     
