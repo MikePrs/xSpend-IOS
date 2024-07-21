@@ -7,7 +7,6 @@
 
 import WidgetKit
 import SwiftUI
-//import xSpend
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -25,7 +24,7 @@ struct Provider: AppIntentTimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
+            let entry = SimpleEntry(date: entryDate, configuration: .monthProgressBar)
             entries.append(entry)
         }
 
@@ -45,9 +44,10 @@ struct GoalWidgetEntryView : View {
         VStack {
             Text("Time:")
             Text(entry.date, style: .time)
-
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+            
+            ProgressView(value: 0.3,
+                         label: { Text("\(entry.configuration.currentSpend) / \(entry.configuration.monthGoal) ") },
+                         currentValueLabel: { Text("30%") })
         }
     }
 }
@@ -59,28 +59,23 @@ struct GoalWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             GoalWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
-        }
+        }.supportedFamilies([.systemMedium, .systemSmall])
     }
 }
 
 extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-//        let profileViewModel = ProfileViewModel()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
+
     
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
-    }
+//    fileprivate static var starEyes: ConfigurationAppIntent {
+//        let intent = ConfigurationAppIntent()
+//        intent.favoriteEmoji = "🤩"
+//        return intent
+//    }
 }
 
 #Preview(as: .systemSmall) {
     GoalWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    SimpleEntry(date: .now, configuration: .monthProgressBar)
+//    SimpleEntry(date: .now, configuration: .starEyes)
 }

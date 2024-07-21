@@ -18,6 +18,9 @@ public class FirebaseViewModel: ObservableObject {
     @Published var allTypes = [ExpenseType]()
     @Published var exchangeRates = ExchangeRatesViewModel()
 
+//    let shared = FirebaseViewModel()
+    
+    public init(){}
     
     func getExpenseTypes(){
         db.collection(Constants.firebase.expenseTypes)
@@ -48,7 +51,7 @@ public class FirebaseViewModel: ObservableObject {
         db.collection(Constants.firebase.usersTargets).document((Auth.auth().currentUser?.email)!)
             .addSnapshotListener { querySnapshot, error in
                 if error != nil {
-                    print("Error geting Expense types")
+                    print("Error geting Expense types: \(String(describing: error))")
                 }else{
                     if let userTarget = querySnapshot?.data()?["target"] as? String {
                         completion(userTarget)
@@ -58,7 +61,6 @@ public class FirebaseViewModel: ObservableObject {
     }
     
     func setUsersTarget(target:String) async -> Result<Bool, FirebaseError> {
-      
             if let email = (Auth.auth().currentUser?.email) {
             do {
                 let _ = try await self.db.collection(Constants.firebase.usersTargets)

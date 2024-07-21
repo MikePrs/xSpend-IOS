@@ -8,10 +8,11 @@
 import WidgetKit
 import SwiftUI
 
+
 @main
 struct GoalWidgetBundle: WidgetBundle {
     var body: some Widget {
         GoalWidget()
-        GoalWidgetLiveActivity()
+//        GoalWidgetLiveActivity()
     }
 }

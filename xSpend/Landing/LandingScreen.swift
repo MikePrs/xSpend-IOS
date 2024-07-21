@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import WidgetKit
 
 struct LandingScreen: View {
     let purpleColor = Color(red: 0.37, green: 0.15, blue: 0.80)
@@ -64,7 +65,8 @@ struct LandingPage: View {
     
     func onLoad(){
         isLoading = true
-        if Auth.auth().currentUser != nil {
+        if let userEmail = Auth.auth().currentUser?.email {
+            Utilities().setUserDefaults(for: "userEmail",with: userEmail)
             self.mainAppLink = true
             print("user")
         }else{

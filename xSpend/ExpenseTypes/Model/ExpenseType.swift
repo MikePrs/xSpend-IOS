@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct ExpenseType:Identifiable {
-    var id:String
-    var name:String
-    var icon:String
+public struct ExpenseType:Identifiable {
+    public var id:String
+    public var name:String
+    public var icon:String
 }

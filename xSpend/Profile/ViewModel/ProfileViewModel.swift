@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import WidgetKit
 
 public class ProfileViewModel:ObservableObject{
     @Published var logoutLink: Bool = false
@@ -45,10 +46,14 @@ public class ProfileViewModel:ObservableObject{
         switch res {
         case .success(_):
             print("User target OK")
+            if let sharedDefaults = UserDefaults(suiteName: Constants.groupName) {
+                sharedDefaults.set(self.monthlyGoal, forKey: "userTarget")
+                WidgetCenter.shared.reloadAllTimelines()
+            }
         case .failure(let err):
             print(err.localizedDescription)
         case .none:
-            print("Something went wrong retrieving user terget")
+            print(Constants.error.retrieveUserTargetErr)
         }
     }
 }

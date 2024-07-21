@@ -8,6 +8,8 @@
 import SwiftUI
 
 public struct Constants {
+    static var groupName = "group.co.mikePrs.xSpend"
+    
     struct firebase {
         // Collections
         static var expenses = "Expenses"
@@ -94,6 +96,8 @@ public struct Constants {
         static var duplicateExpenseType = "This expense type already exists."
         static var getExpensesErr = "Error getting expenses"
         static var firebaseViewModelErr = "Error with firebase view model."
+        static var retrieveUserTargetErr = "Something went wrong retrieving user terget"
+        
     }
     
     
