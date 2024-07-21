@@ -8,7 +8,7 @@
 import SwiftUI
 
 class ExchangeRatesViewModel:ObservableObject {
-    @AppStorage("currencySelection") private var currencySelection: String = ""
+    @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     
     func getConversion(_ from: String, _ to: String) async -> Result<ExchangeRate, FetchError> {
         do {
@@ -30,7 +30,6 @@ class ExchangeRatesViewModel:ObservableObject {
                 return .failure(.unknown)
             }
         } catch {
-            print("Error: \(error)")
             return .failure(.decodingError(error))
         }
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Constants {
+public struct Constants {
     struct firebase {
         // Collections
         static var expenses = "Expenses"
@@ -21,6 +21,7 @@ struct Constants {
         static var timestamp = "timestamp"
         static var date = "date"
         static var currency = "currency"
+        static var usersTargets = "usersTargets"
         
         // add expense type
         static var name = "name"

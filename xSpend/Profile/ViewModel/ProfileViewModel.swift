@@ -8,17 +8,21 @@
 import Foundation
 import FirebaseAuth
 
-class ProfileViewModel:ObservableObject{
+public class ProfileViewModel:ObservableObject{
     @Published var logoutLink: Bool = false
     @Published var expenseTypesLink: Bool = false
     @Published var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @Published private var uniqueCurrencyCodes = Set<String>()
     @Published var showMonthGoalAlert = false
     @Published var exchangeRates = ExchangeRatesViewModel()
-
+    @Published var monthlyGoal = ""
+    private var fbViewModel : FirebaseViewModel?
     
-    func configure(currencySelection:String) async {
-//        await exchangeRates.fetchExchangeRates()
+    public init() {}
+    
+    func configure(fbViewModel:FirebaseViewModel) async {
+        self.fbViewModel = fbViewModel
+        getMonthGoal()
     }
     
     func signOut(){
@@ -30,19 +34,21 @@ class ProfileViewModel:ObservableObject{
         }
     }
     
-    func setMonthGoal(oldValue:String,newValue:String, monthGoal:String) async throws -> String{
-        if let amount = Double(monthGoal), let currencyFrom = self.countryCurrencyCode[oldValue], let currencyTo = self.countryCurrencyCode[newValue]{
-            
-            let convertedResult = await exchangeRates.getExchangeRate(baseCurrencyAmount: amount, from: currencyFrom, to: currencyTo)
-            
-            
-            switch convertedResult {
-            case .success(let conversion):
-                return String(format: "%.2f", conversion)
-            default:
-                return "Err"
-            }
+    func getMonthGoal(){
+        fbViewModel?.getUserTarget { value in
+            self.monthlyGoal = value ?? "0"
         }
-        return " "
+    }
+    
+    func setUsersGoal() async {
+        let res = await fbViewModel?.setUsersTarget(target: self.monthlyGoal)
+        switch res {
+        case .success(_):
+            print("User target OK")
+        case .failure(let err):
+            print(err.localizedDescription)
+        case .none:
+            print("Something went wrong retrieving user terget")
+        }
     }
 }

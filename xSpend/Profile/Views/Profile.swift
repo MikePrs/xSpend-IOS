@@ -14,19 +14,10 @@ struct Profile: View {
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var profileViewModel = ProfileViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    @AppStorage(Constants.appStorage.monthGoal) private var monthGoal: String = ""
+//    @AppStorage(Constants.appStorage.monthGoal) private var monthGoal: String = ""
     
-    func setUp() async {}
-    
-    func setMonthGoal(oldValue: String, newValue: String) async {
-        do{
-            let amountConverted = try await profileViewModel.setMonthGoal(oldValue: oldValue, newValue: newValue, monthGoal: monthGoal )
-            DispatchQueue.main.async {
-                monthGoal = amountConverted
-            }
-        }catch{
-            print("Error")
-        }
+    func setUp() async {
+        await profileViewModel.configure(fbViewModel: fbViewModel)
     }
     
     
@@ -53,13 +44,13 @@ struct Profile: View {
                         .onChange(of: currencySelection) { oldValue, newValue in
                             if oldValue != newValue {
                                 Task{
-                                    await setMonthGoal(oldValue: oldValue, newValue: newValue)
-                                    
+//                                    await setMonthGoal(oldValue: oldValue, newValue: newValue)
+//                                    await fbViewModel.setUsersTarget(target: newValue)
                                 }
                             }
                         }
                     
-                    LabeledContent(Constants.strings.monthGoal, value: monthGoal )
+                    LabeledContent(Constants.strings.monthGoal, value: profileViewModel.monthlyGoal )
                         .onTapGesture {
                             profileViewModel.showMonthGoalAlert.toggle()
                             
@@ -93,12 +84,14 @@ struct Profile: View {
             HStack{
                 TextField(
                     "",
-                    text: $monthGoal
+                    text: $profileViewModel.monthlyGoal
                 ).keyboardType(.decimalPad)
             }
             Button(Constants.strings.cancel, role: .cancel) { }
             Button(Constants.strings.save, role: .none) {
-                
+                Task{
+                    await profileViewModel.setUsersGoal()
+                }
             }
         }
 

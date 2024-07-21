@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-class FirebaseViewModel: ObservableObject {
+public class FirebaseViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var alltypesValues = [String]()
     let standardTypesString = Constants.staticList.standardStringType
@@ -44,6 +44,35 @@ class FirebaseViewModel: ObservableObject {
             }
     }
     
+    func getUserTarget(completion: @escaping (String?) -> Void){
+        db.collection(Constants.firebase.usersTargets).document((Auth.auth().currentUser?.email)!)
+            .addSnapshotListener { querySnapshot, error in
+                if error != nil {
+                    print("Error geting Expense types")
+                }else{
+                    if let userTarget = querySnapshot?.data()?["target"] as? String {
+                        completion(userTarget)
+                    }
+                }
+            }
+    }
+    
+    func setUsersTarget(target:String) async -> Result<Bool, FirebaseError> {
+      
+            if let email = (Auth.auth().currentUser?.email) {
+            do {
+                let _ = try await self.db.collection(Constants.firebase.usersTargets)
+                    .document(email as String)
+                    .setData(["target": target])
+                return .success(true)
+            }catch{
+                return .failure(.firebaseAddExpenseErr)
+            }
+        }else{
+            return .failure(.firebaseAddExpenseErr)
+        }
+    }
+    
     func firebaseDelete(with docId:String, at collectionName:String) async -> Result<Bool, FirebaseError> {
         do{
             let _ = try await db.collection(collectionName).document(docId).delete()
@@ -61,7 +90,6 @@ class FirebaseViewModel: ObservableObject {
         }catch{
             return .failure(.firebaseAddExpenseErr)
         }
-        
     }
     
     func addNewExpenseType(expenseTypeName:String, icon:String) async -> Result<Bool, FirebaseError> {
