@@ -39,16 +39,46 @@ struct SimpleEntry: TimelineEntry {
 
 struct GoalWidgetEntryView : View {
     var entry: Provider.Entry
+    @State var percentage = ""
+    @State var percentageValue = 0.0
+    
+    func onAppear(){
+        guard let month = Double(entry.configuration.monthGoal) else { return }
+        guard let current = Double(entry.configuration.currentSpend) else { return }
+        guard month != 0 else {return}
+        
+        self.percentage = String(format: "%.1f",(current * 100) / month)
+        self.percentageValue = Double(Float(current) / Float(month))
+    }
 
     var body: some View {
         VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+            HStack{
+                Text("\(entry.configuration.currentSpend) \(entry.configuration.currency) / \(entry.configuration.monthGoal) \(entry.configuration.currency) ").frame(alignment: .leading)
+                Spacer()
+            }.padding()
+            GeometryReader { geometry in
+                ZStack{
+                    LinearGradient(gradient: Gradient(colors: [.gray.opacity(0.2)]),
+                                   startPoint: .leading,
+                                   endPoint: .trailing)
+                    .frame(width: 1 * geometry.size.width, height: geometry.size.height)
+                    .cornerRadius(8.0)
+                    
+                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.purple]),
+                                   startPoint: .leading,
+                                   endPoint: .trailing)
+                    .frame(width: CGFloat(self.percentageValue) * geometry.size.width, height: geometry.size.height)
+                    .cornerRadius(8.0)
+                }
+            }.frame(height: 10)
+            HStack{
+                Spacer()
+                Text("\(percentage)%").frame( alignment: .leading)
+            }.padding()
             
-            ProgressView(value: 0.3,
-                         label: { Text("\(entry.configuration.currentSpend) / \(entry.configuration.monthGoal) ") },
-                         currentValueLabel: { Text("30%") })
-        }
+        }.onAppear{onAppear()}
+            
     }
 }
 

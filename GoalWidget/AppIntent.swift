@@ -18,6 +18,8 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     var monthGoal: String
     @Parameter(title: "Current Expenses", default: "0")
     var currentSpend: String
+    @Parameter(title: "Currency", default: "EUR")
+    var currency: String
     
     static var monthProgressBar: ConfigurationAppIntent {
         
@@ -29,8 +31,10 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 //                intent.monthGoal = target
 //            }
 //        }
-        intent.monthGoal = WidgetHelper().userTarget ?? "20"
-        intent.currentSpend = WidgetHelper().userTarget ?? "20"
+        let wh = WidgetHelper()
+        intent.monthGoal = wh.userTarget ?? "20"
+        intent.currentSpend = "557"
+        intent.currency = wh.userCurrency ?? "EUR"
         return intent
     }
 }
@@ -38,12 +42,14 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 class WidgetHelper {
     let sharedDefaults = UserDefaults(suiteName: Constants.groupName)
     @Published var userTarget:String?
+    @Published var userCurrency:String?
+    @Published var percentage:String?
+    @Published var percentageValue:Double?
     
     init() {
-        self.userTarget =  sharedDefaults?.string(forKey: "userTarget") ?? "0"
+        if let usrDefaults = sharedDefaults {
+            self.userTarget =  usrDefaults.string(forKey: "userTarget")
+            self.userCurrency =  usrDefaults.string(forKey: "userCurrency")
+        }
     }
-//    func getUserTargetFromDefaults()  {
-//        userTarget =
-//
-//    }
 }

@@ -41,19 +41,29 @@ public class ProfileViewModel:ObservableObject{
         }
     }
     
-    func setUsersGoal() async {
-        let res = await fbViewModel?.setUsersTarget(target: self.monthlyGoal)
-        switch res {
-        case .success(_):
-            print("User target OK")
-            if let sharedDefaults = UserDefaults(suiteName: Constants.groupName) {
-                sharedDefaults.set(self.monthlyGoal, forKey: "userTarget")
-                WidgetCenter.shared.reloadAllTimelines()
+    func setUsersGoal(oldValue:String,newValue:String) async {
+        if let amount = Double(monthlyGoal), let currencyFrom = self.countryCurrencyCode[oldValue], let currencyTo = self.countryCurrencyCode[newValue]{
+            
+            let convertedResult = await exchangeRates.getExchangeRate(baseCurrencyAmount: amount, from: currencyFrom, to: currencyTo)
+            
+            switch convertedResult {
+            case .success(let conversion):
+                monthlyGoal = String(format: "%.2f", conversion)
+                let res = await fbViewModel?.setUsersTarget(target: self.monthlyGoal)
+                switch res {
+                case .success(_):
+                    print("User target OK")
+                    Utilities().setUserDefaults(for:"userTarget", with: monthlyGoal)
+                case .failure(let err):
+                    print(err.localizedDescription)
+                case .none:
+                    print(Constants.error.retrieveUserTargetErr)
+                }
+            default:
+                print(Constants.error.retrieveUserTargetErr)
             }
-        case .failure(let err):
-            print(err.localizedDescription)
-        case .none:
-            print(Constants.error.retrieveUserTargetErr)
+            
+            
         }
     }
 }

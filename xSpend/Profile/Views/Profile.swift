@@ -44,9 +44,10 @@ struct Profile: View {
                         .onChange(of: currencySelection) { oldValue, newValue in
                             if oldValue != newValue {
                                 Task{
-//                                    await setMonthGoal(oldValue: oldValue, newValue: newValue)
+                                    await profileViewModel.setUsersGoal(oldValue: oldValue, newValue: newValue)
 //                                    await fbViewModel.setUsersTarget(target: newValue)
                                 }
+                                Utilities().setUserDefaults(for:"userCurrency", with: profileViewModel.countryCurrencyCode[currencySelection] ?? "")
                             }
                         }
                     
@@ -90,7 +91,7 @@ struct Profile: View {
             Button(Constants.strings.cancel, role: .cancel) { }
             Button(Constants.strings.save, role: .none) {
                 Task{
-                    await profileViewModel.setUsersGoal()
+//                    await profileViewModel.setUsersGoal()
                 }
             }
         }
