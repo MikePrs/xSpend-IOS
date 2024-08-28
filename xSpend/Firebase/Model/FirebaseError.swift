@@ -16,6 +16,7 @@ enum FirebaseError:Error {
     case firebaseUpdateExpenseTypeErr
     case firebaseDeleteExpenseTypeErr
     case firebaseExpenseTypeFillErr(String)
+    case firebaseExpenseMonthSumErr
     case unknown
     
     var errString: String {
@@ -42,7 +43,8 @@ enum FirebaseError:Error {
         case .firebaseExpenseTypeFillErr(let title):
             return title != "" ? err.duplicateExpenseType :
             err.expenseNameFilled
+        case .firebaseExpenseMonthSumErr:
+            return err.firebaseExpenseMonthSumErr
         }
-        
     }
 }

@@ -92,7 +92,7 @@ struct ExpenseDetail: View {
                                 Button(role: .cancel) {
                                     Task{
                                         if viewType == .add {
-                                            await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                                            await addNewExpenseViewModel.addNewExpense(currencySelection: addNewExpenseViewModel.expenseCurrency)
                                         }else if (viewType == .update){
                                             await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
                                         }
@@ -116,7 +116,11 @@ struct ExpenseDetail: View {
                         Button(action: {
                             if focusedField == .notes {
                                 Task{
-                                    await addNewExpenseViewModel.addNewExpense(currencySelection: currencySelection)
+                                    if viewType == .add {
+                                        await addNewExpenseViewModel.addNewExpense(currencySelection: addNewExpenseViewModel.expenseCurrency)
+                                    }else if (viewType == .update){
+                                        await addNewExpenseViewModel.updateExpense(currencySelection: currencySelection)
+                                    }
                                 }
                             }else{
                                 focusedField = focusedField?.next

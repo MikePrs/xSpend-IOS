@@ -97,7 +97,7 @@ public struct Constants {
         static var getExpensesErr = "Error getting expenses"
         static var firebaseViewModelErr = "Error with firebase view model."
         static var retrieveUserTargetErr = "Something went wrong retrieving user terget"
-        
+        static var firebaseExpenseMonthSumErr = "Something went wrong summarizing month expenses"
     }
     
     

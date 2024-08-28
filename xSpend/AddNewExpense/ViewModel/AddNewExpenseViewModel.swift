@@ -14,6 +14,7 @@ class AddNewExpenseViewModel: ObservableObject {
     @Published var expenseTitle: String = ""
     @Published var expenseType: String = "Coffee"
     @Published var expenseCurrency: String = ""
+    @Published var globalAppsCurrency: String = ""
     @Published var expenseDate = Date.now
     @Published var expenseNotes: String = ""
     @Published var expenseAmount: Float? = nil
@@ -29,7 +30,6 @@ class AddNewExpenseViewModel: ObservableObject {
     func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil, currencySelection:String? = nil){
         self.fbViewModel = fbViewModel
         
-        
         if let exp = expense {
             self.expensedocId = exp.id
             self.expenseTitle = exp.title
@@ -41,11 +41,47 @@ class AddNewExpenseViewModel: ObservableObject {
             self.expenseAmount = exp.amount
             self.expenseCurrency = exp.currency
         }else{
-            if let country = currencySelection{
-                self.expenseCurrency = countryCourency.countryCurrency[country] ?? ""
+            if let currency = currencySelection{
+                self.expenseCurrency = countryCourency.countryCurrency[currency] ?? ""
+                self.globalAppsCurrency = countryCourency.countryCurrency[currency] ?? ""
             }
         }
         
+        calculateMonthsTotalExpenses()
+        
+    }
+    
+    private func calculateMonthsTotalExpenses(){
+        Task{
+            let calendar = Calendar.current
+            let now = Date()
+
+            // Get the current time zone dynamically
+            let timeZone = TimeZone.current
+
+            // Ensure the calendar uses the correct time zone
+            var calendarWithTimeZone = calendar
+            calendarWithTimeZone.timeZone = timeZone
+
+            // Get the first day of the current month in the current time zone
+            let startOfMonth = calendarWithTimeZone.date(from: calendarWithTimeZone.dateComponents([.year, .month], from: now))!
+
+            // Get the first day of the next month in the current time zone
+            var components = DateComponents()
+            components.month = 1
+            components.day = 0
+            let endOfMonth = calendarWithTimeZone.date(byAdding: components, to: startOfMonth)!
+            
+            if let res = await fbViewModel?.fetchCurentMonthExpenses(from: startOfMonth, to: endOfMonth, currency: self.globalAppsCurrency){
+                switch res {
+                case .success(let sum):
+                    print(sum)
+                    Utilities().setUserDefaults(for:"userCurentExpense", with: "\(sum)")
+                case .failure(let err):
+                    print(err)
+                }
+            }
+        }
     }
     
     func updateExpense(currencySelection:String) async {
@@ -78,6 +114,7 @@ class AddNewExpenseViewModel: ObservableObject {
                     self.resetFields()
                     self.showSuccessToast = true
                     self.successToastTitle = Constants.strings.expenseCreated
+                    self.calculateMonthsTotalExpenses()
                 }
             case .failure(let err):
                 self.showAlert(message: err.errString)
@@ -99,9 +136,11 @@ class AddNewExpenseViewModel: ObservableObject {
             Constants.firebase.timestamp : Utils.startOfDayTimestamp(for:   Date(timeIntervalSince1970:expenseDate.timeIntervalSince1970) ) ,
             Constants.firebase.date : formatter4.string(from: expenseDate),
             Constants.firebase.currency :
-                currencySelection != nil ?
-            CountryCurrencyCode().countryCurrency[currencySelection!] as Any :
                 expenseCurrency
+//            Constants.firebase.currency :
+//                currencySelection != nil ?
+//            CountryCurrencyCode().countryCurrency[currencySelection!] as Any :
+//                expenseCurrency
         ]
     }
     

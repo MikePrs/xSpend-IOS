@@ -151,6 +151,33 @@ public class FirebaseViewModel: ObservableObject {
         }
     }
     
+    func fetchCurentMonthExpenses(from:Date , to:Date, currency:String) async -> Result<Float, FirebaseError> {
+        let query = db.collection(Constants.firebase.expenses)
+            .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
+            .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: to.timeIntervalSince1970)
+            .whereField(Constants.firebase.timestamp, isGreaterThan: from.timeIntervalSince1970)
+        
+        do {
+            let snapshot = try await query.getDocuments()
+            var sum = Float(0)
+            for data in snapshot.documents {
+                var convertedAmount = ""
+                if data[Constants.firebase.currency] as! String != currency {
+                    convertedAmount = await getConvertedValue(
+                        baseCurrencyAmount: Double( data[Constants.firebase.amount] as! Float),
+                        from: data[Constants.firebase.currency] as! String, to: currency
+                    )
+                    sum += Float(convertedAmount) ?? 0
+                }else{
+                    sum += data[Constants.firebase.amount] as! Float
+                }
+            }
+            return .success(sum)
+        }catch(_){
+            return .failure(.firebaseAddExpenseErr)
+        }
+    }
+    
     func fetchExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> Result<[SectionedExpenses], FirebaseError> {
         var sectioned = [String:[Expense]]()
         

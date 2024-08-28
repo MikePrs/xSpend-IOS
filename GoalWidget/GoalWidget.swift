@@ -44,7 +44,7 @@ struct GoalWidgetEntryView : View {
     
     func onAppear(){
         guard let month = Double(entry.configuration.monthGoal) else { return }
-        guard let current = Double(entry.configuration.currentSpend) else { return }
+        guard let current = Double(entry.configuration.userCurentExpense) else { return }
         guard month != 0 else {return}
         
         self.percentage = String(format: "%.1f",(current * 100) / month)
@@ -54,7 +54,7 @@ struct GoalWidgetEntryView : View {
     var body: some View {
         VStack {
             HStack{
-                Text("\(entry.configuration.currentSpend) \(entry.configuration.currency) / \(entry.configuration.monthGoal) \(entry.configuration.currency) ").frame(alignment: .leading)
+                Text("\(entry.configuration.userCurentExpense) \(entry.configuration.currency) / \(entry.configuration.monthGoal) \(entry.configuration.currency) ").frame(alignment: .leading)
                 Spacer()
             }.padding()
             GeometryReader { geometry in
