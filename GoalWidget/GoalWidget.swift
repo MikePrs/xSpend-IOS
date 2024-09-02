@@ -65,11 +65,14 @@ struct GoalWidgetEntryView : View {
                     .frame(width: 1 * geometry.size.width, height: geometry.size.height)
                     .cornerRadius(8.0)
                     
-                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.purple]),
-                                   startPoint: .leading,
-                                   endPoint: .trailing)
-                    .frame(width: CGFloat(self.percentageValue) * geometry.size.width, height: geometry.size.height)
-                    .cornerRadius(8.0)
+                    HStack{
+                        LinearGradient(gradient: Gradient(colors: [Color.clear, Color.purple]),
+                                       startPoint: .leading,
+                                       endPoint: .trailing)
+                        .frame(width: CGFloat(self.percentageValue) * geometry.size.width, height: geometry.size.height)
+                        .cornerRadius(8.0)
+                        Spacer()
+                    }
                 }
             }.frame(height: 10)
             HStack{
