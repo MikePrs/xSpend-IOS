@@ -13,6 +13,6 @@ import SwiftUI
 struct GoalWidgetBundle: WidgetBundle {
     var body: some Widget {
         ProgressBarGoalWidget()
-        GaudgeGoalWidget()
+        GaugeGoalWidget()
     }
 }

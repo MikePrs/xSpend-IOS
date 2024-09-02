@@ -49,7 +49,7 @@
 		059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */; };
 		059CFA2F2AF0563300647653 /* ExpensesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CFA2E2AF0563300647653 /* ExpensesScreen.swift */; };
 		05B05FE02C864AF100BF21E6 /* ProgressBarGoalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */; };
-		05B05FE32C864BA600BF21E6 /* GaudgeGoalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B05FE12C864BA300BF21E6 /* GaudgeGoalWidget.swift */; };
+		05B05FE32C864BA600BF21E6 /* GaugeGoalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B05FE12C864BA300BF21E6 /* GaugeGoalWidget.swift */; };
 		05BE81212B404E390082087C /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BE81202B404E390082087C /* ExchangeRatesViewModel.swift */; };
 		05BE81242B4095970082087C /* ExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BE81232B4095970082087C /* ExchangeRate.swift */; };
 		05ED2F612C49A2CC006AF70D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05ED2F602C49A2CC006AF70D /* WidgetKit.framework */; };
@@ -131,7 +131,7 @@
 		059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCurrencyCode.swift; sourceTree = "<group>"; };
 		059CFA2E2AF0563300647653 /* ExpensesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesScreen.swift; sourceTree = "<group>"; };
 		05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarGoalWidget.swift; sourceTree = "<group>"; };
-		05B05FE12C864BA300BF21E6 /* GaudgeGoalWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaudgeGoalWidget.swift; sourceTree = "<group>"; };
+		05B05FE12C864BA300BF21E6 /* GaugeGoalWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeGoalWidget.swift; sourceTree = "<group>"; };
 		05BE81202B404E390082087C /* ExchangeRatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewModel.swift; sourceTree = "<group>"; };
 		05BE81232B4095970082087C /* ExchangeRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRate.swift; sourceTree = "<group>"; };
 		05ED2F5F2C49A2CC006AF70D /* GoalWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GoalWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -504,7 +504,7 @@
 		05B05FDD2C8649B800BF21E6 /* GaudgeWidget */ = {
 			isa = PBXGroup;
 			children = (
-				05B05FE12C864BA300BF21E6 /* GaudgeGoalWidget.swift */,
+				05B05FE12C864BA300BF21E6 /* GaugeGoalWidget.swift */,
 			);
 			path = GaudgeWidget;
 			sourceTree = "<group>";
@@ -772,7 +772,7 @@
 				0504E1AE2C4D3772003FDA03 /* ExpenseType.swift in Sources */,
 				05ED2F782C4D3351006AF70D /* FirebaseViewModel.swift in Sources */,
 				05B05FE02C864AF100BF21E6 /* ProgressBarGoalWidget.swift in Sources */,
-				05B05FE32C864BA600BF21E6 /* GaudgeGoalWidget.swift in Sources */,
+				05B05FE32C864BA600BF21E6 /* GaugeGoalWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
