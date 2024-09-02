@@ -12,7 +12,7 @@ import SwiftUI
 @main
 struct GoalWidgetBundle: WidgetBundle {
     var body: some Widget {
-        GoalWidget()
-//        GoalWidgetLiveActivity()
+        ProgressBarGoalWidget()
+        GaudgeGoalWidget()
     }
 }
