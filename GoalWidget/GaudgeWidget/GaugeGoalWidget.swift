@@ -59,31 +59,31 @@ struct CircularProgressBar: View {
                 .trim(from: 0.15, to: CGFloat(min(self.progress, 0.85)))
                 .stroke(
                     AngularGradient(
-                        gradient: Gradient(colors: [Color.clear, Color.purple]),
+                        gradient: Gradient(colors: [Color.clear, entry.colorChoice]),
                         center: .center,
                         startAngle: .degrees(45),
                         endAngle: .degrees(315 * (progress * 0.7))
                     ),
                     style: StrokeStyle(lineWidth: 8.0, lineCap: .round, lineJoin: .round)
                 )
-                .foregroundColor(Color.purple)
+                .foregroundColor(entry.colorChoice)
                 .rotationEffect(Angle(degrees: 90.0))
                 .animation(.linear, value: progress) // Animate progress changes
             
             Text("\(entry.configuration.userCurentExpense)".split(separator: ".")[0])
                 .font(.title)
                 .bold()
-                .foregroundColor(Color.purple)
+                .foregroundColor(entry.colorChoice)
             
             Text("\(entry.configuration.currency)")
                 .font(.subheadline)
-                .foregroundColor(Color.purple)
+                .foregroundColor(entry.colorChoice)
                 .padding(.top, -40)
             
             // Progress Text
             Text(String(format: "%.0f%%", min(self.progress, 1.0) * 100.0))
                 .font(.title2)
-                .foregroundColor(Color.purple)
+                .foregroundColor(entry.colorChoice)
                 .padding(.top, 70)
 
         }

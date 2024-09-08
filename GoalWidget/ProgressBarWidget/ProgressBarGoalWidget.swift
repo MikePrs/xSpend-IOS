@@ -37,7 +37,7 @@ struct ProgressBarGoalWidgetEntryView : View {
                     .cornerRadius(8.0)
                     
                     HStack{
-                        LinearGradient(gradient: Gradient(colors: [Color.clear, Color.purple]),
+                        LinearGradient(gradient: Gradient(colors: [Color.clear, entry.colorChoice]),
                                        startPoint: .leading,
                                        endPoint: .trailing)
                         .frame(width: CGFloat(self.percentageValue) * geometry.size.width, height: geometry.size.height)
