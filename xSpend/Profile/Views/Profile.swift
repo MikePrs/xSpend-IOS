@@ -10,6 +10,7 @@ import FirebaseAuth
 import SymbolPicker
 
 struct Profile: View {
+    @Environment(\.colorScheme) var colorScheme
     @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var profileViewModel = ProfileViewModel()
@@ -81,19 +82,28 @@ struct Profile: View {
         .background(Color(UIColor.systemGroupedBackground))
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])
         .onAppear{Task{await setUp()}}
-        .alert(Constants.strings.monthGoal, isPresented: $profileViewModel.showMonthGoalAlert) {
-            HStack{
-                TextField(
-                    "",
-                    text: $profileViewModel.monthlyGoal
-                ).keyboardType(.decimalPad)
-            }
-            Button(Constants.strings.cancel, role: .cancel) { }
-            Button(Constants.strings.save, role: .none) {
-                Task{
-//                    await profileViewModel.setUsersGoal()
+        .sheet( isPresented: $profileViewModel.showMonthGoalAlert) {
+            VStack{
+                HStack{
+                    TextField(
+                        "",
+                        text: $profileViewModel.monthlyGoal
+                    )
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 200)
+                    .multilineTextAlignment(.center)
+                    .padding()
                 }
-            }
+                Button(Constants.strings.save, role: .none) {
+                    Task{
+                        await profileViewModel.setUsersGoal(oldValue: currencySelection, newValue: currencySelection)
+                    }
+                    profileViewModel.showMonthGoalAlert = false
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(Utils.getPurpleColor(.light))
+            }.presentationDetents([.fraction(0.2)])
         }
 
     }
