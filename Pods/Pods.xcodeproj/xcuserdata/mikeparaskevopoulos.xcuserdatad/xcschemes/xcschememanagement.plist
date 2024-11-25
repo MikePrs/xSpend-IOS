@@ -179,40 +179,26 @@
 			<key>orderHint</key>
 			<integer>36</integer>
 		</dict>
-		<key>PromisesObjC-FBLPromises_Privacy.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>38</integer>
-		</dict>
-		<key>PromisesObjC.xcscheme</key>
+		<key>RecaptchaInterop.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>37</integer>
 		</dict>
-		<key>RecaptchaInterop.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>39</integer>
-		</dict>
 		<key>SymbolPicker.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>40</integer>
+			<integer>38</integer>
 		</dict>
 		<key>ToastViewSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>41</integer>
+			<integer>39</integer>
 		</dict>
 		<key>abseil-xcprivacy.xcscheme</key>
 		<dict>
