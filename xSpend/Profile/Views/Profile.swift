@@ -19,6 +19,7 @@ struct Profile: View {
     
     func setUp() async {
         await profileViewModel.configure(fbViewModel: fbViewModel)
+        Utilities().setUserDefaults(for:"userCurrency", with: profileViewModel.countryCurrencyCode[currencySelection] ?? "")
     }
     
     
