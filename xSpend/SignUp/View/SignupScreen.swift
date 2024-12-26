@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseAuth
-import ToastViewSwift
 
 struct SignupScreen: View {
     @Environment(\.colorScheme) var colorScheme

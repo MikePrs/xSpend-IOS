@@ -1,6 +1,0 @@
-framework module SymbolPicker {
-  umbrella header "SymbolPicker-umbrella.h"
-
-  export *
-  module * { export * }
-}
