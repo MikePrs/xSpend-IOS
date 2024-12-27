@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @State private var scale = 0.7
+    @State private var scale = 1.0
     @Binding var isActive: Bool
     var body: some View {
         VStack {
             VStack {
-                Image(systemName: "scribble.variable")
-                    .font(.system(size: 100))
-                    .foregroundColor(.blue)
-                Text("Scribble App")
-                    .font(.system(size: 20))
-            }.scaleEffect(scale)
+                Image(Constants.icon.expenses)
+                    .resizable()
+                    .frame(width: 150,height: 150)
+                    .padding(.bottom,26)
+            }
+            .scaleEffect(scale)
             .onAppear{
                 withAnimation(.easeIn(duration: 0.7)) {
-                    self.scale = 0.9
+                    self.scale = 2.5
                 }
             }
         }.onAppear {
