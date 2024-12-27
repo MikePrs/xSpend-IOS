@@ -17,8 +17,6 @@ public class FirebaseViewModel: ObservableObject {
     @Published var alltypesValueIcon : [String:String] =  Constants.staticList.alltypesValueIcon
     @Published var allTypes = [ExpenseType]()
     @Published var exchangeRates = ExchangeRatesViewModel()
-
-//    let shared = FirebaseViewModel()
     
     public init(){}
     

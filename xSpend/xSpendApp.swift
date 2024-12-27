@@ -22,14 +22,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct YourApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
-
-
+    
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        LandingPage().preferredColorScheme(isDarkMode ? .dark : .light)
+          ViewCoordinator()
       }
     }
   }
+}
+
+
+struct ViewCoordinator: View {
+    @State private var isActive = false
+    @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
+    var body: some View {
+        if isActive {
+            LandingPage().preferredColorScheme(isDarkMode ? .dark : .light)
+        }else {
+            SplashScreen(isActive: $isActive)
+        }
+    }
 }

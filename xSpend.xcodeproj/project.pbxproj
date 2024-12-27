@@ -48,6 +48,7 @@
 		059CDDF52A6096900006DF80 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDF42A6096900006DF80 /* Profile.swift */; };
 		059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */; };
 		059CFA2F2AF0563300647653 /* ExpensesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CFA2E2AF0563300647653 /* ExpensesScreen.swift */; };
+		05AC09402D1F2930003E05A2 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AC093F2D1F2930003E05A2 /* SplashScreenView.swift */; };
 		05B05FE02C864AF100BF21E6 /* ProgressBarGoalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */; };
 		05B05FE32C864BA600BF21E6 /* GaugeGoalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B05FE12C864BA300BF21E6 /* GaugeGoalWidget.swift */; };
 		05BE81212B404E390082087C /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BE81202B404E390082087C /* ExchangeRatesViewModel.swift */; };
@@ -137,6 +138,7 @@
 		059CDDF42A6096900006DF80 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		059CDDFA2A6866FA0006DF80 /* CountryCurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCurrencyCode.swift; sourceTree = "<group>"; };
 		059CFA2E2AF0563300647653 /* ExpensesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesScreen.swift; sourceTree = "<group>"; };
+		05AC093F2D1F2930003E05A2 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarGoalWidget.swift; sourceTree = "<group>"; };
 		05B05FE12C864BA300BF21E6 /* GaugeGoalWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeGoalWidget.swift; sourceTree = "<group>"; };
 		05BE81202B404E390082087C /* ExchangeRatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewModel.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			children = (
 				05ED2F772C4D3187006AF70D /* xSpend.entitlements */,
 				0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */,
+				05AC093F2D1F2930003E05A2 /* SplashScreenView.swift */,
 				0597263B2B39DFE900A13131 /* GoogleService-Info.plist */,
 				057978822C2732A500550877 /* PrivacyInfo.xcprivacy */,
 				057978442C15140F00550877 /* ExchangeRates */,
@@ -659,6 +662,7 @@
 				0579786E2C190E8B00550877 /* Utils.swift in Sources */,
 				057978762C1B783400550877 /* ExpenseFilterFields.swift in Sources */,
 				0504E1B82C4D91D0003FDA03 /* Utilities.swift in Sources */,
+				05AC09402D1F2930003E05A2 /* SplashScreenView.swift in Sources */,
 				0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */,
 				057978562C1602A400550877 /* SignUpViewModel.swift in Sources */,
 				057978372C0CD2C200550877 /* ConstantsXspend.swift in Sources */,
@@ -839,6 +843,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = xSpend/xSpend.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -874,6 +879,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = xSpend/xSpend.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
