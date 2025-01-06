@@ -9,7 +9,17 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-public class FirebaseViewModel: ObservableObject {
+public class FirebaseViewModel: ObservableObject, Hashable {
+    let id = UUID()
+    public static func == (lhs: FirebaseViewModel, rhs: FirebaseViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    
+    
     let db = Firestore.firestore()
     @Published var alltypesValues = [String]()
     let standardTypesString = Constants.staticList.standardStringType
@@ -46,16 +56,18 @@ public class FirebaseViewModel: ObservableObject {
     }
     
     func getUserTarget(completion: @escaping (String?) -> Void){
-        db.collection(Constants.firebase.usersTargets).document((Auth.auth().currentUser?.email)!)
-            .addSnapshotListener { querySnapshot, error in
-                if error != nil {
-                    print("Error geting Expense types: \(String(describing: error))")
-                }else{
-                    if let userTarget = querySnapshot?.data()?["target"] as? String {
-                        completion(userTarget)
+        if let email = (Auth.auth().currentUser?.email) {
+            db.collection(Constants.firebase.usersTargets).document(email)
+                .addSnapshotListener { querySnapshot, error in
+                    if error != nil {
+                        print("Error geting Expense types: \(String(describing: error))")
+                    }else{
+                        if let userTarget = querySnapshot?.data()?["target"] as? String {
+                            completion(userTarget)
+                        }
                     }
                 }
-            }
+        }
     }
     
     func setUsersTarget(target:String) async -> Result<Bool, FirebaseError> {

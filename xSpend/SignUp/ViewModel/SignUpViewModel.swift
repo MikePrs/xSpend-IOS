@@ -18,16 +18,16 @@ class SignUpViewModel: ObservableObject {
     @Published var errorAlertMessage: String = ""
     @Published var signupLink: Bool = false
 
-    func signUp() {
+    func signUp(success: @escaping (Bool) -> Void) {
         if passwordMatch {
             Auth.auth().createUser(withEmail: usernameEmail, password: password) { result, error in
                 if let error = error {
                     print("an error occured: \(error.localizedDescription)")
                     self.errorAlert = true
                     self.errorAlertMessage = error.localizedDescription
-                    return
+                    success(false)
                 }else{
-                    self.signupLink.toggle()
+                    success(true)
                 }
             }
         }else{

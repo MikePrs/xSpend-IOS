@@ -13,15 +13,14 @@ struct Profile: View {
     @Environment(\.colorScheme) var colorScheme
     @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
     @ObservedObject var fbViewModel = FirebaseViewModel()
-    @ObservedObject var profileViewModel = ProfileViewModel()
+    @StateObject var profileViewModel = ProfileViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-//    @AppStorage(Constants.appStorage.monthGoal) private var monthGoal: String = ""
+    @EnvironmentObject var router: Router
     
     func setUp() async {
         await profileViewModel.configure(fbViewModel: fbViewModel)
         Utilities().setUserDefaults(for:"userCurrency", with: profileViewModel.countryCurrencyCode[currencySelection] ?? "")
     }
-    
     
     var body: some View {
         VStack{
@@ -62,20 +61,20 @@ struct Profile: View {
                 } header: {
                     Text(Constants.strings.appSettings)
                 }
-                Button(role: .cancel) {profileViewModel.expenseTypesLink.toggle()} label:{Text(Constants.strings.addExpenseType)}
+                Button(role: .cancel) {
+                    router.navigate(to: .expenseTypes(fbViewModel: fbViewModel))
+                } label:{Text(Constants.strings.addExpenseType)}
                 Section {
-                    Button(role: .destructive) {profileViewModel.signOut()} label:{
+                    Button(role: .destructive) {
+                        if profileViewModel.signOut() {
+                            router.navigate(to: .landingScreen)
+                        }
+                    } label:{
                         HStack{
                             Image(systemName: Constants.icon.logOut)
                             Text(Constants.strings.logOut)
                         }
                     }
-                }
-                .navigationDestination(isPresented: $profileViewModel.logoutLink) {
-                    LandingScreen()
-                }
-                .navigationDestination(isPresented: $profileViewModel.expenseTypesLink) {
-                    ExpenseTypes().environmentObject(fbViewModel)
                 }
             }.padding(.top,1)
             
@@ -110,8 +109,8 @@ struct Profile: View {
     }
 }
 
-struct Profile_Previews: PreviewProvider {
-    static var previews: some View {
-        Profile()
-    }
-}
+//struct Profile_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Profile()
+//    }
+//}

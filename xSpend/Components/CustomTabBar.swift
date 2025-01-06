@@ -97,13 +97,9 @@ import SwiftUI
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
     @ObservedObject var fbViewModel = FirebaseViewModel()
-
-    init() {
-        UITabBar.appearance().isHidden = true
-    }
+    @EnvironmentObject var router: Router
     
     var body: some View {
-        
         ZStack {
             VStack {
                 TabView(selection: $tabSelected) {
@@ -119,7 +115,7 @@ struct TabManager: View {
                     .tabItem {
                     }.tag(Tab.person)
                 }
-            }
+            }.environmentObject(router)
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $tabSelected)
@@ -131,8 +127,8 @@ struct TabManager: View {
 
 
 
-struct AddExpense_Previews: PreviewProvider {
-    static var previews: some View {
-        TabManager()
-    }
-}
+//struct AddExpense_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TabManager()
+//    }
+//}

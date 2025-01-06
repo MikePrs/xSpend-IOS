@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3B4BB269-AA07-4DB7-BA78-9811825471C9"
+            uuid = "07B70721-1FFE-4A9D-882E-03A394757952"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "xSpend/AddNewExpense/Views/AddNewExpense.swift"
+            filePath = "xSpend/Login/ViewModel/LoginViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "onAppear()"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "login(success:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "997EF9E3-75C0-4DEC-89FC-1C4F705CBC50"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xSpend/Login/ViewModel/LoginViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "login(success:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

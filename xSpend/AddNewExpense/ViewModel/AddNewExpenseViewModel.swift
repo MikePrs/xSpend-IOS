@@ -8,7 +8,15 @@
 import Foundation
 import FirebaseAuth
 
-class AddNewExpenseViewModel: ObservableObject {
+class AddNewExpenseViewModel: ObservableObject, Hashable {
+    let id = UUID()
+    static func == (lhs: AddNewExpenseViewModel, rhs: AddNewExpenseViewModel) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     private var fbViewModel : FirebaseViewModel?
     
     @Published var expenseTitle: String = ""
@@ -137,10 +145,6 @@ class AddNewExpenseViewModel: ObservableObject {
             Constants.firebase.date : formatter4.string(from: expenseDate),
             Constants.firebase.currency :
                 expenseCurrency
-//            Constants.firebase.currency :
-//                currencySelection != nil ?
-//            CountryCurrencyCode().countryCurrency[currencySelection!] as Any :
-//                expenseCurrency
         ]
     }
     

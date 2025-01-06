@@ -17,15 +17,15 @@ class LoginViewModel: ObservableObject {
     @Published var loginLink: Bool = false
     @Published var errorAlertMessage: String = ""
     
-    
-    func login() {
+    func login(success: @escaping (Bool) -> Void) {
         Auth.auth().signIn(withEmail: usernameEmail, password: password) { (result, error) in
             if let error = error {
                 print(error.localizedDescription)
                 self.errorAlert = true
                 self.errorAlertMessage = error.localizedDescription
+                success(false)
             } else {
-                self.loginLink.toggle()
+                success(true)
             }
         }
     }

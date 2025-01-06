@@ -18,7 +18,7 @@ struct ExpenseTypes: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var fbViewModel = FirebaseViewModel()
     @ObservedObject var expenseTypesViewModel = ExpenseTypesViewModel()
-    
+    @EnvironmentObject var router: Router
     
     func setUp()  {
         expenseTypesViewModel.configure(fbViewModel: fbViewModel)
@@ -29,7 +29,6 @@ struct ExpenseTypes: View {
     }
     
     var body: some View {
-        NavigationStack{
             List{
                 ForEach(fbViewModel.allTypes) {type in
                     HStack{
@@ -91,7 +90,7 @@ struct ExpenseTypes: View {
                     AddExpenseTypeSheet(expenseTypesViewModel: expenseTypesViewModel)
                 }
             }.tint(Utils.getPurpleColor(colorScheme))
-        }.onAppear {
+        .onAppear {
             setUp()
         }
     }

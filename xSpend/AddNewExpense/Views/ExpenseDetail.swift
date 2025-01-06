@@ -16,7 +16,7 @@ struct ExpenseDetail: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @State var viewType: ExpenseDetailViewType
-   
+    @EnvironmentObject var router: Router
 
     var body: some View {
         VStack{
@@ -25,7 +25,7 @@ struct ExpenseDetail: View {
                     Image(systemName: Constants.icon.left)
                         .foregroundStyle(Utils.getPurpleColor(colorScheme))
                     Button(Constants.strings.back) {
-                        dismiss()
+                        router.navigateBack()
                     }.tint(Utils.getPurpleColor(colorScheme))
                     Spacer()
                     Button(viewType.isDisabled ? Constants.strings.edit : Constants.strings.cancel) {

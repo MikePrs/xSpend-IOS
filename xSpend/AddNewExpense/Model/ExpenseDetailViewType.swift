@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ExpenseDetailViewType {
+enum ExpenseDetailViewType:Hashable {
     case add, update, view
     
     var title : String{

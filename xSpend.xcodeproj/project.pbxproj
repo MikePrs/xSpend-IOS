@@ -16,6 +16,7 @@
 		0504E1B42C4D37DB003FDA03 /* ExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BE81232B4095970082087C /* ExchangeRate.swift */; };
 		0504E1B52C4D3E39003FDA03 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0504E1B82C4D91D0003FDA03 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0504E1B72C4D91D0003FDA03 /* Utilities.swift */; };
+		054835E22D2BF069008A8D70 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054835E12D2BF069008A8D70 /* Router.swift */; };
 		0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */; };
 		0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */; };
 		0565AE792A5AF0BF0050A9D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0565AE782A5AF0BF0050A9D8 /* Assets.xcassets */; };
@@ -105,6 +106,7 @@
 /* Begin PBXFileReference section */
 		0504E1B62C4D5779003FDA03 /* GoalWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoalWidgetExtension.entitlements; sourceTree = "<group>"; };
 		0504E1B72C4D91D0003FDA03 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		054835E12D2BF069008A8D70 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		0565AE712A5AF0BE0050A9D8 /* xSpend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xSpend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xSpendApp.swift; sourceTree = "<group>"; };
 		0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingScreen.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				05ED2F772C4D3187006AF70D /* xSpend.entitlements */,
 				0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */,
 				05AC093F2D1F2930003E05A2 /* SplashScreenView.swift */,
+				054835E12D2BF069008A8D70 /* Router.swift */,
 				0597263B2B39DFE900A13131 /* GoogleService-Info.plist */,
 				057978822C2732A500550877 /* PrivacyInfo.xcprivacy */,
 				057978442C15140F00550877 /* ExchangeRates */,
@@ -663,6 +666,7 @@
 				0579787F2C27301200550877 /* ExpenseType.swift in Sources */,
 				059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */,
 				0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */,
+				054835E22D2BF069008A8D70 /* Router.swift in Sources */,
 				0579786E2C190E8B00550877 /* Utils.swift in Sources */,
 				057978762C1B783400550877 /* ExpenseFilterFields.swift in Sources */,
 				0504E1B82C4D91D0003FDA03 /* Utilities.swift in Sources */,

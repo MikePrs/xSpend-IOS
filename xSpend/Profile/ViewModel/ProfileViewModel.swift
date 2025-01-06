@@ -19,19 +19,18 @@ public class ProfileViewModel:ObservableObject{
     @Published var monthlyGoal = ""
     private var fbViewModel : FirebaseViewModel?
     
-    public init() {}
-    
     func configure(fbViewModel:FirebaseViewModel) async {
         self.fbViewModel = fbViewModel
         getMonthGoal()
     }
     
-    func signOut(){
+    func signOut() -> Bool{
         do {
             try Auth.auth().signOut()
-            logoutLink.toggle()
+            return true
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
+            return false
         }
     }
     

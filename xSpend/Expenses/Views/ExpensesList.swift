@@ -10,7 +10,7 @@ import AlertToast
 
 struct ExpensesList: View {
     @Environment(\.colorScheme) var colorScheme
-    
+    @EnvironmentObject var router: Router
     @ObservedObject var fbViewModel: FirebaseViewModel
     @ObservedObject var addNewExpenseViewModel : AddNewExpenseViewModel
     @ObservedObject var expensesViewModel : ExpensesViewModel
@@ -18,10 +18,6 @@ struct ExpensesList: View {
     @State var currency: String
     @State var showingDeleteAlert = false
     var loadMoreExpenses: () -> Void
-    
-    func setUp(){
-        
-    }
     
     var body: some View {
         List{
@@ -31,7 +27,11 @@ struct ExpensesList: View {
                         Button {
                             addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
                             addNewExpenseViewModel.detailViewType = .view
-                            expensesViewModel.openDetails = true
+                            router.navigate(to: .expenseDetail(
+                                addNewExpenseViewModel: addNewExpenseViewModel,
+                                fbViewModel: fbViewModel,
+                                viewType: .view
+                            ))
                         } label: {
                             HStack{
                                 VStack(alignment: .leading, spacing: 0){
@@ -81,7 +81,6 @@ struct ExpensesList: View {
                 }
             }
         }
-        .onAppear{setUp()}
         .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
             Button(Constants.strings.no, role: .cancel) {
                 expensesViewModel.expenseId = ""
