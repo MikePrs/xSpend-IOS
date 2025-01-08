@@ -10,8 +10,8 @@ import AlertToast
 
 struct ExpenseDetail: View {
     @FocusState private var focusedField: AddExpensesField?
-    @ObservedObject var addNewExpenseViewModel : AddNewExpenseViewModel
-    @ObservedObject var fbViewModel : FirebaseViewModel
+    @StateObject var addNewExpenseViewModel : AddNewExpenseViewModel
+    @StateObject var fbViewModel : FirebaseViewModel
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""

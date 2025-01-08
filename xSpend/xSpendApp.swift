@@ -23,6 +23,7 @@ struct YourApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @ObservedObject var router = Router()
+    @StateObject var fbViewModel = FirebaseViewModel()
     @Environment(\.colorScheme) var colorScheme
     
     var body: some Scene {
@@ -47,11 +48,11 @@ struct YourApp: App {
                             )
                             .navigationBarBackButtonHidden()
                             .background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground) : .black)
-                        case .expenseTypes((let fbViewModel)):
-                            ExpenseTypes(fbViewModel:fbViewModel)
+                        case .expenseTypes:
+                            ExpenseTypes()
                         }
                     }
-            }.environmentObject(router)
+            }.environmentObject(router).environmentObject(fbViewModel)
         }
     }
 }

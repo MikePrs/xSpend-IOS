@@ -12,16 +12,16 @@ import AlertToast
 
 struct ExpensesScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var fbViewModel = FirebaseViewModel()
-    @ObservedObject var  expensesViewModel = ExpensesViewModel()
-    @ObservedObject var addNewExpenseViewModel = AddNewExpenseViewModel()
+    @EnvironmentObject var fbViewModel: FirebaseViewModel
+    @StateObject var  expensesViewModel = ExpensesViewModel()
+    @StateObject var addNewExpenseViewModel = AddNewExpenseViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @FocusState private var focusedField: ExpenseFilterFields?
     @State var detailViewType:ExpenseDetailViewType = .view
     @EnvironmentObject var router: Router
     
     func setUp() async {
-        await  expensesViewModel.configure(fbViewModel: fbViewModel,currencySelection:currencySelection)
+        await expensesViewModel.configure(fbViewModel: fbViewModel,currencySelection:currencySelection)
     }
     
     var body: some View {
@@ -109,11 +109,8 @@ struct ExpensesScreen: View {
             if !expensesViewModel.isLoading {
                 ExpensesList(
                     fbViewModel: fbViewModel,
-                    addNewExpenseViewModel: addNewExpenseViewModel, expensesViewModel:expensesViewModel,
-                    exchangeRates:  expensesViewModel.exchangeRates,
-                    currency:  expensesViewModel.currency,
-                    loadMoreExpenses:  expensesViewModel.loadMoreExpenses
-                ).environmentObject(router)
+                    addNewExpenseViewModel: addNewExpenseViewModel
+                ).environmentObject(expensesViewModel)
             }else{
                 Spacer()
                 ProgressView()

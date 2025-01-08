@@ -16,8 +16,8 @@ struct ExpenseTypes: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var fbViewModel = FirebaseViewModel()
-    @ObservedObject var expenseTypesViewModel = ExpenseTypesViewModel()
+    @EnvironmentObject var fbViewModel: FirebaseViewModel
+    @StateObject var expenseTypesViewModel = ExpenseTypesViewModel()
     @EnvironmentObject var router: Router
     
     func setUp()  {

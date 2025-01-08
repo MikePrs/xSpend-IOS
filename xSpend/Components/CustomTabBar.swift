@@ -96,8 +96,8 @@ import SwiftUI
 
 struct TabManager: View {
     @State private var tabSelected: Tab = .add
-    @ObservedObject var fbViewModel = FirebaseViewModel()
     @EnvironmentObject var router: Router
+    @EnvironmentObject var fbViewModel: FirebaseViewModel
     
     var body: some View {
         ZStack {
@@ -111,11 +111,11 @@ struct TabManager: View {
                     .tabItem {
                     }.tag(Tab.house)
                     
-                    Profile().environmentObject(fbViewModel)
+                    Profile()
                     .tabItem {
                     }.tag(Tab.person)
                 }
-            }.environmentObject(router)
+            }
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $tabSelected)

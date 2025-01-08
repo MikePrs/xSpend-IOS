@@ -19,7 +19,7 @@ enum Destination: Hashable {
         fbViewModel: FirebaseViewModel,
         viewType: ExpenseDetailViewType
     )
-    case expenseTypes(fbViewModel: FirebaseViewModel)
+    case expenseTypes
 }
 
 final class Router: ObservableObject {

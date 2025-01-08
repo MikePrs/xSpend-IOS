@@ -13,7 +13,7 @@ import AlertToast
 struct AddExpenseTypeSheet: View {
     @Environment(\.colorScheme) var colorScheme
 
-    @ObservedObject var expenseTypesViewModel : ExpenseTypesViewModel
+    @StateObject var expenseTypesViewModel : ExpenseTypesViewModel
     
     var body: some View {
         Button {

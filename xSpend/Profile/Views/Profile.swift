@@ -12,10 +12,10 @@ import SymbolPicker
 struct Profile: View {
     @Environment(\.colorScheme) var colorScheme
     @AppStorage(Constants.appStorage.isDarkMode) private var isDarkMode = false
-    @ObservedObject var fbViewModel = FirebaseViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
     @EnvironmentObject var router: Router
+    @EnvironmentObject var fbViewModel: FirebaseViewModel
     
     func setUp() async {
         await profileViewModel.configure(fbViewModel: fbViewModel)
@@ -62,7 +62,7 @@ struct Profile: View {
                     Text(Constants.strings.appSettings)
                 }
                 Button(role: .cancel) {
-                    router.navigate(to: .expenseTypes(fbViewModel: fbViewModel))
+                    router.navigate(to: .expenseTypes)
                 } label:{Text(Constants.strings.addExpenseType)}
                 Section {
                     Button(role: .destructive) {

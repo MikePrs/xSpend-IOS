@@ -12,7 +12,7 @@ import SwiftUI
 class ExpensesViewModel: ObservableObject {
     private var fbViewModel : FirebaseViewModel?
     
-    @ObservedObject var exchangeRates = ExchangeRatesViewModel()
+    @StateObject var exchangeRates = ExchangeRatesViewModel()
     @Published var startDate = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now)!
     @Published var filterType = Constants.strings.any
     @Published var limitDate = Date.now
@@ -142,6 +142,7 @@ class ExpensesViewModel: ObservableObject {
     }
     
     func getExpenses(from:Date , to:Date, category:String, min:Float? = nil, max:Float? = nil, currency: String) async -> [SectionedExpenses] {
+        isLoading = true
         if let fbVM = fbViewModel {
             let result = await fbVM.fetchExpenses(
                 from: from,

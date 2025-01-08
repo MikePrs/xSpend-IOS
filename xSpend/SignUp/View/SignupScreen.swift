@@ -10,7 +10,7 @@ import FirebaseAuth
 
 struct SignupScreen: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject private var signUpViewModel = SignUpViewModel()
+    @StateObject private var signUpViewModel = SignUpViewModel()
     @EnvironmentObject var router: Router
 
     var body: some View {

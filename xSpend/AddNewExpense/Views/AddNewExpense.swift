@@ -13,8 +13,8 @@ import AlertToast
 struct AddNewExpense: View {
     @Environment(\.colorScheme) var colorScheme
     @AppStorage(Constants.appStorage.currencySelection) private var currencySelection: String = ""
-    @ObservedObject var fbViewModel = FirebaseViewModel()
-    @ObservedObject var addNewExpenseViewModel = AddNewExpenseViewModel()
+    @EnvironmentObject var fbViewModel: FirebaseViewModel
+    @StateObject var addNewExpenseViewModel = AddNewExpenseViewModel()
     
     func onAppear() {
         fbViewModel.getExpenseTypes()

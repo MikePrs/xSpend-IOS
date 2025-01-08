@@ -11,7 +11,7 @@ import FirebaseAuth
 struct LoginScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var router: Router
-    @ObservedObject private var loginViewModel = LoginViewModel()
+    @StateObject private var loginViewModel = LoginViewModel()
     
     var body: some View {
         VStack{

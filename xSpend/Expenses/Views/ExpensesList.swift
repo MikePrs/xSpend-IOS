@@ -11,13 +11,17 @@ import AlertToast
 struct ExpensesList: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var router: Router
-    @ObservedObject var fbViewModel: FirebaseViewModel
-    @ObservedObject var addNewExpenseViewModel : AddNewExpenseViewModel
-    @ObservedObject var expensesViewModel : ExpensesViewModel
-    @State var exchangeRates: ExchangeRatesViewModel
-    @State var currency: String
+    @StateObject var fbViewModel: FirebaseViewModel
+    @StateObject var addNewExpenseViewModel : AddNewExpenseViewModel
+    @EnvironmentObject var expensesViewModel : ExpensesViewModel
     @State var showingDeleteAlert = false
-    var loadMoreExpenses: () -> Void
+    
+    func loadMoreExpenses(){
+        expensesViewModel.loadMoreExpenses()
+    }
+    
+    func setup(){
+    }
     
     var body: some View {
         List{
@@ -38,10 +42,10 @@ struct ExpensesList: View {
                                     HStack {
                                         Text("-"+String(exp.amount))
                                         Text(exp.currency)
-                                        if currency != exp.currency, exp.amountConverted != "Api Error" {
+                                        if expensesViewModel.currency != exp.currency, exp.amountConverted != "Api Error" {
                                             Text(" -> ").foregroundStyle(.gray)
                                             Text("-\(exp.amountConverted)")
-                                            Text(currency)
+                                            Text(expensesViewModel.currency)
                                         }
                                     }.padding(.vertical,2)
                                     Text(exp.title).font(.system(size: 14)).opacity(0.6)
@@ -80,7 +84,7 @@ struct ExpensesList: View {
                     Spacer()
                 }
             }
-        }
+        }.onAppear{setup()}
         .alert(Constants.strings.expenseDelete, isPresented: $showingDeleteAlert) {
             Button(Constants.strings.no, role: .cancel) {
                 expensesViewModel.expenseId = ""
