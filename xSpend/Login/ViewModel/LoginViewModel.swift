@@ -15,16 +15,20 @@ class LoginViewModel: ObservableObject {
     @Published var showPassword: Bool = false
     @Published var errorAlert: Bool = false
     @Published var loginLink: Bool = false
+    @Published var isLoading: Bool = false
     @Published var errorAlertMessage: String = ""
     
     func login(success: @escaping (Bool) -> Void) {
+        isLoading = true
         Auth.auth().signIn(withEmail: usernameEmail, password: password) { (result, error) in
             if let error = error {
                 print(error.localizedDescription)
                 self.errorAlert = true
                 self.errorAlertMessage = error.localizedDescription
+                self.isLoading = false
                 success(false)
             } else {
+                self.isLoading = false
                 success(true)
             }
         }

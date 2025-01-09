@@ -15,6 +15,7 @@ public class ProfileViewModel:ObservableObject{
     @Published var countryCurrencyCode = CountryCurrencyCode().countryCurrency
     @Published private var uniqueCurrencyCodes = Set<String>()
     @Published var showMonthGoalAlert = false
+    @Published var isLoading = false
     @Published var exchangeRates = ExchangeRatesViewModel()
     @Published var monthlyGoal = ""
     private var fbViewModel : FirebaseViewModel?
@@ -25,11 +26,14 @@ public class ProfileViewModel:ObservableObject{
     }
     
     func signOut() -> Bool{
+        isLoading = true
         do {
             try Auth.auth().signOut()
+            isLoading = false
             return true
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
+            isLoading = false
             return false
         }
     }
