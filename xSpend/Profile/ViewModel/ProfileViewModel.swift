@@ -46,23 +46,31 @@ public class ProfileViewModel:ObservableObject{
             let convertedResult = await exchangeRates.getExchangeRate(baseCurrencyAmount: amount, from: currencyFrom, to: currencyTo)
             
             switch convertedResult {
-            case .success(let conversion):
-                monthlyGoal = String(format: "%.2f", conversion)
-                let res = await fbViewModel?.setUsersTarget(target: self.monthlyGoal)
-                switch res {
-                case .success(_):
-                    print("User target OK")
-                    Utilities().setUserDefaults(for:"userTarget", with: monthlyGoal)
-                case .failure(let err):
-                    print(err.localizedDescription)
-                case .none:
-                    print(Constants.error.retrieveUserTargetErr)
-                }
+            case .success(let convertedAmount):
+                await updateUsersGoal(amount: convertedAmount)
             default:
                 print(Constants.error.retrieveUserTargetErr)
             }
-            
-            
+        }
+    }
+    
+    func setUserGoalManualy(newValue:Double) async {
+        await updateUsersGoal(amount: newValue)
+    }
+    
+    func updateUsersGoal(amount: Double) async{
+        let res = await fbViewModel?.setUsersTarget(target: String(format: "%.2f", amount))
+        switch res {
+        case .success(_):
+            print("User target OK")
+            DispatchQueue.main.async {
+                self.monthlyGoal = String(format: "%.2f", amount)
+            }
+            Utilities().setUserDefaults(for:"userTarget", with: monthlyGoal)
+        case .failure(let err):
+            print(err.localizedDescription)
+        case .none:
+            print(Constants.error.retrieveUserTargetErr)
         }
     }
 }

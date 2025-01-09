@@ -97,7 +97,7 @@ struct Profile: View {
                 }
                 Button(Constants.strings.save, role: .none) {
                     Task{
-                        await profileViewModel.setUsersGoal(oldValue: currencySelection, newValue: currencySelection)
+                        await profileViewModel.setUserGoalManualy(newValue: Double(profileViewModel.monthlyGoal) ?? 0.0)
                     }
                     profileViewModel.showMonthGoalAlert = false
                 }
