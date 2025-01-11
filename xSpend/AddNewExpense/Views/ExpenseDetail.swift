@@ -79,7 +79,9 @@ struct ExpenseDetail: View {
                     }.frame(height: 280).scrollDisabled(true)
                     
                     if viewType != .view{
-                        QuickAmounts(addNewExpenseViewModel: addNewExpenseViewModel)
+                        QuickAmounts { amountSelected in
+                            addNewExpenseViewModel.expenseAmount = (Float(amountSelected) ?? 0) + (addNewExpenseViewModel.expenseAmount ?? 0)
+                        }
                     }
                     
                     Form{

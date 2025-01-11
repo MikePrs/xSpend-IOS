@@ -17,6 +17,10 @@
 		0504E1B52C4D3E39003FDA03 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0504E1B82C4D91D0003FDA03 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0504E1B72C4D91D0003FDA03 /* Utilities.swift */; };
 		0515FF192D31A9050008D456 /* xSpendWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0515FF2A2D31DD2D0008D456 /* QuickAmounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */; };
+		0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786D2C190E8B00550877 /* Utils.swift */; };
+		0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
+		0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579787E2C27301200550877 /* ExpenseType.swift */; };
 		054835E22D2BF069008A8D70 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054835E12D2BF069008A8D70 /* Router.swift */; };
 		0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */; };
 		0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */; };
@@ -822,6 +826,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0515FF2A2D31DD2D0008D456 /* QuickAmounts.swift in Sources */,
+				0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */,
+				0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */,
+				0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,14 +8,8 @@
 import SwiftUI
 
 struct QuickAmounts: View {
-    @StateObject var addNewExpenseViewModel:AddNewExpenseViewModel
     
-    func quickBtnAction(_ value:String ){
-        if let floatValue = Float(value) {
-            addNewExpenseViewModel.expenseAmount =
-            (addNewExpenseViewModel.expenseAmount ?? 0) + floatValue
-        }
-    }
+    var quickBtnAction: (String) -> Void
     
     var body: some View {
         HStack{
@@ -26,7 +20,6 @@ struct QuickAmounts: View {
             QuickAmountButton(value: "20") {quickBtnAction("20")}
             QuickAmountButton(value: "50") {quickBtnAction("50")}
         }
-
     }
 
 }
@@ -41,9 +34,17 @@ struct QuickAmountButton: View {
         Button(action: {
             action()
         }) {
+#if os(watchOS)
+            Text("+\(value)")
+                .font(.system(size: 9)).tint(.white)
+#else
             Text("+\(value)").padding(10).tint(.white)
+#endif
         }
         .background(Utils.getPurpleColor(colorScheme))
+#if os(watchOS)
+        .frame(width:30,height:30)
+#endif
         .cornerRadius(10)
     }
 }
