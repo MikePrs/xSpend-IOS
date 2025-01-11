@@ -21,6 +21,10 @@
 		0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786D2C190E8B00550877 /* Utils.swift */; };
 		0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
 		0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579787E2C27301200550877 /* ExpenseType.swift */; };
+		0515FF312D328D220008D456 /* ColorChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF302D328D220008D456 /* ColorChoice.swift */; };
+		0515FF342D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */; };
+		0515FF352D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */; };
+		0515FF362D328E930008D456 /* ColorChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF302D328D220008D456 /* ColorChoice.swift */; };
 		054835E22D2BF069008A8D70 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054835E12D2BF069008A8D70 /* Router.swift */; };
 		0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */; };
 		0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */; };
@@ -146,6 +150,8 @@
 		0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xSpendWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0515FF052D31A9050008D456 /* xSpendWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xSpendWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0515FF0F2D31A9050008D456 /* xSpendWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xSpendWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0515FF302D328D220008D456 /* ColorChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorChoice.swift; sourceTree = "<group>"; };
+		0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarGoalWidgetEntryView.swift; sourceTree = "<group>"; };
 		054835E12D2BF069008A8D70 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		0565AE712A5AF0BE0050A9D8 /* xSpend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xSpend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xSpendApp.swift; sourceTree = "<group>"; };
@@ -582,6 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */,
+				0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */,
 			);
 			path = ProgressBarWidget;
 			sourceTree = "<group>";
@@ -597,6 +604,7 @@
 		05ED2F642C49A2CC006AF70D /* GoalWidget */ = {
 			isa = PBXGroup;
 			children = (
+				0515FF302D328D220008D456 /* ColorChoice.swift */,
 				05B05FDD2C8649B800BF21E6 /* GaudgeWidget */,
 				05B05FDC2C8649AC00BF21E6 /* ProgressBarWidget */,
 				05ED2F652C49A2CC006AF70D /* GoalWidgetBundle.swift */,
@@ -826,9 +834,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0515FF352D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */,
 				0515FF2A2D31DD2D0008D456 /* QuickAmounts.swift in Sources */,
 				0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */,
 				0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */,
+				0515FF362D328E930008D456 /* ColorChoice.swift in Sources */,
 				0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -901,6 +911,8 @@
 				0504E1B32C4D37D6003FDA03 /* FetchError.swift in Sources */,
 				05ED2F6C2C49A2CC006AF70D /* AppIntent.swift in Sources */,
 				0504E1B12C4D3793003FDA03 /* Expense.swift in Sources */,
+				0515FF312D328D220008D456 /* ColorChoice.swift in Sources */,
+				0515FF342D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */,
 				05ED2F682C49A2CC006AF70D /* GoalWidgetLiveActivity.swift in Sources */,
 				0504E1B42C4D37DB003FDA03 /* ExchangeRate.swift in Sources */,
 				05ED2F792C4D335D006AF70D /* ConstantsXspend.swift in Sources */,
