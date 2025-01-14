@@ -21,7 +21,6 @@ struct HorizontalScrollScreens: View {
     var body: some View {
         TabView {
             MainScreen().tag(0)
-            
             AnalyticsScreen().tag(1)
         }
         .tabViewStyle(PageTabViewStyle())

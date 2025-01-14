@@ -7,7 +7,6 @@
 
 import WidgetKit
 import AppIntents
-import FirebaseCore
 import SwiftUI
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {

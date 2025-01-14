@@ -9,6 +9,11 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: AppIntentTimelineProvider {
+    
+    func recommendations() -> [AppIntentRecommendation<ConfigurationAppIntent>] {
+        return [AppIntentRecommendation(intent: ConfigurationAppIntent(), description: Constants.strings.monthGoal)]
+    }
+    
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), colorChoice: .purple)
     }

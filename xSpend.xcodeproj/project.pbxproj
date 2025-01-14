@@ -25,6 +25,14 @@
 		0515FF342D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */; };
 		0515FF352D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */; };
 		0515FF362D328E930008D456 /* ColorChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF302D328D220008D456 /* ColorChoice.swift */; };
+		0515FF3C2D32D6440008D456 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05ED2F602C49A2CC006AF70D /* WidgetKit.framework */; };
+		0515FF3D2D32D6440008D456 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05ED2F622C49A2CC006AF70D /* SwiftUI.framework */; };
+		0515FF482D32D6460008D456 /* MonthGoalComplicationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0515FF3B2D32D6440008D456 /* MonthGoalComplicationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0515FF4E2D32D9770008D456 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ED2F6B2C49A2CC006AF70D /* AppIntent.swift */; };
+		0515FF4F2D32D9950008D456 /* ColorChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515FF302D328D220008D456 /* ColorChoice.swift */; };
+		0515FF502D32D9C10008D456 /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
+		0515FF512D32DC4F0008D456 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ED2F692C49A2CC006AF70D /* Provider.swift */; };
+		0515FF522D32DD320008D456 /* ExpenseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579787E2C27301200550877 /* ExpenseType.swift */; };
 		054835E22D2BF069008A8D70 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054835E12D2BF069008A8D70 /* Router.swift */; };
 		0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */; };
 		0565AE772A5AF0BE0050A9D8 /* LandingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0565AE762A5AF0BE0050A9D8 /* LandingScreen.swift */; };
@@ -89,26 +97,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0515FF062D31A9050008D456 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0565AE692A5AF0BE0050A9D8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0515FEF52D31A9020008D456;
-			remoteInfo = "xSpendWatch Watch App";
-		};
-		0515FF102D31A9050008D456 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0565AE692A5AF0BE0050A9D8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0515FEF52D31A9020008D456;
-			remoteInfo = "xSpendWatch Watch App";
-		};
 		0515FF172D31A9050008D456 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0565AE692A5AF0BE0050A9D8 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 0515FEF52D31A9020008D456;
 			remoteInfo = "xSpendWatch Watch App";
+		};
+		0515FF462D32D6460008D456 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0565AE692A5AF0BE0050A9D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0515FF3A2D32D6440008D456;
+			remoteInfo = MonthGoalComplicationExtension;
 		};
 		05ED2F702C49A2CE006AF70D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -131,6 +132,17 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0515FF4D2D32D6460008D456 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0515FF482D32D6460008D456 /* MonthGoalComplicationExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		05ED2F732C49A2CE006AF70D /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -148,10 +160,9 @@
 		0504E1B62C4D5779003FDA03 /* GoalWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoalWidgetExtension.entitlements; sourceTree = "<group>"; };
 		0504E1B72C4D91D0003FDA03 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xSpendWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0515FF052D31A9050008D456 /* xSpendWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xSpendWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0515FF0F2D31A9050008D456 /* xSpendWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xSpendWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0515FF302D328D220008D456 /* ColorChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorChoice.swift; sourceTree = "<group>"; };
 		0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarGoalWidgetEntryView.swift; sourceTree = "<group>"; };
+		0515FF3B2D32D6440008D456 /* MonthGoalComplicationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MonthGoalComplicationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		054835E12D2BF069008A8D70 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		0565AE712A5AF0BE0050A9D8 /* xSpend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xSpend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0565AE742A5AF0BE0050A9D8 /* xSpendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xSpendApp.swift; sourceTree = "<group>"; };
@@ -208,8 +219,19 @@
 		48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAmounts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0515FF492D32D6460008D456 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0515FEF72D31A9020008D456 /* xSpendWatch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "xSpendWatch Watch App"; sourceTree = "<group>"; };
+		0515FF3E2D32D6440008D456 /* MonthGoalComplication */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0515FF492D32D6460008D456 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MonthGoalComplication; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,17 +242,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0515FF022D31A9050008D456 /* Frameworks */ = {
+		0515FF382D32D6440008D456 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0515FF0C2D31A9050008D456 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				0515FF3D2D32D6440008D456 /* SwiftUI.framework in Frameworks */,
+				0515FF3C2D32D6440008D456 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +286,7 @@
 				0565AE732A5AF0BE0050A9D8 /* xSpend */,
 				05ED2F642C49A2CC006AF70D /* GoalWidget */,
 				0515FEF72D31A9020008D456 /* xSpendWatch Watch App */,
+				0515FF3E2D32D6440008D456 /* MonthGoalComplication */,
 				0565AE722A5AF0BE0050A9D8 /* Products */,
 				3D5DF300D9A7862AD74A1A65 /* Frameworks */,
 			);
@@ -280,8 +298,7 @@
 				0565AE712A5AF0BE0050A9D8 /* xSpend.app */,
 				05ED2F5F2C49A2CC006AF70D /* GoalWidgetExtension.appex */,
 				0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */,
-				0515FF052D31A9050008D456 /* xSpendWatch Watch AppTests.xctest */,
-				0515FF0F2D31A9050008D456 /* xSpendWatch Watch AppUITests.xctest */,
+				0515FF3B2D32D6440008D456 /* MonthGoalComplicationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -636,10 +653,12 @@
 				0515FEF22D31A9020008D456 /* Sources */,
 				0515FEF32D31A9020008D456 /* Frameworks */,
 				0515FEF42D31A9020008D456 /* Resources */,
+				0515FF4D2D32D6460008D456 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0515FF472D32D6460008D456 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0515FEF72D31A9020008D456 /* xSpendWatch Watch App */,
@@ -651,45 +670,27 @@
 			productReference = 0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0515FF042D31A9050008D456 /* xSpendWatch Watch AppTests */ = {
+		0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0515FF222D31A9050008D456 /* Build configuration list for PBXNativeTarget "xSpendWatch Watch AppTests" */;
+			buildConfigurationList = 0515FF4A2D32D6460008D456 /* Build configuration list for PBXNativeTarget "MonthGoalComplicationExtension" */;
 			buildPhases = (
-				0515FF012D31A9050008D456 /* Sources */,
-				0515FF022D31A9050008D456 /* Frameworks */,
-				0515FF032D31A9050008D456 /* Resources */,
+				0515FF372D32D6440008D456 /* Sources */,
+				0515FF382D32D6440008D456 /* Frameworks */,
+				0515FF392D32D6440008D456 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0515FF072D31A9050008D456 /* PBXTargetDependency */,
 			);
-			name = "xSpendWatch Watch AppTests";
+			fileSystemSynchronizedGroups = (
+				0515FF3E2D32D6440008D456 /* MonthGoalComplication */,
+			);
+			name = MonthGoalComplicationExtension;
 			packageProductDependencies = (
 			);
-			productName = "xSpendWatch Watch AppTests";
-			productReference = 0515FF052D31A9050008D456 /* xSpendWatch Watch AppTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0515FF0E2D31A9050008D456 /* xSpendWatch Watch AppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0515FF232D31A9050008D456 /* Build configuration list for PBXNativeTarget "xSpendWatch Watch AppUITests" */;
-			buildPhases = (
-				0515FF0B2D31A9050008D456 /* Sources */,
-				0515FF0C2D31A9050008D456 /* Frameworks */,
-				0515FF0D2D31A9050008D456 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0515FF112D31A9050008D456 /* PBXTargetDependency */,
-			);
-			name = "xSpendWatch Watch AppUITests";
-			packageProductDependencies = (
-			);
-			productName = "xSpendWatch Watch AppUITests";
-			productReference = 0515FF0F2D31A9050008D456 /* xSpendWatch Watch AppUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
+			productName = MonthGoalComplicationExtension;
+			productReference = 0515FF3B2D32D6440008D456 /* MonthGoalComplicationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		0565AE702A5AF0BE0050A9D8 /* xSpend */ = {
 			isa = PBXNativeTarget;
@@ -742,13 +743,8 @@
 					0515FEF52D31A9020008D456 = {
 						CreatedOnToolsVersion = 16.0;
 					};
-					0515FF042D31A9050008D456 = {
+					0515FF3A2D32D6440008D456 = {
 						CreatedOnToolsVersion = 16.0;
-						TestTargetID = 0515FEF52D31A9020008D456;
-					};
-					0515FF0E2D31A9050008D456 = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = 0515FEF52D31A9020008D456;
 					};
 					0565AE702A5AF0BE0050A9D8 = {
 						CreatedOnToolsVersion = 14.2;
@@ -779,8 +775,7 @@
 				0565AE702A5AF0BE0050A9D8 /* xSpend */,
 				05ED2F5E2C49A2CC006AF70D /* GoalWidgetExtension */,
 				0515FEF52D31A9020008D456 /* xSpendWatch Watch App */,
-				0515FF042D31A9050008D456 /* xSpendWatch Watch AppTests */,
-				0515FF0E2D31A9050008D456 /* xSpendWatch Watch AppUITests */,
+				0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -793,14 +788,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0515FF032D31A9050008D456 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0515FF0D2D31A9050008D456 /* Resources */ = {
+		0515FF392D32D6440008D456 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -843,17 +831,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0515FF012D31A9050008D456 /* Sources */ = {
+		0515FF372D32D6440008D456 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0515FF0B2D31A9050008D456 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				0515FF502D32D9C10008D456 /* ConstantsXspend.swift in Sources */,
+				0515FF522D32DD320008D456 /* ExpenseType.swift in Sources */,
+				0515FF4F2D32D9950008D456 /* ColorChoice.swift in Sources */,
+				0515FF512D32DC4F0008D456 /* Provider.swift in Sources */,
+				0515FF4E2D32D9770008D456 /* AppIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -928,20 +914,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0515FF072D31A9050008D456 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0515FEF52D31A9020008D456 /* xSpendWatch Watch App */;
-			targetProxy = 0515FF062D31A9050008D456 /* PBXContainerItemProxy */;
-		};
-		0515FF112D31A9050008D456 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0515FEF52D31A9020008D456 /* xSpendWatch Watch App */;
-			targetProxy = 0515FF102D31A9050008D456 /* PBXContainerItemProxy */;
-		};
 		0515FF182D31A9050008D456 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0515FEF52D31A9020008D456 /* xSpendWatch Watch App */;
 			targetProxy = 0515FF172D31A9050008D456 /* PBXContainerItemProxy */;
+		};
+		0515FF472D32D6460008D456 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
+			targetProxy = 0515FF462D32D6460008D456 /* PBXContainerItemProxy */;
 		};
 		05ED2F712C49A2CE006AF70D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1020,98 +1001,71 @@
 			};
 			name = Release;
 		};
-		0515FF1D2D31A9050008D456 /* Debug */ = {
+		0515FF4B2D32D6460008D456 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4Q4PVC3RU;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MonthGoalComplication/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MonthGoalComplication;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mikePrs.xSpendWatch-Watch-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = co.mikePrs.xSpend.watchkitapp.MonthGoalComplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/xSpendWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/xSpendWatch Watch App";
 				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
-		0515FF1E2D31A9050008D456 /* Release */ = {
+		0515FF4C2D32D6460008D456 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4Q4PVC3RU;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MonthGoalComplication/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MonthGoalComplication;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mikePrs.xSpendWatch-Watch-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = co.mikePrs.xSpend.watchkitapp.MonthGoalComplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/xSpendWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/xSpendWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
-			};
-			name = Release;
-		};
-		0515FF1F2D31A9050008D456 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C4Q4PVC3RU;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mikePrs.xSpendWatch-Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "xSpendWatch Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
-			};
-			name = Debug;
-		};
-		0515FF202D31A9050008D456 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C4Q4PVC3RU;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mikePrs.xSpendWatch-Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "xSpendWatch Watch App";
 				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Release;
@@ -1379,20 +1333,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0515FF222D31A9050008D456 /* Build configuration list for PBXNativeTarget "xSpendWatch Watch AppTests" */ = {
+		0515FF4A2D32D6460008D456 /* Build configuration list for PBXNativeTarget "MonthGoalComplicationExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0515FF1D2D31A9050008D456 /* Debug */,
-				0515FF1E2D31A9050008D456 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0515FF232D31A9050008D456 /* Build configuration list for PBXNativeTarget "xSpendWatch Watch AppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0515FF1F2D31A9050008D456 /* Debug */,
-				0515FF202D31A9050008D456 /* Release */,
+				0515FF4B2D32D6460008D456 /* Debug */,
+				0515FF4C2D32D6460008D456 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
