@@ -9,18 +9,23 @@
 import WidgetKit
 import SwiftUI
 
+struct ProgressBarData:Equatable {
+    var monthGoal: String
+    var userCurentExpense: String
+    var currency: String
+
+}
+
 struct ProgressBarGoalWidgetEntryView : View {
-    @State var percentage = ""
-    @State var percentageValue = 0.0
+    @State var percentage: String? = nil
+    @State var percentageValue: Double? = nil
     
-    @State var monthGoal: String
-    @State var userCurentExpense: String
-    @State var currency: String
     @State var color: ColorChoice
+    var data : ProgressBarData
     
     func onAppear(){
-        guard let month = Double(monthGoal) else { return }
-        guard let current = Double(userCurentExpense) else { return }
+        guard let month = Double(data.monthGoal) else { return }
+        guard let current = Double(data.userCurentExpense) else { return }
         guard month != 0 else {return}
         
         self.percentage = String(format: "%.1f",(current * 100) / month)
@@ -30,7 +35,7 @@ struct ProgressBarGoalWidgetEntryView : View {
     var body: some View {
         VStack {
             HStack{
-                Text("\(userCurentExpense) \(currency) / \(monthGoal) \(currency) ").frame(alignment: .leading)
+                Text("\(data.userCurentExpense) \(data.currency) / \(data.monthGoal) \(data.currency) ").frame(alignment: .leading)
                 Spacer()
             }.padding()
             GeometryReader { geometry in
@@ -45,7 +50,7 @@ struct ProgressBarGoalWidgetEntryView : View {
                         LinearGradient(gradient: Gradient(colors: [Color.clear, color.uiColor]),
                                        startPoint: .leading,
                                        endPoint: .trailing)
-                        .frame(width: CGFloat(self.percentageValue) * geometry.size.width, height: geometry.size.height)
+                        .frame(width: CGFloat(self.percentageValue ?? 0.0) * geometry.size.width, height: geometry.size.height)
                         .cornerRadius(8.0)
                         Spacer()
                     }
@@ -53,10 +58,13 @@ struct ProgressBarGoalWidgetEntryView : View {
             }.frame(height: 10)
             HStack{
                 Spacer()
-                Text("\(percentage)%").frame( alignment: .leading)
+                Text("\(percentage ?? "0")%").frame( alignment: .leading)
             }.padding()
             
-        }.onAppear{onAppear()}
-            
+        }
+        .onAppear{onAppear()}
+        .onChange(of: data) { _,_ in
+            onAppear()
+        }
     }
 }

@@ -28,11 +28,20 @@ struct MonthGoalComplication: Widget {
 
 struct MonthGoalComplicationEntryView : View {
     var entry: Provider.Entry
+    @State var progress : Double = 0.5 // default value 
+    
+    func onAppear(){
+        guard let month = Double(entry.configuration.monthGoal) else { return }
+        guard let current = Double(entry.configuration.userCurentExpense) else { return }
+        guard month != 0 else {return}
+        
+        self.progress = (current / month)
+    }
     
     var body: some View {
         VStack{
-            CurvedBarView(progress: 0.7)
-        }
+            CurvedBarView(progress: progress)
+        }.onAppear{onAppear()}
     }
 }
 

@@ -26,18 +26,18 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
         
         var intent = ConfigurationAppIntent()
         let wh = WidgetHelper()
-        intent.monthGoal = wh.userTarget
-        intent.userCurentExpense = wh.userCurentExpense
-        intent.currency = wh.userCurrency
+        intent.monthGoal = wh.userTarget ?? "1000"
+        intent.userCurentExpense = wh.userCurentExpense ?? "500"
+        intent.currency = wh.userCurrency ?? ""
         return intent
     }
 }
 
 class WidgetHelper {
     let sharedDefaults = UserDefaults(suiteName: Constants.groupName)
-    @Published var userTarget:String
-    @Published var userCurrency:String
-    @Published var userCurentExpense:String
+    @Published var userTarget:String?
+    @Published var userCurrency:String?
+    @Published var userCurentExpense:String?
     @Published var percentage:String?
     @Published var percentageValue:Double?
     
@@ -50,10 +50,6 @@ class WidgetHelper {
             self.userTarget =  userTarget
             self.userCurentExpense = userCurentExpense
             self.userCurrency =  userCurrency
-        }else{
-            self.userTarget =  "0"
-            self.userCurentExpense = "0"
-            self.userCurrency =  ""
         }
     }
 }

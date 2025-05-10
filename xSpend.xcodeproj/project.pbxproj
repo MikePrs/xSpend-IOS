@@ -16,6 +16,7 @@
 		0504E1B42C4D37DB003FDA03 /* ExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BE81232B4095970082087C /* ExchangeRate.swift */; };
 		0504E1B52C4D3E39003FDA03 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0504E1B82C4D91D0003FDA03 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0504E1B72C4D91D0003FDA03 /* Utilities.swift */; };
+		05129BDB2DCD5EDF00D6E03A /* WCSessionManagerWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */; };
 		0515FF192D31A9050008D456 /* xSpendWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0515FF2A2D31DD2D0008D456 /* QuickAmounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */; };
 		0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579786D2C190E8B00550877 /* Utils.swift */; };
@@ -59,6 +60,7 @@
 		0579787C2C26313B00550877 /* FirebaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579787B2C26313B00550877 /* FirebaseError.swift */; };
 		0579787F2C27301200550877 /* ExpenseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0579787E2C27301200550877 /* ExpenseType.swift */; };
 		057978812C27304100550877 /* SectionedExpenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978802C27304100550877 /* SectionedExpenses.swift */; };
+		0585EDB32DCD4F0900509C2A /* WCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EDB22DCD4F0900509C2A /* WCSessionManager.swift */; };
 		0597263C2B39DFE900A13131 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0597263B2B39DFE900A13131 /* GoogleService-Info.plist */; };
 		0598EA132AEEB4CA00EC9EC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */; };
 		059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */; };
@@ -157,8 +159,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0501D1F72DCEC94D00D7E74B /* MonthGoalComplicationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MonthGoalComplicationExtension.entitlements; sourceTree = "<group>"; };
 		0504E1B62C4D5779003FDA03 /* GoalWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoalWidgetExtension.entitlements; sourceTree = "<group>"; };
 		0504E1B72C4D91D0003FDA03 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionManagerWatch.swift; sourceTree = "<group>"; };
 		0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xSpendWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0515FF302D328D220008D456 /* ColorChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorChoice.swift; sourceTree = "<group>"; };
 		0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarGoalWidgetEntryView.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 		0579787E2C27301200550877 /* ExpenseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseType.swift; sourceTree = "<group>"; };
 		057978802C27304100550877 /* SectionedExpenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedExpenses.swift; sourceTree = "<group>"; };
 		057978822C2732A500550877 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		0585EDB22DCD4F0900509C2A /* WCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionManager.swift; sourceTree = "<group>"; };
 		0597263B2B39DFE900A13131 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0598EA122AEEB4CA00EC9EC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -282,6 +287,7 @@
 		0565AE682A5AF0BE0050A9D8 = {
 			isa = PBXGroup;
 			children = (
+				0501D1F72DCEC94D00D7E74B /* MonthGoalComplicationExtension.entitlements */,
 				0504E1B62C4D5779003FDA03 /* GoalWidgetExtension.entitlements */,
 				0565AE732A5AF0BE0050A9D8 /* xSpend */,
 				05ED2F642C49A2CC006AF70D /* GoalWidget */,
@@ -326,6 +332,8 @@
 				0565AE782A5AF0BF0050A9D8 /* Assets.xcassets */,
 				0565AE7A2A5AF0BF0050A9D8 /* Preview Content */,
 				05AC09452D1F3717003E05A2 /* Launch Screen.storyboard */,
+				0585EDB22DCD4F0900509C2A /* WCSessionManager.swift */,
+				05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */,
 			);
 			path = xSpend;
 			sourceTree = "<group>";
@@ -755,7 +763,7 @@
 				};
 			};
 			buildConfigurationList = 0565AE6C2A5AF0BE0050A9D8 /* Build configuration list for PBXProject "xSpend" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -827,6 +835,7 @@
 				0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */,
 				0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */,
 				0515FF362D328E930008D456 /* ColorChoice.swift in Sources */,
+				05129BDB2DCD5EDF00D6E03A /* WCSessionManagerWatch.swift in Sources */,
 				0515FF2B2D31DDC90008D456 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -877,6 +886,7 @@
 				059CFA2F2AF0563300647653 /* ExpensesScreen.swift in Sources */,
 				059CDDFB2A6866FA0006DF80 /* CountryCurrencyCode.swift in Sources */,
 				0579787C2C26313B00550877 /* FirebaseError.swift in Sources */,
+				0585EDB32DCD4F0900509C2A /* WCSessionManager.swift in Sources */,
 				0579786A2C18F10000550877 /* ExpenseTypesViewModel.swift in Sources */,
 				057978672C1796E200550877 /* ProfileViewModel.swift in Sources */,
 				057978812C27304100550877 /* SectionedExpenses.swift in Sources */,
@@ -938,6 +948,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "xSpendWatch Watch App/xSpendWatch Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"xSpendWatch Watch App/Preview Content\"";
@@ -973,6 +984,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "xSpendWatch Watch App/xSpendWatch Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"xSpendWatch Watch App/Preview Content\"";
@@ -1007,6 +1019,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MonthGoalComplicationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4Q4PVC3RU;
@@ -1042,6 +1055,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MonthGoalComplicationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4Q4PVC3RU;

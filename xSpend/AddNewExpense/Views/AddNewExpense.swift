@@ -17,6 +17,9 @@ struct AddNewExpense: View {
     @StateObject var addNewExpenseViewModel = AddNewExpenseViewModel()
     
     func onAppear() {
+        
+        
+        
         fbViewModel.getExpenseTypes()
         if currencySelection == "" {
             if let usersCountryCode = Locale.current.region?.identifier{

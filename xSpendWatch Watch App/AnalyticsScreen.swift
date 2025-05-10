@@ -8,22 +8,39 @@
 import SwiftUI
 
 struct AnalyticsScreen: View {
-    var monthGoal = "1000"
-    var userCurentExpense = "500"
-    var percentage = "50%"
-    var percentageValue = 0.5
-    var currency = "EUR"
+
+    @ObservedObject var sessionManager = WCSessionManagerWatch.shared
+    
+    func getDefaults(){
+        if let sharedDefaults = UserDefaults(suiteName: Constants.groupName) {
+            let usrDefaults = sharedDefaults
+            
+            if let userTarget = usrDefaults.string(forKey: "userTarget") {
+                sessionManager.userTarget = userTarget
+            }
+            if let userCurrency = usrDefaults.string(forKey: "userCurrency") {
+                sessionManager.userCurrency = userCurrency
+            }
+            if let userCurrentExpense = usrDefaults.string(forKey: "userCurentExpense") {
+                sessionManager.userCurrentExpense = userCurrentExpense
+            }
+        }else{
+            print("userDefaults not found")
+        }
+    }
     
     var body: some View {
         VStack(spacing:0) {
             ProgressBarGoalWidgetEntryView(
-                percentage: percentage,
-                percentageValue: percentageValue,
-                monthGoal: monthGoal,
-                userCurentExpense: userCurentExpense,
-                currency: currency,
-                color: ColorChoice.purple
+                color: ColorChoice.purple,
+                data: ProgressBarData(
+                    monthGoal: sessionManager.userTarget,
+                    userCurentExpense: sessionManager.userCurrentExpense,
+                    currency: sessionManager.userCurrency
+                )
             )
+        }.onAppear {
+            getDefaults()
         }
     }
 }
