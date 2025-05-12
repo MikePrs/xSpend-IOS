@@ -24,17 +24,35 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: .monthProgressBar, colorChoice: configuration.widgetAccentcolor.uiColor)
+
+        for minuteOffset in stride(from: 0, to: 60, by: 5) {
+            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
+            
+            
+            if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.xSpend.usersStatsData") {
+                print("✅ App group container is available at: \(containerURL)")
+            } else {
+                print("❌ App group container is NOT available. Entitlements may be missing or it's being called too early.")
+            }
+            
+            // ✅ Re-fetch shared defaults each time
+            let helper = WidgetHelper()
+            var updatedConfig = configuration
+            updatedConfig.monthGoal = helper.userTarget ?? "1000"
+            updatedConfig.userCurentExpense = helper.userCurentExpense ?? "500"
+            updatedConfig.currency = helper.userCurrency ?? "EUR"
+
+            let entry = SimpleEntry(date: entryDate, configuration: updatedConfig, colorChoice: configuration.widgetAccentcolor.uiColor)
             entries.append(entry)
         }
 
-        return Timeline(entries: entries, policy: .atEnd)
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
+        print("Next complication update scheduled for: \(nextUpdate)")
+        return Timeline(entries: entries, policy: .after(nextUpdate))
     }
+
+
 }
 
 struct SimpleEntry: TimelineEntry {

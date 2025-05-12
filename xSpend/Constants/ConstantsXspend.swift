@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct Constants {
-    static var groupName = "group.co.mikePrs.xSpend"
+    static var groupName = "group.xSpend.usersStatsData"
     
     struct firebase {
         // Collections

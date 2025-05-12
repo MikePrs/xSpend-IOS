@@ -20,12 +20,6 @@ struct MonthGoalComplication: Widget {
     }
 }
 
-#Preview(as: .accessoryCorner) {
-    MonthGoalComplication()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .monthProgressBar, colorChoice: .cyan)
-}
-
 struct MonthGoalComplicationEntryView : View {
     var entry: Provider.Entry
     @State var progress : Double = 0.5 // default value 

@@ -10,32 +10,45 @@ import WidgetKit
 import SwiftUI
 
 struct ProgressBarData:Equatable {
-    var monthGoal: String
-    var userCurentExpense: String
-    var currency: String
+    var monthGoal: String?
+    var userCurentExpense: String?
+    var currency: String?
 
 }
 
 struct ProgressBarGoalWidgetEntryView : View {
     @State var percentage: String? = nil
     @State var percentageValue: Double? = nil
+    @State var monthGoal: String = ""
+    @State var userCurentExpense: String = ""
+    @State var currency: String = ""
     
     @State var color: ColorChoice
     var data : ProgressBarData
     
-    func onAppear(){
-        guard let month = Double(data.monthGoal) else { return }
-        guard let current = Double(data.userCurentExpense) else { return }
-        guard month != 0 else {return}
-        
-        self.percentage = String(format: "%.1f",(current * 100) / month)
-        self.percentageValue = Double(Float(current) / Float(month))
+    func onAppear() {
+        guard
+            let monthString = data.monthGoal,
+            let month = Double(monthString),
+            let currentString = data.userCurentExpense,
+            let current = Double(currentString),
+            month != 0,
+            let currency = data.currency
+        else {
+            return
+        }
+
+        self.percentage = String(format: "%.1f", (current * 100) / month)
+        self.percentageValue = current / month
+        self.monthGoal = String(format: "%.2f", month)
+        self.userCurentExpense = String(format: "%.2f", current)
+        self.currency = currency
     }
 
     var body: some View {
         VStack {
             HStack{
-                Text("\(data.userCurentExpense) \(data.currency) / \(data.monthGoal) \(data.currency) ").frame(alignment: .leading)
+                Text("\(userCurentExpense) \(currency) / \(monthGoal) \(currency)")
                 Spacer()
             }.padding()
             GeometryReader { geometry in

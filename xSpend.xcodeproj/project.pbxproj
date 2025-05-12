@@ -95,6 +95,7 @@
 		05ED2F792C4D335D006AF70D /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
 		05F6641D2A7052A800F5D701 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641C2A7052A800F5D701 /* Expense.swift */; };
 		05F6641F2A797BE000F5D701 /* ExpenseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */; };
+		05F8B5462DD1485000EE8F2D /* WCSessionManagerWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */; };
 		48E5D5542C231E8C007EEF2B /* QuickAmounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */; };
 /* End PBXBuildFile section */
 
@@ -160,6 +161,7 @@
 
 /* Begin PBXFileReference section */
 		0501D1F72DCEC94D00D7E74B /* MonthGoalComplicationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MonthGoalComplicationExtension.entitlements; sourceTree = "<group>"; };
+		0501D1FD2DCFD51200D7E74B /* WatchConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchConnectivity.framework; path = System/Library/Frameworks/WatchConnectivity.framework; sourceTree = SDKROOT; };
 		0504E1B62C4D5779003FDA03 /* GoalWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoalWidgetExtension.entitlements; sourceTree = "<group>"; };
 		0504E1B72C4D91D0003FDA03 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionManagerWatch.swift; sourceTree = "<group>"; };
@@ -232,10 +234,17 @@
 			);
 			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
 		};
+		05F8B5482DD1489200EE8F2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Utilities.swift,
+			);
+			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0515FEF72D31A9020008D456 /* xSpendWatch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "xSpendWatch Watch App"; sourceTree = "<group>"; };
+		0515FEF72D31A9020008D456 /* xSpendWatch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (05F8B5482DD1489200EE8F2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "xSpendWatch Watch App"; sourceTree = "<group>"; };
 		0515FF3E2D32D6440008D456 /* MonthGoalComplication */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0515FF492D32D6460008D456 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MonthGoalComplication; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -645,6 +654,7 @@
 		3D5DF300D9A7862AD74A1A65 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0501D1FD2DCFD51200D7E74B /* WatchConnectivity.framework */,
 				05ED2F602C49A2CC006AF70D /* WidgetKit.framework */,
 				05ED2F622C49A2CC006AF70D /* SwiftUI.framework */,
 			);
@@ -849,6 +859,7 @@
 				0515FF4F2D32D9950008D456 /* ColorChoice.swift in Sources */,
 				0515FF512D32DC4F0008D456 /* Provider.swift in Sources */,
 				0515FF4E2D32D9770008D456 /* AppIntent.swift in Sources */,
+				05F8B5462DD1485000EE8F2D /* WCSessionManagerWatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +968,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "xSpendWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = xSpendWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = co.mikePrs.xSpend;
@@ -993,6 +1005,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "xSpendWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = xSpendWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = co.mikePrs.xSpend;

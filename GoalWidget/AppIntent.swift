@@ -21,36 +21,28 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     // configurable parameters.
     @Parameter(title: "Color", default: .purple )
     var widgetAccentcolor: ColorChoice
-    
-    static var monthProgressBar: ConfigurationAppIntent {
-        
-        var intent = ConfigurationAppIntent()
-        let wh = WidgetHelper()
-        intent.monthGoal = wh.userTarget ?? "1000"
-        intent.userCurentExpense = wh.userCurentExpense ?? "500"
-        intent.currency = wh.userCurrency ?? ""
-        return intent
-    }
 }
 
 class WidgetHelper {
     let sharedDefaults = UserDefaults(suiteName: Constants.groupName)
-    @Published var userTarget:String?
-    @Published var userCurrency:String?
-    @Published var userCurentExpense:String?
-    @Published var percentage:String?
-    @Published var percentageValue:Double?
+    
+    var userTarget: String?
+    var userCurrency: String?
+    var userCurentExpense: String?
+    var percentage: String?
+    var percentageValue: Double?
     
     init() {
-        if let usrDefaults = sharedDefaults,
-           let userTarget = usrDefaults.string(forKey: "userTarget"),
-           let userCurrency =  usrDefaults.string(forKey: "userCurrency"),
-           let userCurentExpense =  usrDefaults.string(forKey: "userCurentExpense")
-        {
-            self.userTarget =  userTarget
-            self.userCurentExpense = userCurentExpense
-            self.userCurrency =  userCurrency
+        guard let usrDefaults = sharedDefaults else {
+            print("Shared defaults not found")
+            return
         }
+
+        self.userTarget = usrDefaults.string(forKey: "userTarget")
+        self.userCurrency = usrDefaults.string(forKey: "userCurrency")
+        self.userCurentExpense = usrDefaults.string(forKey: "userCurentExpense")
+
+        print("Fetched from sharedDefaults:", self.userTarget ?? "nil", self.userCurentExpense ?? "nil", self.userCurrency ?? "nil")
     }
 }
 
