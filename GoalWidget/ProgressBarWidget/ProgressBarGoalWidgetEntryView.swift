@@ -9,12 +9,7 @@
 import WidgetKit
 import SwiftUI
 
-struct ProgressBarData:Equatable {
-    var monthGoal: String?
-    var userCurentExpense: String?
-    var currency: String?
 
-}
 
 struct ProgressBarGoalWidgetEntryView : View {
     @State var percentage: String? = nil

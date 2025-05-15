@@ -96,6 +96,10 @@
 		05F6641D2A7052A800F5D701 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641C2A7052A800F5D701 /* Expense.swift */; };
 		05F6641F2A797BE000F5D701 /* ExpenseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */; };
 		05F8B5462DD1485000EE8F2D /* WCSessionManagerWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */; };
+		05F8B5EE2DD68CCF00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
+		05F8B5EF2DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
+		05F8B5F02DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
+		05F8B5F12DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
 		48E5D5542C231E8C007EEF2B /* QuickAmounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */; };
 /* End PBXBuildFile section */
 
@@ -223,6 +227,7 @@
 		05ED2F772C4D3187006AF70D /* xSpend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = xSpend.entitlements; sourceTree = "<group>"; };
 		05F6641C2A7052A800F5D701 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTypes.swift; sourceTree = "<group>"; };
+		05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarData.swift; sourceTree = "<group>"; };
 		48E5D5532C231E8C007EEF2B /* QuickAmounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAmounts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -621,6 +626,7 @@
 		05B05FDC2C8649AC00BF21E6 /* ProgressBarWidget */ = {
 			isa = PBXGroup;
 			children = (
+				05F8B5F22DD68D1400EE8F2D /* Model */,
 				05B05FDE2C864A5800BF21E6 /* ProgressBarGoalWidget.swift */,
 				0515FF332D328DF50008D456 /* ProgressBarGoalWidgetEntryView.swift */,
 			);
@@ -649,6 +655,14 @@
 				05ED2F6F2C49A2CE006AF70D /* Info.plist */,
 			);
 			path = GoalWidget;
+			sourceTree = "<group>";
+		};
+		05F8B5F22DD68D1400EE8F2D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		3D5DF300D9A7862AD74A1A65 /* Frameworks */ = {
@@ -841,6 +855,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0515FF352D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */,
+				05F8B5EE2DD68CCF00EE8F2D /* ProgressBarData.swift in Sources */,
 				0515FF2A2D31DD2D0008D456 /* QuickAmounts.swift in Sources */,
 				0515FF2C2D31DDD80008D456 /* ConstantsXspend.swift in Sources */,
 				0515FF2D2D31DDEC0008D456 /* ExpenseType.swift in Sources */,
@@ -860,6 +875,7 @@
 				0515FF512D32DC4F0008D456 /* Provider.swift in Sources */,
 				0515FF4E2D32D9770008D456 /* AppIntent.swift in Sources */,
 				05F8B5462DD1485000EE8F2D /* WCSessionManagerWatch.swift in Sources */,
+				05F8B5F12DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,6 +888,7 @@
 				057978612C164BD200550877 /* ExpensesViewModel.swift in Sources */,
 				48E5D5542C231E8C007EEF2B /* QuickAmounts.swift in Sources */,
 				05BE81212B404E390082087C /* ExchangeRatesViewModel.swift in Sources */,
+				05F8B5EF2DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */,
 				0579787F2C27301200550877 /* ExpenseType.swift in Sources */,
 				059CDDEF2A60946B0006DF80 /* CustomTabBar.swift in Sources */,
 				0565AE752A5AF0BE0050A9D8 /* xSpendApp.swift in Sources */,
@@ -920,6 +937,7 @@
 				0504E1B12C4D3793003FDA03 /* Expense.swift in Sources */,
 				0515FF312D328D220008D456 /* ColorChoice.swift in Sources */,
 				0515FF342D328DF60008D456 /* ProgressBarGoalWidgetEntryView.swift in Sources */,
+				05F8B5F02DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */,
 				05ED2F682C49A2CC006AF70D /* GoalWidgetLiveActivity.swift in Sources */,
 				0504E1B42C4D37DB003FDA03 /* ExchangeRate.swift in Sources */,
 				05ED2F792C4D335D006AF70D /* ConstantsXspend.swift in Sources */,
@@ -972,6 +990,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = xSpendWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = co.mikePrs.xSpend;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1009,6 +1028,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = xSpendWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = co.mikePrs.xSpend;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

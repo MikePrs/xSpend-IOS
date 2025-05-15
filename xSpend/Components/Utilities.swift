@@ -22,13 +22,13 @@ class Utilities {
     }
     
     func getComplicationsUserDefaultsValues()-> [String:String] {
-//        let sharedDefaults = UserDefaults(suiteName: Constants.groupName)
-//        if let usrDefaults = sharedDefaults,
-//           let userTarget = usrDefaults.string(forKey: "userTarget"),
-//           let userCurrency =  usrDefaults.string(forKey: "userCurrency"),
-//           let userCurentExpense =  usrDefaults.string(forKey: "userCurentExpense"){
-//            return ["userTarget" : userTarget, "userCurrency" : userCurrency, "userCurentExpense" : userCurentExpense]
-//        }
+        let sharedDefaults = UserDefaults(suiteName: Constants.groupName)
+        if let usrDefaults = sharedDefaults,
+           let userTarget = usrDefaults.string(forKey: "userTarget"),
+           let userCurrency =  usrDefaults.string(forKey: "userCurrency"),
+           let userCurentExpense =  usrDefaults.string(forKey: "userCurentExpense"){
+            return ["userTarget" : userTarget, "userCurrency" : userCurrency, "userCurentExpense" : userCurentExpense]
+        }
         return [:]
     }
     
@@ -36,15 +36,11 @@ class Utilities {
     func sendComplicationUpdate() {
         WCSession.default.transferCurrentComplicationUserInfo(getComplicationsUserDefaultsValues())
         WCSession.default.transferUserInfo(getComplicationsUserDefaultsValues())
-        
-//        sendLocalNotificationToWatch()
-//        updateTimelines()
     }
     
     func updateTimelines(){
         WidgetCenter.shared.reloadTimelines(ofKind: "MonthGoalComplication")
         WidgetCenter.shared.reloadAllTimelines()
-        
     }
 
 }
