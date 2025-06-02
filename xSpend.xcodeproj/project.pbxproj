@@ -95,6 +95,10 @@
 		05ED2F792C4D335D006AF70D /* ConstantsXspend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057978362C0CD2C200550877 /* ConstantsXspend.swift */; };
 		05F6641D2A7052A800F5D701 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641C2A7052A800F5D701 /* Expense.swift */; };
 		05F6641F2A797BE000F5D701 /* ExpenseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6641E2A797BE000F5D701 /* ExpenseTypes.swift */; };
+		05F7B01A2DE9A38400BE2775 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 05F7B0192DE9A38400BE2775 /* FirebaseMessaging */; };
+		05F7B01C2DEBCCAB00BE2775 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 05F7B01B2DEBCCAB00BE2775 /* FirebaseFunctions */; };
+		05F7B01E2DEC479900BE2775 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 05F7B01D2DEC479900BE2775 /* FirebaseMessaging */; };
+		05F7B0202DEC48F000BE2775 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F7B01F2DEC48F000BE2775 /* FirebaseCore */; };
 		05F8B5462DD1485000EE8F2D /* WCSessionManagerWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05129BD92DCD5EDF00D6E03A /* WCSessionManagerWatch.swift */; };
 		05F8B5EE2DD68CCF00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
 		05F8B5EF2DD68CFD00EE8F2D /* ProgressBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F8B5EC2DD68CCF00EE8F2D /* ProgressBarData.swift */; };
@@ -258,6 +262,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05F7B0202DEC48F000BE2775 /* FirebaseCore in Frameworks */,
+				05F7B01E2DEC479900BE2775 /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +282,8 @@
 			files = (
 				05EB11DC2D1DDCBE00807872 /* SymbolPicker in Frameworks */,
 				05EB11D22D1DDB5000807872 /* FirebaseCore in Frameworks */,
+				05F7B01A2DE9A38400BE2775 /* FirebaseMessaging in Frameworks */,
+				05F7B01C2DEBCCAB00BE2775 /* FirebaseFunctions in Frameworks */,
 				05EB11D62D1DDB5000807872 /* FirebaseStorage in Frameworks */,
 				05EB11D02D1DDB5000807872 /* FirebaseAuth in Frameworks */,
 				05EB11E42D1DDD5F00807872 /* AlertToast in Frameworks */,
@@ -697,6 +705,8 @@
 			);
 			name = "xSpendWatch Watch App";
 			packageProductDependencies = (
+				05F7B01D2DEC479900BE2775 /* FirebaseMessaging */,
+				05F7B01F2DEC48F000BE2775 /* FirebaseCore */,
 			);
 			productName = "xSpendWatch Watch App";
 			productReference = 0515FEF62D31A9020008D456 /* xSpendWatch Watch App.app */;
@@ -1490,6 +1500,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 05DDA2702D1DD4A9001C335A /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		05F7B0192DE9A38400BE2775 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05DDA26F2D1DD43B001C335A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		05F7B01B2DEBCCAB00BE2775 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05DDA26F2D1DD43B001C335A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		05F7B01D2DEC479900BE2775 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05DDA26F2D1DD43B001C335A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		05F7B01F2DEC48F000BE2775 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05DDA26F2D1DD43B001C335A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

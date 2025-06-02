@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct AnalyticsScreen: View {
-    @ObservedObject var sessionManager = WCSessionManagerWatch.shared
     var body: some View {
         VStack(spacing:0) {
             ProgressBarGoalWidgetEntryView(
                 color: ColorChoice.purple,
-                data: sessionManager.getData()
+                data: WCSessionManagerWatch.shared.getData()
             )
         }
     }

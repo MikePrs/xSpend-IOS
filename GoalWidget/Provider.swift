@@ -47,7 +47,7 @@ struct Provider: AppIntentTimelineProvider {
             entries.append(entry)
         }
 
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
         print("Next complication update scheduled for: \(nextUpdate)")
         return Timeline(entries: entries, policy: .after(nextUpdate))
     }

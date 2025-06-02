@@ -20,8 +20,8 @@ struct ContentView: View {
 struct HorizontalScrollScreens: View {
     var body: some View {
         TabView {
-            MainScreen().tag(0)
-            AnalyticsScreen().tag(1)
+//            MainScreen().tag(0)
+            AnalyticsScreen().tag(0)
         }
         .tabViewStyle(PageTabViewStyle())
     }

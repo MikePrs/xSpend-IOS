@@ -15,7 +15,7 @@ class Utilities {
         if let sharedDefaults = UserDefaults(suiteName: Constants.groupName) {
             sharedDefaults.set(value, forKey: key)
             sharedDefaults.synchronize()
-            WCSessionManager.shared.sendMessage(getComplicationsUserDefaultsValues())
+//            WCSessionManager.shared.sendMessage(getComplicationsUserDefaultsValues())
             sendComplicationUpdate()
             updateTimelines()
         }

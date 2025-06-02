@@ -39,13 +39,13 @@ class WCSessionManagerWatch: NSObject, ObservableObject, WCSessionDelegate, UNUs
         print("watchOS: Activated with state: \(activationState.rawValue)")
     }
     
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        handleIncomingData(applicationContext)
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        handleIncomingData(message)
-    }
+//    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+//        handleIncomingData(applicationContext)
+//    }
+//    
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+//        handleIncomingData(message)
+//    }
     
     func session(_ session: WCSession, didReceiveUserInfo message: [String : Any] = [:]) {
         handleIncomingData(message)

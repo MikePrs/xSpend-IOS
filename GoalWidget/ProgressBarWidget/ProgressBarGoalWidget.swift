@@ -18,7 +18,7 @@ struct ProgressBarGoalWidget: Widget {
                 data: ProgressBarData(
                 monthGoal: entry.configuration.monthGoal,
                 userCurentExpense: entry.configuration.userCurentExpense,
-                currency: entry.configuration.currency),
+                currency: entry.configuration.currency)
             ).containerBackground(.fill.tertiary, for: .widget)
         }.supportedFamilies([.systemMedium, .systemSmall])
     }
