@@ -26,7 +26,7 @@ struct Provider: AppIntentTimelineProvider {
         var entries: [SimpleEntry] = []
         let currentDate = Date()
 
-        for minuteOffset in stride(from: 0, to: 60, by: 5) {
+        for minuteOffset in stride(from: 0, to: 60, by: 1) {
             let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             
             

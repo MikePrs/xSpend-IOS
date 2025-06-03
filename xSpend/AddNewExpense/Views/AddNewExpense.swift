@@ -18,8 +18,6 @@ struct AddNewExpense: View {
     
     func onAppear() {
         
-        
-        
         fbViewModel.getExpenseTypes()
         if currencySelection == "" {
             if let usersCountryCode = Locale.current.region?.identifier{
@@ -33,8 +31,7 @@ struct AddNewExpense: View {
     
     var body: some View {
         VStack {
-            ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add
-            )
+            ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add)
         }
         .background(Color(UIColor.systemGroupedBackground))
         .ignoresSafeArea(.all, edges: [.bottom, .trailing])
