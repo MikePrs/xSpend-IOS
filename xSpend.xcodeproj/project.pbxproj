@@ -236,25 +236,25 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0515FF492D32D6460008D456 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
-		};
-		05F8B5482DD1489200EE8F2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		05212C9C2E059F21005B8656 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Utilities.swift,
 			);
 			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
 		};
+		0579C0B42E059D9700BADA3F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0515FF3A2D32D6440008D456 /* MonthGoalComplicationExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0515FEF72D31A9020008D456 /* xSpendWatch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (05F8B5482DD1489200EE8F2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "xSpendWatch Watch App"; sourceTree = "<group>"; };
-		0515FF3E2D32D6440008D456 /* MonthGoalComplication */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0515FF492D32D6460008D456 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MonthGoalComplication; sourceTree = "<group>"; };
+		0515FEF72D31A9020008D456 /* xSpendWatch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (05212C9C2E059F21005B8656 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "xSpendWatch Watch App"; sourceTree = "<group>"; };
+		0515FF3E2D32D6440008D456 /* MonthGoalComplication */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0579C0B42E059D9700BADA3F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MonthGoalComplication; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
