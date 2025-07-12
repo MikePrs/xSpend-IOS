@@ -9,6 +9,7 @@ import Foundation
 
 enum FirebaseError:Error {
     case firebaseErrGetExpense
+    case firebaseErrGetExpensesWeekReport
     case firebaseErrDelete
     case firebaseAddExpenseErr
     case firebaseUpdateExpenseErr
@@ -26,6 +27,8 @@ enum FirebaseError:Error {
         switch self {
         case .firebaseErrGetExpense:
             return err.getExpensesErr
+        case .firebaseErrGetExpensesWeekReport:
+            return err.getExpensesWeekReportErr
         case .firebaseErrDelete:
             return err.deleteExpenseError
         case .unknown:

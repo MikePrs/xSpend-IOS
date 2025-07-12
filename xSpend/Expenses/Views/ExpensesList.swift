@@ -29,13 +29,16 @@ struct ExpensesList: View {
                 Section(header: Text("\(section.id)")) {
                     ForEach(section.expenses) { exp in
                         Button {
-                            addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
-                            addNewExpenseViewModel.detailViewType = .view
-                            router.navigate(to: .expenseDetail(
-                                addNewExpenseViewModel: addNewExpenseViewModel,
-                                fbViewModel: fbViewModel,
-                                viewType: .view
-                            ))
+                            Task{
+                                await addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
+                            }
+                                addNewExpenseViewModel.detailViewType = .view
+                                router.navigate(to: .expenseDetail(
+                                    addNewExpenseViewModel: addNewExpenseViewModel,
+                                    fbViewModel: fbViewModel,
+                                    viewType: .view
+                                ))
+                            
                         } label: {
                             HStack{
                                 VStack(alignment: .leading, spacing: 0){
@@ -66,7 +69,9 @@ struct ExpensesList: View {
                             .tint(.red)
                             
                             Button(Constants.strings.edit) {
-                                addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
+                                Task{
+                                    await addNewExpenseViewModel.configure(fbViewModel: fbViewModel,expense:exp)
+                                }
                                 addNewExpenseViewModel.detailViewType = .update
                                 expensesViewModel.openDetails = true
                             }

@@ -95,6 +95,7 @@ public struct Constants {
         static var expenseNameFilled = "Expense name should be filled."
         static var duplicateExpenseType = "This expense type already exists."
         static var getExpensesErr = "Error getting expenses"
+        static var getExpensesWeekReportErr = "Error getting expenses week report"
         static var firebaseViewModelErr = "Error with firebase view model."
         static var retrieveUserTargetErr = "Something went wrong retrieving user terget"
         static var firebaseExpenseMonthSumErr = "Something went wrong summarizing month expenses"
@@ -163,7 +164,6 @@ public struct Constants {
         static var expensetypeDelete = "Are you sure you want to delete this expense type?"
         static var expenseDelete = "Are you sure you want to delete this expense ?"
         static var monthGoal = "Monthly spending goal."
-        
-
+        static var weeklyReport = "Weekly spending report."
     }
 }

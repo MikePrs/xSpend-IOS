@@ -252,5 +252,73 @@ public class FirebaseViewModel: ObservableObject, Hashable {
         
         return expenseSect
     }
+    
+    func getWeeklyReport() async -> Result<[LineChartModel], FirebaseError> {
+        let monday = getCurrentWeekRangeTimestamps()?.start
+        let sunday = getCurrentWeekRangeTimestamps()?.end
+        var chartData = [LineChartModel]()
+        var charDict = [String:Float]()
+        if let monday, let sunday{
+            let query = db.collection(Constants.firebase.expenses)
+                .whereField(Constants.firebase.user, isEqualTo: Auth.auth().currentUser?.email! as Any)
+                .whereField(Constants.firebase.timestamp, isLessThanOrEqualTo: sunday)
+                .whereField(Constants.firebase.timestamp, isGreaterThanOrEqualTo: monday)
+            
+            do {
+                let snapshot = try await query.getDocuments()
+                for data in snapshot.documents {
+                    if let date = data[Constants.firebase.date] as? String,
+                       let amount = data[Constants.firebase.amount] as? Float {
+                        if charDict[date] != nil {
+                            charDict[date]! += amount
+                        }else{
+                            charDict[date] = amount
+                        }
+                    }
+                }
+                
+                charDict.forEach { (key, value) in
+                    if let date = Utilities().parseDate(from: key) {
+                        chartData.append(
+                            LineChartModel(
+                                day: date,
+                                amount: value
+                            )
+                        )
+                    }
+                }
+            } catch {
+                return .failure(.firebaseErrGetExpensesWeekReport)
+            }
+            
+        }
+        return .success(chartData)
+    }
+    
+    func getCurrentWeekRangeTimestamps() -> (start: Int, end: Int)? {
+        let calendar = Calendar.current
+        let now = Date()
+
+        // Get the weekday (1 = Sunday, 2 = Monday, ..., 7 = Saturday)
+        let weekday = calendar.component(.weekday, from: now)
+        let daysToMonday = (weekday == 1) ? -6 : -(weekday - 2)
+
+        // Calculate start of Monday
+        guard let monday = calendar.date(byAdding: .day, value: daysToMonday, to: calendar.startOfDay(for: now)) else {
+            return nil
+        }
+
+        // Calculate end of Sunday at 23:59:59
+        guard let sundayDate = calendar.date(byAdding: .day, value: 6, to: monday),
+              let sundayEnd = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: sundayDate) else {
+            return nil
+        }
+
+        // Convert to Int (Unix timestamp in seconds)
+        let startTimestamp = Int(monday.timeIntervalSince1970)
+        let endTimestamp = Int(sundayEnd.timeIntervalSince1970)
+
+        return (start: startTimestamp, end: endTimestamp)
+    }
 }
 

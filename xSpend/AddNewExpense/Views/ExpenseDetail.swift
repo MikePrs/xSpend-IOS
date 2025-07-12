@@ -33,7 +33,6 @@ struct ExpenseDetail: View {
                     }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
                 }.padding().background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
             }
-            ScrollView{
                 VStack(){
                     Form {
                         Text(viewType.title)
@@ -106,8 +105,7 @@ struct ExpenseDetail: View {
                             }
                         }
                         
-                    }.frame(height: 300).scrollDisabled(true)
-                }
+                    }.frame(height: 270).scrollDisabled(true)
             }
             .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
             .scrollDismissesKeyboard(.immediately)
