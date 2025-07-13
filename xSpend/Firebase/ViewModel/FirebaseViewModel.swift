@@ -292,7 +292,7 @@ public class FirebaseViewModel: ObservableObject, Hashable {
             }
             
         }
-        return .success(chartData)
+        return .success(chartData.sorted { $0.day < $1.day })
     }
     
     func getCurrentWeekRangeTimestamps() -> (start: Int, end: Int)? {

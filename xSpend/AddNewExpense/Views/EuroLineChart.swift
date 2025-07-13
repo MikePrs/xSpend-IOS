@@ -43,8 +43,11 @@ struct EuroLineChartView: View {
                 AxisMarks(position: .leading)
             }
             .frame(height: 300)
+            
+            VStack {
+                
+            }.frame(height: 150)
         }
-        .padding(.bottom, 120)
         .padding(.horizontal, 30)
     }
 }

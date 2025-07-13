@@ -40,7 +40,6 @@ struct AddNewExpense: View {
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
-        .ignoresSafeArea(.all, edges: [.bottom, .trailing])
         .onAppear{Task{await setUp()}}
     }
 }
