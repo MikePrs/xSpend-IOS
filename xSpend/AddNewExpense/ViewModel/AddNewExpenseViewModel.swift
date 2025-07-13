@@ -35,6 +35,7 @@ class AddNewExpenseViewModel: ObservableObject, Hashable {
     @Published var countryCourency = CountryCurrencyCode()
     @Published var detailViewType:ExpenseDetailViewType = .view
     @Published var weeklyReport = [LineChartModel]()
+    @Published var weeklyReportLoader = true
     
     func configure(fbViewModel:FirebaseViewModel, expense :Expense? = nil, currencySelection:String? = nil) {
         self.fbViewModel = fbViewModel
@@ -137,6 +138,7 @@ class AddNewExpenseViewModel: ObservableObject, Hashable {
         let result = await self.fbViewModel?.getWeeklyReport()
         switch result {
         case .success(let report):
+            weeklyReportLoader = false
             self.weeklyReport = report
         case .failure(let err):
             self.showAlert(message: err.errString)

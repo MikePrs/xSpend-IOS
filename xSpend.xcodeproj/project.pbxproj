@@ -78,6 +78,7 @@
 		05E6E4C02E22D3F500C6050B /* LineChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4BF2E22D3F500C6050B /* LineChartModel.swift */; };
 		05E6E4C22E22EB0400C6050B /* LineChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4BF2E22D3F500C6050B /* LineChartModel.swift */; };
 		05E6E4C32E2300BF00C6050B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0504E1B72C4D91D0003FDA03 /* Utilities.swift */; };
+		05E6E4C72E23EAA100C6050B /* PillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4C62E23EAA100C6050B /* PillView.swift */; };
 		05EB11D02D1DDB5000807872 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11CF2D1DDB5000807872 /* FirebaseAuth */; };
 		05EB11D22D1DDB5000807872 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11D12D1DDB5000807872 /* FirebaseCore */; };
 		05EB11D42D1DDB5000807872 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11D32D1DDB5000807872 /* FirebaseFirestore */; };
@@ -225,6 +226,7 @@
 		05BE81232B4095970082087C /* ExchangeRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRate.swift; sourceTree = "<group>"; };
 		05E6E4BD2E22D38900C6050B /* EuroLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EuroLineChart.swift; sourceTree = "<group>"; };
 		05E6E4BF2E22D3F500C6050B /* LineChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartModel.swift; sourceTree = "<group>"; };
+		05E6E4C62E23EAA100C6050B /* PillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillView.swift; sourceTree = "<group>"; };
 		05ED2F5F2C49A2CC006AF70D /* GoalWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GoalWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		05ED2F602C49A2CC006AF70D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		05ED2F622C49A2CC006AF70D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -635,6 +637,7 @@
 				059CDDEE2A60946B0006DF80 /* CustomTabBar.swift */,
 				0579783A2C14F09500550877 /* HeaderTitle.swift */,
 				0504E1B72C4D91D0003FDA03 /* Utilities.swift */,
+				05E6E4C62E23EAA100C6050B /* PillView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -926,6 +929,7 @@
 				05F6641D2A7052A800F5D701 /* Expense.swift in Sources */,
 				059CDDF32A6096790006DF80 /* AddNewExpense.swift in Sources */,
 				0579787A2C26310E00550877 /* FetchError.swift in Sources */,
+				05E6E4C72E23EAA100C6050B /* PillView.swift in Sources */,
 				0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */,
 				057978702C19D6F400550877 /* ExpenseDetail.swift in Sources */,
 				057978482C151BAB00550877 /* ExpensesList.swift in Sources */,

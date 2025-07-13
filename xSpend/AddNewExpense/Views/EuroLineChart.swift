@@ -11,6 +11,8 @@ import Charts
 struct EuroLineChartView: View {
     let data: [LineChartModel]
     let currency : String
+
+    @Environment(\.colorScheme) var colorScheme
     
     private func calculateWeeksExpense() -> String {
         var weekSum:Float = 0
@@ -26,19 +28,19 @@ struct EuroLineChartView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
             
-            Text("\(calculateWeeksExpense()) \(currency)")
-                .font(.title3)
-                .foregroundStyle(Constants.colors.purpleColor)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+            HStack{
+                Spacer()
+                PillView(title: "\(calculateWeeksExpense()) \(currency)")
+            }.padding(.bottom, 10)
             
             Chart(data) { item in
                 LineMark(
                     x: .value("Day", item.day),
                     y: .value("Euro", item.amount)
                 )
-                .foregroundStyle(Constants.colors.purpleColor)
+                .foregroundStyle(colorScheme == .light ? Constants.colors.purpleColor : Constants.colors.lightPurpleColor)
                 .symbol(Circle())
             }
             .chartXScale(domain: Utilities().currentWeekDates().first!...Utilities().endOfDay(for: Utilities().currentWeekDates().last!))

@@ -37,6 +37,11 @@ struct AddNewExpense: View {
             ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add)
             if addNewExpenseViewModel.weeklyReport.count > 0 {
                 EuroLineChartView(data: addNewExpenseViewModel.weeklyReport, currency: addNewExpenseViewModel.expenseCurrency)
+            } else {
+                if addNewExpenseViewModel.weeklyReportLoader {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
