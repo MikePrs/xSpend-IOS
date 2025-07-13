@@ -36,7 +36,7 @@ struct AddNewExpense: View {
         ScrollView {
             ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add)
             if addNewExpenseViewModel.weeklyReport.count > 0 {
-                EuroLineChartView(data: addNewExpenseViewModel.weeklyReport)
+                EuroLineChartView(data: addNewExpenseViewModel.weeklyReport, currency: addNewExpenseViewModel.expenseCurrency)
             }
         }
         .background(Color(UIColor.systemGroupedBackground))

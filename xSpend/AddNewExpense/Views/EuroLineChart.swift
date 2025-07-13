@@ -10,6 +10,15 @@ import Charts
 
 struct EuroLineChartView: View {
     let data: [LineChartModel]
+    let currency : String
+    
+    private func calculateWeeksExpense() -> String {
+        var weekSum:Float = 0
+        for day in data {
+            weekSum += day.amount
+        }
+        return String(format: "%.2f",weekSum)
+    }
     
     var body: some View {
         VStack{
@@ -18,6 +27,11 @@ struct EuroLineChartView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 20)
+            
+            Text("\(calculateWeeksExpense()) \(currency)")
+                .font(.title3)
+                .foregroundStyle(Constants.colors.purpleColor)
+                .frame(maxWidth: .infinity, alignment: .trailing)
             
             Chart(data) { item in
                 LineMark(
