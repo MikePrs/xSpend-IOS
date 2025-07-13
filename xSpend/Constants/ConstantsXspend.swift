@@ -165,5 +165,6 @@ public struct Constants {
         static var expenseDelete = "Are you sure you want to delete this expense ?"
         static var monthGoal = "Monthly spending goal."
         static var weeklyReport = "Weekly spending report."
+        static var addExpenseNote = "Notes: Fields with the asterisk (*) are required."
     }
 }
