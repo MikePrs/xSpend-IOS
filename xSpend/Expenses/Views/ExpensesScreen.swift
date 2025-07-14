@@ -177,7 +177,7 @@ struct ExpensesScreen: View {
             )
         }
         .fullScreenCover(isPresented: $showAnalyticsPanelView) {
-            ExpensesListAnalyticsPanelView()
+            ExpensesListAnalyticsPanelView(data: expensesViewModel.expenseList)
         }
     }
 }
