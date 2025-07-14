@@ -77,16 +77,17 @@ struct ExpenseDetail: View {
                         }
                     }.frame(height: 250).scrollDisabled(true)
                     
-                    HStack{
-                        Text(Constants.strings.addExpenseNote)
-                            .foregroundStyle(.gray)
-                            .font(.footnote)
-                        Spacer()
-                    }
-                    .padding(.leading, 30)
-                    .padding(.bottom, 25)
                     
-                    if viewType != .view{
+                    if viewType != .view {
+                        HStack{
+                            Text(Constants.strings.addExpenseNote)
+                                .foregroundStyle(.gray)
+                                .font(.footnote)
+                            Spacer()
+                        }
+                        .padding(.leading, 30)
+                        .padding(.bottom, 25)
+                        
                         QuickAmounts { amountSelected in
                             addNewExpenseViewModel.expenseAmount = (Float(amountSelected) ?? 0) + (addNewExpenseViewModel.expenseAmount ?? 0)
                         }

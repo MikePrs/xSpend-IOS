@@ -63,6 +63,7 @@ public struct Constants {
         static var noIcon = "questionmark.square.dashed"
         static var logOut = "arrowshape.turn.up.backward"
         static var trash = "trash"
+        static var analyticsIcon = "cellularbars"
         
     }
     
@@ -166,5 +167,6 @@ public struct Constants {
         static var monthGoal = "Monthly spending goal."
         static var weeklyReport = "Weekly spending report."
         static var addExpenseNote = "Notes: Fields with the asterisk (*) are required."
+        static var exopensesListAnalytics = "Show Analytics for the curent results"
     }
 }
