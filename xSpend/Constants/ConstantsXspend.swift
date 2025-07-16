@@ -64,6 +64,7 @@ public struct Constants {
         static var logOut = "arrowshape.turn.up.backward"
         static var trash = "trash"
         static var analyticsIcon = "cellularbars"
+        static var categoryColorIcon = "circle.inset.filled"
         
     }
     
@@ -168,5 +169,8 @@ public struct Constants {
         static var weeklyReport = "Weekly spending report."
         static var addExpenseNote = "Notes: Fields with the asterisk (*) are required."
         static var exopensesListAnalytics = "Show Analytics for the curent results"
+        static var typesFilterPanelFootnote = "Note: Tap on the type you want to hide from the graph."
+        static var analytics = "Analytics"
+        static var typesInFilters = "Types in the graph"
     }
 }
