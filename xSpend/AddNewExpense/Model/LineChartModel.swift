@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct LineChartModel: Identifiable {
+struct LineChartModel: Identifiable, Hashable {
     let id = UUID()
-    let day: Date       // Day of the month (1-31)
-    let amount: Float   // Euro amount
+    let day: Date
+    let amount: Float
+    var isActive: Bool?
 }
