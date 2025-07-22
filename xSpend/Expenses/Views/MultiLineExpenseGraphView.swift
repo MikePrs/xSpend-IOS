@@ -18,7 +18,6 @@ struct MultiLineExpenseGraphView: View {
     @Environment(\.dismiss) var dismiss
     var data : [SectionedExpenses]
     
-    @State var typesSet : Set<String> = []
     @State var typeColorDic : [String:Color] = [:]
     @State var typesFilter = [TypesFilterPanel]()
     @State var chartData = [String : [LineChartModel]]()
@@ -49,10 +48,6 @@ struct MultiLineExpenseGraphView: View {
         for item in chartData {
             chartData[item.key] = chartData[item.key]?.sorted{$0.day < $1.day}
         }
-    }
-    
-    func getTypesSum(){
-        
     }
     
     func handleActivateType(type:String){

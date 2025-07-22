@@ -34,7 +34,11 @@ struct ExpensesListAnalyticsPanelView: View {
                         .cornerRadius(20)
                 }.padding(.horizontal,8)
                 
-                MultiLineExpenseGraphView(data: data)
+                if chartType == Constants.strings.multiLine {
+                    MultiLineExpenseGraphView(data: data)
+                }else if chartType == Constants.strings.pieChart {
+                    PieChartView(data: data)
+                }
             }
         }.background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground) : .black)
     }

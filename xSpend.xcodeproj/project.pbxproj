@@ -83,6 +83,7 @@
 		05E6E4CD2E30106400C6050B /* MultiLineExpenseGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4CC2E30106400C6050B /* MultiLineExpenseGraphView.swift */; };
 		05E6E4CF2E30122C00C6050B /* TypesFilterPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4CE2E30122C00C6050B /* TypesFilterPanel.swift */; };
 		05E6E4D02E30122C00C6050B /* TypesFilterPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4CE2E30122C00C6050B /* TypesFilterPanel.swift */; };
+		05E6E4D22E30334500C6050B /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6E4D12E30334500C6050B /* PieChartView.swift */; };
 		05EB11D02D1DDB5000807872 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11CF2D1DDB5000807872 /* FirebaseAuth */; };
 		05EB11D22D1DDB5000807872 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11D12D1DDB5000807872 /* FirebaseCore */; };
 		05EB11D42D1DDB5000807872 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 05EB11D32D1DDB5000807872 /* FirebaseFirestore */; };
@@ -234,6 +235,7 @@
 		05E6E4C82E25955300C6050B /* ExpensesListAnalyticsPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesListAnalyticsPanelView.swift; sourceTree = "<group>"; };
 		05E6E4CC2E30106400C6050B /* MultiLineExpenseGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineExpenseGraphView.swift; sourceTree = "<group>"; };
 		05E6E4CE2E30122C00C6050B /* TypesFilterPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesFilterPanel.swift; sourceTree = "<group>"; };
+		05E6E4D12E30334500C6050B /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		05ED2F5F2C49A2CC006AF70D /* GoalWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GoalWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		05ED2F602C49A2CC006AF70D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		05ED2F622C49A2CC006AF70D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -507,6 +509,7 @@
 				057978472C151BAB00550877 /* ExpensesList.swift */,
 				05E6E4C82E25955300C6050B /* ExpensesListAnalyticsPanelView.swift */,
 				05E6E4CC2E30106400C6050B /* MultiLineExpenseGraphView.swift */,
+				05E6E4D12E30334500C6050B /* PieChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -942,6 +945,7 @@
 				0579787A2C26310E00550877 /* FetchError.swift in Sources */,
 				05E6E4C92E25955300C6050B /* ExpensesListAnalyticsPanelView.swift in Sources */,
 				05E6E4C72E23EAA100C6050B /* PillView.swift in Sources */,
+				05E6E4D22E30334500C6050B /* PieChartView.swift in Sources */,
 				0565AE852A5B02310050A9D8 /* LoginScreen.swift in Sources */,
 				057978702C19D6F400550877 /* ExpenseDetail.swift in Sources */,
 				057978482C151BAB00550877 /* ExpensesList.swift in Sources */,
