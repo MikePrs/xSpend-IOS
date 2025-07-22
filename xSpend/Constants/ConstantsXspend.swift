@@ -172,5 +172,8 @@ public struct Constants {
         static var typesFilterPanelFootnote = "Note: Tap on the type you want to hide from the graph."
         static var analytics = "Analytics"
         static var typesInFilters = "Types in the graph"
+        static var multiLine = "Multi Line"
+        static var pieChart = "Pie chart"
+        static var chartType = "Chart type"
     }
 }

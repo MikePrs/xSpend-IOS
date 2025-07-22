@@ -118,7 +118,7 @@ struct ExpensesScreen: View {
                     }) {
                         Text(Constants.strings.exopensesListAnalytics)
                             .foregroundStyle(colorScheme == .light ?  Constants.colors.purpleColor : Constants.colors.lightPurpleColor)
-                            .font(.footnote)
+                            .font(.body)
                     }
                     
                     ExpensesList(
