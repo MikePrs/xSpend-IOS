@@ -43,7 +43,7 @@ struct AddNewExpense: View {
                         .progressViewStyle(CircularProgressViewStyle())
                 }
             }
-        }
+        }.scrollDismissesKeyboard(.immediately)
         .background(Color(UIColor.systemGroupedBackground))
         .onAppear{Task{await setUp()}}
     }
