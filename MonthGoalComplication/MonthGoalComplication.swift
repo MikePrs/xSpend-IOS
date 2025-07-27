@@ -16,7 +16,7 @@ struct MonthGoalComplication: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             MonthGoalComplicationEntryView(entry: entry)
                 .containerBackground(.fill, for: .widget)
-        }
+        }.supportedFamilies([.accessoryCorner])
     }
 }
 
