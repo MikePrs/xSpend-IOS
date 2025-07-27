@@ -63,6 +63,8 @@ public struct Constants {
         static var noIcon = "questionmark.square.dashed"
         static var logOut = "arrowshape.turn.up.backward"
         static var trash = "trash"
+        static var analyticsIcon = "cellularbars"
+        static var categoryColorIcon = "circle.inset.filled"
         
     }
     
@@ -95,6 +97,7 @@ public struct Constants {
         static var expenseNameFilled = "Expense name should be filled."
         static var duplicateExpenseType = "This expense type already exists."
         static var getExpensesErr = "Error getting expenses"
+        static var getExpensesWeekReportErr = "Error getting expenses week report"
         static var firebaseViewModelErr = "Error with firebase view model."
         static var retrieveUserTargetErr = "Something went wrong retrieving user terget"
         static var firebaseExpenseMonthSumErr = "Something went wrong summarizing month expenses"
@@ -163,7 +166,14 @@ public struct Constants {
         static var expensetypeDelete = "Are you sure you want to delete this expense type?"
         static var expenseDelete = "Are you sure you want to delete this expense ?"
         static var monthGoal = "Monthly spending goal."
-        
-
+        static var weeklyReport = "Weekly spending report."
+        static var addExpenseNote = "Notes: Fields with the asterisk (*) are required."
+        static var exopensesListAnalytics = "Show Analytics for the curent results"
+        static var typesFilterPanelFootnote = "Note: Tap on the type you want to hide from the graph."
+        static var analytics = "Analytics"
+        static var typesInFilters = "Types in the graph"
+        static var multiLine = "Multi Line"
+        static var pieChart = "Pie chart"
+        static var chartType = "Chart type"
     }
 }

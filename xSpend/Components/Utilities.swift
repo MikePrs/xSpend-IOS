@@ -43,4 +43,38 @@ class Utilities {
         WidgetCenter.shared.reloadAllTimelines()
     }
 
+    
+    func parseDate(from dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d/M/yyyy" // Handles "10/7/2025" format
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.date(from: dateString)
+    }
+    
+    var dayFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E" // short day name
+        return formatter
+    }
+    
+    func currentWeekDates() -> [Date] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        let weekday = calendar.component(.weekday, from: today)
+        let daysToMonday = (weekday == 1) ? -6 : -(weekday - 2) // Sunday = 1
+
+        guard let monday = calendar.date(byAdding: .day, value: daysToMonday, to: today) else {
+            return []
+        }
+
+        return (0..<7).compactMap {
+            calendar.date(byAdding: .day, value: $0, to: monday)
+        }
+    }
+    
+    func endOfDay(for date: Date) -> Date {
+        Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)!
+    }
+
 }

@@ -33,7 +33,6 @@ struct ExpenseDetail: View {
                     }.tint(viewType.isDisabled ? Utils.getPurpleColor(colorScheme) : .red)
                 }.padding().background(colorScheme == .light ? Color(uiColor: .secondarySystemBackground):nil)
             }
-            ScrollView{
                 VStack(){
                     Form {
                         Text(viewType.title)
@@ -41,24 +40,24 @@ struct ExpenseDetail: View {
                             .fontWeight(.bold)
                         
                         HStack{
-                            Text(Constants.strings.title+": ")
+                            Text(Constants.strings.title + ": ")
                             TextField("", text: $addNewExpenseViewModel.expenseTitle)
                                 .focused($focusedField, equals: .title)
                         }
                         
-                        Picker(Constants.strings.type, selection: $addNewExpenseViewModel.expenseType){
+                        Picker("\(viewType == .add ? "*" : "")\(Constants.strings.type)", selection: $addNewExpenseViewModel.expenseType){
                             ForEach(fbViewModel.alltypesValues, id: \.self) { value in
                                 Text(value).tag(value)
                             }
                         }
                         .pickerStyle(DefaultPickerStyle())
                         
-                        DatePicker(selection: $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
-                            Text(Constants.strings.selectDate)
+                        DatePicker(selection:  $addNewExpenseViewModel.expenseDate, in: ...Date.now, displayedComponents: .date) {
+                            Text("\(viewType == .add ? "*" : "")\(Constants.strings.selectDate)")
                         }.tint(Constants.colors.lightPurpleColor)
                         
                         HStack{
-                            Text(Constants.strings.amountSpace)
+                            Text("\(viewType == .add ? "*" : "")\(Constants.strings.amountSpace)")
                             TextField(Constants.strings.amount, value: $addNewExpenseViewModel.expenseAmount,format:.number)
                                 .keyboardType(.decimalPad)
                                 .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -76,9 +75,19 @@ struct ExpenseDetail: View {
                             }
                             .pickerStyle(DefaultPickerStyle())
                         }
-                    }.frame(height: 280).scrollDisabled(true)
+                    }.frame(height: 250).scrollDisabled(true)
                     
-                    if viewType != .view{
+                    
+                    if viewType != .view {
+                        HStack{
+                            Text(Constants.strings.addExpenseNote)
+                                .foregroundStyle(.gray)
+                                .font(.footnote)
+                            Spacer()
+                        }
+                        .padding(.leading, 30)
+                        .padding(.bottom, 25)
+                        
                         QuickAmounts { amountSelected in
                             addNewExpenseViewModel.expenseAmount = (Float(amountSelected) ?? 0) + (addNewExpenseViewModel.expenseAmount ?? 0)
                         }
@@ -106,8 +115,7 @@ struct ExpenseDetail: View {
                             }
                         }
                         
-                    }.frame(height: 300).scrollDisabled(true)
-                }
+                    }.frame(height: 270).scrollDisabled(true)
             }
             .disabled(viewType.isDisabled).opacity(viewType.isDisabled ? 0.7 : 1)
             .scrollDismissesKeyboard(.immediately)

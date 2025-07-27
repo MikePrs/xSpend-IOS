@@ -119,6 +119,7 @@ struct TabManager: View {
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $tabSelected)
+                    .background(Color(UIColor.systemGroupedBackground))
             }
             .navigationBarHidden(true)
         }.ignoresSafeArea(.keyboard, edges: .bottom)

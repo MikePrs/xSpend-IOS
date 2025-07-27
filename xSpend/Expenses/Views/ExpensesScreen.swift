@@ -19,6 +19,7 @@ struct ExpensesScreen: View {
     @FocusState private var focusedField: ExpenseFilterFields?
     @State var detailViewType:ExpenseDetailViewType = .view
     @EnvironmentObject var router: Router
+    @State private var showAnalyticsPanelView = false
     
     func setUp() async {
         await expensesViewModel.configure(fbViewModel: fbViewModel,currencySelection:currencySelection)
@@ -102,15 +103,29 @@ struct ExpensesScreen: View {
                             }
                         }
                     }
+                    
                 }
             }
             .scrollDisabled(true)
             .frame(height:  expensesViewModel.filtersSize).ignoresSafeArea(.keyboard)
+            
+            
+            
             if !expensesViewModel.isLoading {
-                ExpensesList(
-                    fbViewModel: fbViewModel,
-                    addNewExpenseViewModel: addNewExpenseViewModel
-                ).environmentObject(expensesViewModel)
+                VStack{
+                    Button(action: {
+                        showAnalyticsPanelView = true
+                    }) {
+                        Text(Constants.strings.exopensesListAnalytics)
+                            .foregroundStyle(colorScheme == .light ?  Constants.colors.purpleColor : Constants.colors.lightPurpleColor)
+                            .font(.body)
+                    }
+                    
+                    ExpensesList(
+                        fbViewModel: fbViewModel,
+                        addNewExpenseViewModel: addNewExpenseViewModel
+                    ).environmentObject(expensesViewModel)
+                }
             }else{
                 Spacer()
                 ProgressView()
@@ -160,6 +175,9 @@ struct ExpensesScreen: View {
                 title:  expensesViewModel.successToastText,
                 style: .style(titleColor: Utils.getAlertColor(colorScheme))
             )
+        }
+        .fullScreenCover(isPresented: $showAnalyticsPanelView) {
+            ExpensesListAnalyticsPanelView(data: expensesViewModel.expenseList)
         }
     }
 }

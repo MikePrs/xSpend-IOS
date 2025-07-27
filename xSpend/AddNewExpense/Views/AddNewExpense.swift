@@ -16,8 +16,10 @@ struct AddNewExpense: View {
     @EnvironmentObject var fbViewModel: FirebaseViewModel
     @StateObject var addNewExpenseViewModel = AddNewExpenseViewModel()
     
-    func onAppear() {
-        
+//    init() async {
+//    }
+    
+    func setUp() async {
         fbViewModel.getExpenseTypes()
         if currencySelection == "" {
             if let usersCountryCode = Locale.current.region?.identifier{
@@ -27,14 +29,22 @@ struct AddNewExpense: View {
             }
         }
         addNewExpenseViewModel.configure(fbViewModel: fbViewModel, currencySelection:currencySelection)
+        await addNewExpenseViewModel.getWeeklyReportData()
     }
     
     var body: some View {
-        VStack {
+        ScrollView {
             ExpenseDetail(addNewExpenseViewModel: addNewExpenseViewModel,fbViewModel: fbViewModel, viewType: .add)
+            if addNewExpenseViewModel.weeklyReport.count > 0 {
+                EuroLineChartView(data: addNewExpenseViewModel.weeklyReport, currency: addNewExpenseViewModel.expenseCurrency)
+            } else {
+                if addNewExpenseViewModel.weeklyReportLoader {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
+            }
         }
         .background(Color(UIColor.systemGroupedBackground))
-        .ignoresSafeArea(.all, edges: [.bottom, .trailing])
-        .onAppear{onAppear()}
+        .onAppear{Task{await setUp()}}
     }
 }
